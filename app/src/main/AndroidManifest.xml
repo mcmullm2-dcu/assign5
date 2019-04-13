@@ -2,9 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="michaelmcmullin.sda.firstday">
 
-  <!-- Camera is used for QR code reading and adding media to a procedure step. App can be run
-   without it, so setting 'required' to false. -->
-  <uses-feature android:name="android.hardware.camera" android:required="false"/>
+  <!--
+   Camera is used for QR code reading and adding media to a procedure step. App can be run
+   without it, so setting 'required' to false.
+    -->
+  <uses-feature
+    android:name="android.hardware.camera"
+    android:required="false"/>
 
   <!-- Although the app can run offline, most data is accessed from a Firestore DB online. -->
   <uses-permission android:name="android.permission.INTERNET"/>
@@ -16,11 +20,14 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
-    <!-- App uses Firebase ML-Kit to recognise QR codes. This requires the appropriate Machine
+
+    <!--
+     App uses Firebase ML-Kit to recognise QR codes. This requires the appropriate Machine
      Learning models to be installed, 'barcode' in this case. By default, the model will be
      downloaded the first time it's used, which could result in delays. Running offline the first
      time will give no results as there's no model to work against. The following line ensures that
-     the model downloads as soon as the app is installed, making it available in advance. -->
+     the model downloads as soon as the app is installed, making it available in advance.
+        -->
     <meta-data
       android:name="com.google.firebase.ml.vision.DEPENDENCIES"
       android:value="barcode"/>
@@ -31,6 +38,16 @@
 
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
+    </activity>
+    <activity android:name=".LoginActivity">
+    </activity>
+    <activity android:name=".QrReaderActivity">
+    </activity>
+    <activity android:name=".SearchResultsActivity">
+    </activity>
+    <activity android:name=".ProcedureActivity">
+    </activity>
+    <activity android:name=".ProcedureFormActivity">
     </activity>
   </application>
 
