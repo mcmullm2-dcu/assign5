@@ -1,4 +1,4 @@
-package michaelmcmullin.sda.firstday;
+package michaelmcmullin.sda.firstday.dataaccess;
 
 import android.arch.lifecycle.LiveData;
 import android.os.Handler;
@@ -9,6 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import michaelmcmullin.sda.firstday.AppConstants;
 
 /**
  * Extends {@link LiveData} to operate on Firestore data.
