@@ -3,11 +3,14 @@ package michaelmcmullin.sda.firstday.utils;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import michaelmcmullin.sda.firstday.LoginActivity;
 import michaelmcmullin.sda.firstday.MainActivity;
 import michaelmcmullin.sda.firstday.interfaces.User;
@@ -16,6 +19,14 @@ import michaelmcmullin.sda.firstday.interfaces.User;
  * An implementation of the {@link User} interface to centralise some user operations.
  */
 public class CurrentUser implements User {
+  private FirebaseUser user;
+
+  /**
+   * Default constructor that sets the currently logged in user.
+   */
+  public CurrentUser() {
+    reset();
+  }
 
   @Override
   /**
@@ -24,7 +35,50 @@ public class CurrentUser implements User {
    * <code>null</code>.
    */
   public String getUserId() {
-    // TODO: Implement this method.
+    if (user != null) {
+      return user.getUid();
+    }
+    return null;
+  }
+
+  /**
+   * Gets the main display name for the currently logged in user.
+   *
+   * @return Returns a <code>String</code> value of the logged in user's name, or <code>null</code>
+   *     if it's not available.
+   */
+  @Override
+  public String getDisplayName() {
+    if (user != null) {
+      return user.getDisplayName();
+    }
+    return null;
+  }
+
+  /**
+   * Gets the email address of the currently logged in user.
+   *
+   * @return Returns the logged in user's email address, if available, or <code>null</code> if it's
+   *     not.
+   */
+  @Override
+  public String getEmail() {
+    if (user != null) {
+      return user.getEmail();
+    }
+    return null;
+  }
+
+  /**
+   * Gets the <code>Uri</code> of the current user's profile photo if available.
+   *
+   * @return Returns the logged in user's profile photo, if available.
+   */
+  @Override
+  public Uri getPhoto() {
+    if (user != null) {
+      return user.getPhotoUrl();
+    }
     return null;
   }
 
@@ -45,5 +99,14 @@ public class CurrentUser implements User {
             current.finish();
           }
         });
+  }
+
+  /**
+   * Resets the current user. Useful for race conditions where this class is created before the user
+   * login process has completed.
+   */
+  @Override
+  public void reset() {
+    user = FirebaseAuth.getInstance().getCurrentUser();
   }
 }
