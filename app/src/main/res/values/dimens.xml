@@ -11,4 +11,7 @@
   <dimen name="font_title">16sp</dimen>
   <dimen name="font_edit_text">16sp</dimen>
   <dimen name="font_page_title">20sp</dimen>
+
+  <!-- Image sizes -->
+  <dimen name="profile_image">48dp</dimen>
 </resources>

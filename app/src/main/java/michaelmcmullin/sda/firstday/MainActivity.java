@@ -1,6 +1,8 @@
 package michaelmcmullin.sda.firstday;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,10 +10,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import de.hdodenhof.circleimageview.CircleImageView;
 import michaelmcmullin.sda.firstday.interfaces.User;
 import michaelmcmullin.sda.firstday.utils.CurrentUser;
 
@@ -30,6 +36,19 @@ public class MainActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+
+    // Demo profile picture. If it's null, show default image (or colour in this case).
+    CircleImageView profile = findViewById(R.id.profile_image);
+    Uri profile_picture = user.getPhoto();
+    if (profile_picture != null) {
+      Glide.with(this).load(profile_picture).into(profile);
+    } else {
+      profile.setImageResource(R.drawable.ic_default_profile_picture);
+    }
+
+    // Demo user display name
+    TextView msg = findViewById(R.id.welcome);
+    msg.setText(user.getDisplayName());
   }
 
   /**
