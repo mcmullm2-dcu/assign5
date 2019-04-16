@@ -22,11 +22,6 @@ import java.util.List;
 public class LoginActivity extends AppCompatActivity {
 
   /**
-   * Constant used for FirebaseUI authentication intent.
-   */
-  private static final int RC_SIGN_IN = 1;
-
-  /**
    * A list of authentication providers. Some are commented out for future configuration. For now,
    * we're only supporting Email and Google providers
    */
@@ -85,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
             .setAvailableProviders(providers)
             .setLogo(R.drawable.ic_app_icon)
             .build(),
-        RC_SIGN_IN);
+        AppConstants.RC_SIGN_IN);
   }
 
   /**
@@ -98,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
 
-    if (requestCode == RC_SIGN_IN) {
+    if (requestCode == AppConstants.RC_SIGN_IN) {
       IdpResponse response = IdpResponse.fromResultIntent(data);
 
       if (resultCode == RESULT_OK) {
