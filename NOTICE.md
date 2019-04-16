@@ -13,3 +13,4 @@ stability and reliability of photo and video capture on all Android devices.
 StackOverflow provided some helpful code snippets, which are licensed under CC BY-SA 3.0 (Creative Commons Attribution-ShareAlike 3.0 Unported). These are attributed throughout the code with links to the relevant answers. Some notable examples include:
 
 * [Firebase Timestamps in Java Objects](https://stackoverflow.com/a/33111791/5233918) by [Lyla](https://stackoverflow.com/users/497605/lyla)
+* [Architecture Components with Firestore](https://stackoverflow.com/a/50455288/5233918) by [Brian Begun](https://stackoverflow.com/users/6846268/brian-begun), based on an article by [Doug Stevenson](https://firebase.googleblog.com/2017/12/using-android-architecture-components.html).
