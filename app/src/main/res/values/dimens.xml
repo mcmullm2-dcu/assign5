@@ -14,4 +14,5 @@
 
   <!-- Image sizes -->
   <dimen name="profile_image">48dp</dimen>
+  <dimen name="login_logo">96dp</dimen>
 </resources>
