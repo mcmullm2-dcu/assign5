@@ -27,7 +27,7 @@
   <Button
     android:id="@+id/sign_in_button"
     android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="1"
-    android:text="@string/button_signin"/>
+    android:layout_height="wrap_content"
+    android:text="@string/button_signin"
+    android:onClick="Login"/>
 </LinearLayout>
