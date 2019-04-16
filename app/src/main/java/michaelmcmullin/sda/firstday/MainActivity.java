@@ -12,8 +12,12 @@ import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import michaelmcmullin.sda.firstday.interfaces.User;
+import michaelmcmullin.sda.firstday.utils.CurrentUser;
 
 public class MainActivity extends AppCompatActivity {
+
+  User user = new CurrentUser();
 
   /**
    * Called when {@link MainActivity} is started, initialising the Activity and inflating the
@@ -52,28 +56,9 @@ public class MainActivity extends AppCompatActivity {
 
     switch (item.getItemId()) {
       case R.id.menuitem_log_out:
-        Logout();
+        user.logOut(this);
         return true;
     }
     return false;
   }
-
-  /**
-   * Logs a user out of the app, redirecting them back to {@link LoginActivity}.
-   */
-  public void Logout() {
-    setContentView(R.layout.activity_login);
-    AuthUI.getInstance()
-        .signOut(this)
-        .addOnCompleteListener(new OnCompleteListener<Void>() {
-          public void onComplete(@NonNull Task<Void> task) {
-            Toast.makeText(MainActivity.this, "Logged Out", Toast.LENGTH_SHORT).show();
-            // Back to Sign-in screen
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-          }
-        });
-  }
-
 }
