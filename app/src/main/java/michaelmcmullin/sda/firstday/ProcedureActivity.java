@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ListView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,7 +16,9 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.MetadataChanges;
+import java.util.ArrayList;
 import javax.annotation.Nullable;
+import michaelmcmullin.sda.firstday.models.Step;
 
 public class ProcedureActivity extends AppCompatActivity {
 
@@ -141,5 +144,17 @@ public class ProcedureActivity extends AppCompatActivity {
         }
       }
     });
+
+    // Gets the procedure steps.
+    final ArrayList<Step> steps = new ArrayList<>();
+
+    // TODO: Populate steps
+    steps.add(new Step(1, "Start off", "This is the first step."));
+    steps.add(new Step(2, "Do something", "This is the second step."));
+    steps.add(new Step(3, "Finish up", "This is the final step."));
+
+    StepAdapter adapter = new StepAdapter(this, steps);
+    ListView listView = findViewById(R.id.step_list);
+    listView.setAdapter(adapter);
   }
 }
