@@ -48,6 +48,10 @@ public class LoginActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    // If the user is already logged in, skip this activity
+    if (IsLoggedIn()) {
+      StartApp();
+    }
     setContentView(R.layout.activity_login);
   }
   /**
