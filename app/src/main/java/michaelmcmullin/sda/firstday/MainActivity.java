@@ -80,4 +80,14 @@ public class MainActivity extends AppCompatActivity {
     }
     return false;
   }
+
+  /**
+   * DEMO METHOD: Open activity to view a specific procedure details
+   * @param v
+   */
+  public void launchProcedure(View v) {
+    Intent intent = new Intent(this, ProcedureActivity.class);
+    intent.putExtra(ProcedureActivity.EXTRA_ID, "X24IPHR0gJr3Aa78lCqW");
+    startActivity(intent);
+  }
 }

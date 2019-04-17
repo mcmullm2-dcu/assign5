@@ -2,6 +2,8 @@ package michaelmcmullin.sda.firstday.models;
 
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.ServerTimestamp;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -32,7 +34,7 @@ public class Procedure {
   /**
    * The timestamp of when this {@link Procedure} instance was first created.
    */
-  private HashMap<String, Object> created;
+  private Date created;
 
   /**
    * Flag indicating if this {@link Procedure} is publicly accessible, or only available users who
@@ -53,8 +55,7 @@ public class Procedure {
    * @param created The timestamp indicating when this {@link Procedure} was first created.
    * @param is_public Indicates if this {@link Procedure} instance is publicly available.
    */
-  public Procedure(String name, String description, User owner,
-      HashMap<String, Object> created, boolean is_public) {
+  public Procedure(String name, String description, User owner, Date created, boolean is_public) {
     this.name = name;
     this.description = description;
     this.owner = owner;
@@ -106,23 +107,9 @@ public class Procedure {
    * Gets the timestamp indicating when this {@link Procedure} instance was first created.
    * @return A timestamp indicating when this {@link Procedure} instance was created.
    */
-  public HashMap<String, Object> getCreated() {
-    if (created != null) {
-      return created;
-    }
-    // Otherwise make a new object set to FieldValue.serverTimestamp()
-    HashMap<String, Object> dateCreatedObj = new HashMap<String, Object>();
-    dateCreatedObj.put("created", FieldValue.serverTimestamp());
-    return dateCreatedObj;
-  }
-
-  /**
-   * Gets this {@link Procedure} instance's timestamp represented as a <code>long</code> value.
-   * @return Returns the timestamp indicating when this {@link Procedure} was created.
-   */
-  @Exclude
-  public long getCreatedLong() {
-    return (long)created.get("created");
+  @ServerTimestamp
+  public Date getCreated() {
+    return created;
   }
 
   /**
