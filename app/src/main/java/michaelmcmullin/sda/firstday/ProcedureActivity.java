@@ -16,6 +16,9 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.MetadataChanges;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import javax.annotation.Nullable;
 import michaelmcmullin.sda.firstday.models.Step;
@@ -38,6 +41,26 @@ public class ProcedureActivity extends AppCompatActivity {
   public static final String DESCRIPTION_KEY = "description";
 
   /**
+   * Name of the procedure ID field in other collections.
+   */
+  public static final String PROCEDURE_KEY = "procedure_id";
+
+  /**
+   * Name of the Step 'sequence' field in Firestore.
+   */
+  public static final String STEP_SEQUENCE_KEY = "sequence";
+
+  /**
+   * Name of the Step 'name' field in Firestore.
+   */
+  public static final String STEP_NAME_KEY = "name";
+
+  /**
+   * Name of the Step 'descriptino' field in Firestore.
+   */
+  public static final String STEP_DESCRIPTION_KEY = "description";
+
+  /**
    * Holds a reference to the Firestore database instance.
    */
   private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -48,6 +71,11 @@ public class ProcedureActivity extends AppCompatActivity {
   private DocumentReference procedureDoc;
 
   /**
+   * Holds a reference to the 'step' collection in Firestore
+   */
+  private CollectionReference stepCollection = db.collection("step");
+
+  /**
    * The {@link TextView} that displays the name of this procedure.
    */
   private TextView procedureHeading;
@@ -56,6 +84,11 @@ public class ProcedureActivity extends AppCompatActivity {
    * The {@link TextView} that displays the procedure's summary.
    */
   private TextView procedureDescription;
+
+  /**
+   * The unique ID of the procedure to display
+   */
+  private String procedureId;
 
   /**
    * Called when {@link ProcedureActivity} is started, initialising the Activity and inflating the
@@ -76,7 +109,7 @@ public class ProcedureActivity extends AppCompatActivity {
     // Ensure we have a reference to the selected procedure document
     if (procedureDoc == null) {
       Intent intent = getIntent();
-      String procedureId = intent.getStringExtra(EXTRA_ID);
+      procedureId = intent.getStringExtra(EXTRA_ID);
       procedureDoc = db.collection("procedure").document(procedureId);
       Log.d(AppConstants.TAG, "ProcedureActivity.onCreate called with ID = " + procedureId);
     }
@@ -115,6 +148,11 @@ public class ProcedureActivity extends AppCompatActivity {
   }
 
   private void populateViews() {
+    if (procedureId == null || procedureId.isEmpty()) {
+      Intent intent = getIntent();
+      procedureId = intent.getStringExtra(EXTRA_ID);
+    }
+
     // Gets the main procedure details. Adding a Snapshot listener seems like it might be overkill,
     // so this assumes the procedure isn't going to be continually updated as users are watching it.
     // The snapshot listeners will be more appropriate for, say, the comments section.
@@ -145,16 +183,27 @@ public class ProcedureActivity extends AppCompatActivity {
       }
     });
 
-    // Gets the procedure steps.
-    final ArrayList<Step> steps = new ArrayList<>();
+    // Populate steps from Firestore
+    Query stepQuery = stepCollection.whereEqualTo(PROCEDURE_KEY, procedureId).orderBy("sequence");
+    stepQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+      @Override
+      public void onComplete(@NonNull Task<QuerySnapshot> task) {
+        if (task != null && task.isSuccessful()) {
+          final ArrayList<Step> steps = new ArrayList<>();
 
-    // TODO: Populate steps
-    steps.add(new Step(1, "Start off", "This is the first step."));
-    steps.add(new Step(2, "Do something", "This is the second step."));
-    steps.add(new Step(3, "Finish up", "This is the final step."));
+          for (QueryDocumentSnapshot document : task.getResult()) {
+            int sequence = (int)Math.round(document.getDouble(STEP_SEQUENCE_KEY));
+            String name = document.getString(STEP_NAME_KEY);
+            String description = document.getString(STEP_DESCRIPTION_KEY);
+            Step step = new Step(sequence, name, description);
+            steps.add(step);
+          }
 
-    StepAdapter adapter = new StepAdapter(this, steps);
-    ListView listView = findViewById(R.id.step_list);
-    listView.setAdapter(adapter);
+          StepAdapter adapter = new StepAdapter(ProcedureActivity.this, steps);
+          ListView listView = findViewById(R.id.step_list);
+          listView.setAdapter(adapter);
+        }
+      }
+    });
   }
 }
