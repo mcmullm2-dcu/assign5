@@ -1,29 +1,31 @@
 package michaelmcmullin.sda.firstday;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
-import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import de.hdodenhof.circleimageview.CircleImageView;
 import michaelmcmullin.sda.firstday.interfaces.User;
 import michaelmcmullin.sda.firstday.utils.CurrentUser;
 
 public class MainActivity extends AppCompatActivity {
 
+  /**
+   * A reference to the currently signed-in user
+   */
   User user = new CurrentUser();
+
+  /**
+   * A value to hold the scanned in QR code
+   */
+  String qrCode;
 
   /**
    * Called when {@link MainActivity} is started, initialising the Activity and inflating the
@@ -89,5 +91,32 @@ public class MainActivity extends AppCompatActivity {
     Intent intent = new Intent(this, ProcedureActivity.class);
     intent.putExtra(ProcedureActivity.EXTRA_ID, "X24IPHR0gJr3Aa78lCqW");
     startActivity(intent);
+  }
+
+  /**
+   * Launches the QR scanner activity.
+   * @param view
+   */
+  public void TakePhoto(View view) {
+    Intent qrIntent = new Intent(this, QrReaderActivity.class);
+    qrIntent.putExtra(QrReaderActivity.EXTRA_QR_CODE, qrCode);
+    // startActivityForResult(qrIntent, AppConstants.REQUEST_TAKE_QR_PHOTO);
+    startActivity(qrIntent);
+  }
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    if (requestCode == AppConstants.REQUEST_TAKE_QR_PHOTO) {
+      if (resultCode == MainActivity.RESULT_OK) {
+        qrCode = intent.getStringExtra(QrReaderActivity.EXTRA_QR_CODE);
+        if (qrCode != null && !qrCode.isEmpty()) {
+          Intent procedureIntent = new Intent(this, ProcedureActivity.class);
+          procedureIntent.putExtra(ProcedureActivity.EXTRA_ID, qrCode);
+          startActivity(procedureIntent);
+        } else {
+          Toast.makeText(this, "No QR code recognised...", Toast.LENGTH_LONG).show();
+        }
+      }
+    }
   }
 }

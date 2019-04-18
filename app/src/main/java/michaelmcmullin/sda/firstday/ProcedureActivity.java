@@ -96,6 +96,9 @@ public class ProcedureActivity extends AppCompatActivity implements ProcedureIdG
    * Populate the activity's view with a Procedure's details.
    */
   private void populateViews() {
+    Log.i(AppConstants.TAG, "==================================");
+    Log.i(AppConstants.TAG, getProcedureId());
+
     // Gets the main procedure details. Adding a Snapshot listener seems like it might be overkill,
     // so this assumes the procedure isn't going to be continually updated as users are watching it.
     // The snapshot listeners will be more appropriate for, say, the comments section.

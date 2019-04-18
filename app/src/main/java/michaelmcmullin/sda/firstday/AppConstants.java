@@ -15,4 +15,9 @@ public class AppConstants {
    */
   public static final int RC_SIGN_IN = 1;
 
+  /**
+   * Request code used for launching camera intent for QR code scanning.
+   */
+  public static final int REQUEST_TAKE_QR_PHOTO = RC_SIGN_IN + 1;
+
 }

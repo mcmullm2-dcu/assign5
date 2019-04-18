@@ -7,4 +7,20 @@
   android:layout_height="match_parent"
   tools:context=".QrReaderActivity">
 
+  <com.camerakit.CameraKitView
+    android:id="@+id/camera"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+    app:camera_facing="back" />
+
+  <Button
+    android:id="@+id/take_picture_button"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Capture QR Code"
+    android:onClick="takePhoto"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"/>
+
 </android.support.constraint.ConstraintLayout>

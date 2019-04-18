@@ -37,4 +37,15 @@
     app:layout_constraintRight_toRightOf="parent"
     android:onClick="launchProcedure"/>
 
+  <Button
+    android:id="@+id/launch_qr_code"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Scan QR Code"
+    android:layout_marginTop="@dimen/spacing_med"
+    app:layout_constraintTop_toBottomOf="@id/launch_procedure"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    android:onClick="TakePhoto"/>
+
 </android.support.constraint.ConstraintLayout>
