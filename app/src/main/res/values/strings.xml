@@ -8,7 +8,7 @@
   <string name="button_browse">Browse</string>
   <string name="title_my_procedures">My Procedures:</string>
   <string name="title_steps">Steps:</string>
-  <string name="title_comments">Comments:</string>
+  <string name="title_comments">Comments (newest first):</string>
   <string name="comment_owner_format">%s (Owner)</string>
   <string name="modal_dismiss_text">Dismiss</string>
   <string name="title_new_procedure">Add a new procedure:</string>

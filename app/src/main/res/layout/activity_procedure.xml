@@ -24,4 +24,10 @@
     android:id="@+id/step_list"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" />
+
+  <fragment
+    android:id="@+id/comment_list"
+    android:name="michaelmcmullin.sda.firstday.CommentsFragment"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
 </LinearLayout>

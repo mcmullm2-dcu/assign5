@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -20,11 +19,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.Query.Direction;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
-import java.util.List;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureIdGetter;
 import michaelmcmullin.sda.firstday.models.Comment;
-import michaelmcmullin.sda.firstday.models.Procedure;
-import michaelmcmullin.sda.firstday.models.Step;
 
 /**
  * Fragment that displays comments for a procedure.
@@ -113,7 +109,7 @@ public class CommentsFragment extends Fragment {
           return;
         }
 
-        List<Comment> comments = new ArrayList<>();
+        ArrayList<Comment> comments = new ArrayList<>();
         if (queryDocumentSnapshots != null) {
           for (DocumentSnapshot comment : queryDocumentSnapshots) {
             String message = comment.getString("message");
@@ -125,7 +121,10 @@ public class CommentsFragment extends Fragment {
           }
         }
 
-        // TODO: Create a CommentAdapter class and tie it in with the comments list.
+        // Create a CommentAdapter class and tie it in with the comments list.
+        final CommentAdapter adapter = new CommentAdapter(getActivity(), comments);
+        ListView listView = getView().findViewById(R.id.list_view_comments);
+        listView.setAdapter(adapter);
       }
     });
   }
