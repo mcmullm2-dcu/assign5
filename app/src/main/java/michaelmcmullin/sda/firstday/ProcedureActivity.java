@@ -1,29 +1,25 @@
 package michaelmcmullin.sda.firstday;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
-import javax.annotation.Nullable;
+import michaelmcmullin.sda.firstday.interfaces.ProcedureIdGetter;
 import michaelmcmullin.sda.firstday.models.Step;
 
-public class ProcedureActivity extends AppCompatActivity {
+public class ProcedureActivity extends AppCompatActivity implements ProcedureIdGetter {
 
   /**
    * Used as an Intent Extra tag to pass the procedure ID to this activity.
@@ -44,11 +40,6 @@ public class ProcedureActivity extends AppCompatActivity {
    * Name of the procedure ID field in other collections.
    */
   public static final String PROCEDURE_KEY = "procedure_id";
-
-  /**
-   * Name of the Step 'sequence' field in Firestore.
-   */
-  public static final String STEP_SEQUENCE_KEY = "sequence";
 
   /**
    * Name of the Step 'name' field in Firestore.
@@ -122,7 +113,7 @@ public class ProcedureActivity extends AppCompatActivity {
   @Override
   protected void onStart() {
     super.onStart();
-
+    /*
     procedureDoc.addSnapshotListener(this,
       new EventListener<DocumentSnapshot>() {
         @Override
@@ -131,7 +122,7 @@ public class ProcedureActivity extends AppCompatActivity {
             // App sometimes crashed around here when calling the exists() method, as documentSnapshot
             // could sometimes be null, especially when logged out. Adding a null check fixes this.
             if (documentSnapshot != null && documentSnapshot.exists()) {
-              /*String name = documentSnapshot.getString(NAME_KEY);
+              String name = documentSnapshot.getString(NAME_KEY);
               String description = documentSnapshot.getString(DESCRIPTION_KEY);
 
               if (procedureHeading != null) {
@@ -139,12 +130,13 @@ public class ProcedureActivity extends AppCompatActivity {
               }
               if (procedureDescription != null) {
                 procedureDescription.setText(description);
-              }*/
+              }
             } else if (e != null) {
               Log.w(AppConstants.TAG, "Got an exception", e);
             }
           }
       });
+    */
   }
 
   private void populateViews() {
@@ -158,7 +150,7 @@ public class ProcedureActivity extends AppCompatActivity {
     // The snapshot listeners will be more appropriate for, say, the comments section.
     procedureDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
       @Override
-      public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+      public void onComplete(@android.support.annotation.NonNull Task<DocumentSnapshot> task) {
         if (task.isSuccessful()) {
           DocumentSnapshot document = task.getResult();
           // App sometimes crashed around here when calling the exists() method, as document could
@@ -187,16 +179,19 @@ public class ProcedureActivity extends AppCompatActivity {
     Query stepQuery = stepCollection.whereEqualTo(PROCEDURE_KEY, procedureId).orderBy("sequence");
     stepQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
       @Override
-      public void onComplete(@NonNull Task<QuerySnapshot> task) {
-        if (task != null && task.isSuccessful()) {
+      public void onComplete(@android.support.annotation.NonNull Task<QuerySnapshot> task) {
+        if (task.isSuccessful()) {
           final ArrayList<Step> steps = new ArrayList<>();
 
-          for (QueryDocumentSnapshot document : task.getResult()) {
-            int sequence = (int)Math.round(document.getDouble(STEP_SEQUENCE_KEY));
-            String name = document.getString(STEP_NAME_KEY);
-            String description = document.getString(STEP_DESCRIPTION_KEY);
-            Step step = new Step(sequence, name, description);
-            steps.add(step);
+          QuerySnapshot result = task.getResult();
+          if (result != null) {
+            int sequence = 1;
+            for (QueryDocumentSnapshot document : result) {
+              String name = document.getString(STEP_NAME_KEY);
+              String description = document.getString(STEP_DESCRIPTION_KEY);
+              Step step = new Step(sequence++, name, description);
+              steps.add(step);
+            }
           }
 
           StepAdapter adapter = new StepAdapter(ProcedureActivity.this, steps);
@@ -205,5 +200,18 @@ public class ProcedureActivity extends AppCompatActivity {
         }
       }
     });
+  }
+
+  /**
+   * Gets the unique ID of the procedure being displayed by this class.
+   * @return Returns the unique ID of this activities procedure.
+   */
+  @Override
+  public String getProcedureId() {
+    if (procedureId == null || procedureId.isEmpty()) {
+      Intent intent = getIntent();
+      procedureId = intent.getStringExtra(EXTRA_ID);
+    }
+    return procedureId;
   }
 }
