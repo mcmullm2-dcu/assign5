@@ -98,12 +98,7 @@ public class ProcedureActivity extends AppCompatActivity implements ProcedureIdG
     procedureDescription = findViewById(R.id.text_view_procedure_description);
 
     // Ensure we have a reference to the selected procedure document
-    if (procedureDoc == null) {
-      Intent intent = getIntent();
-      procedureId = intent.getStringExtra(EXTRA_ID);
-      procedureDoc = db.collection("procedure").document(procedureId);
-      Log.d(AppConstants.TAG, "ProcedureActivity.onCreate called with ID = " + procedureId);
-    }
+    procedureDoc = db.collection("procedure").document(getProcedureId());
     populateViews();
   }
 
@@ -140,11 +135,6 @@ public class ProcedureActivity extends AppCompatActivity implements ProcedureIdG
   }
 
   private void populateViews() {
-    if (procedureId == null || procedureId.isEmpty()) {
-      Intent intent = getIntent();
-      procedureId = intent.getStringExtra(EXTRA_ID);
-    }
-
     // Gets the main procedure details. Adding a Snapshot listener seems like it might be overkill,
     // so this assumes the procedure isn't going to be continually updated as users are watching it.
     // The snapshot listeners will be more appropriate for, say, the comments section.
@@ -176,7 +166,7 @@ public class ProcedureActivity extends AppCompatActivity implements ProcedureIdG
     });
 
     // Populate steps from Firestore
-    Query stepQuery = stepCollection.whereEqualTo(PROCEDURE_KEY, procedureId).orderBy("sequence");
+    Query stepQuery = stepCollection.whereEqualTo(PROCEDURE_KEY, getProcedureId()).orderBy("sequence");
     stepQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
       @Override
       public void onComplete(@android.support.annotation.NonNull Task<QuerySnapshot> task) {
