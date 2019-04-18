@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import java.util.Arrays;
 import java.util.List;
+import michaelmcmullin.sda.firstday.utils.CurrentUser;
 
 /**
  * {@link LoginActivity} is the first Activity displayed when the application is launched, featuring
@@ -102,6 +103,7 @@ public class LoginActivity extends AppCompatActivity {
 
       if (resultCode == RESULT_OK) {
         // Successfully signed in
+        // Now start the app's main activity.
         StartApp();
       } else {
         // Sign in failed. If response is null the user canceled the

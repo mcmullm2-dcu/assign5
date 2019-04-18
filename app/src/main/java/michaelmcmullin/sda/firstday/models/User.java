@@ -19,11 +19,6 @@ public class User {
   private String name;
 
   /**
-   * The email address of the {@link User} stored in this instance.
-   */
-  private String email;
-
-  /**
    * The <code>Uri</code> of this {@link User} instance's profile photo.
    */
   private Uri photo;
@@ -36,12 +31,10 @@ public class User {
   /**
    * Create a new instance of {@link User} supplying their name and email address.
    * @param name The display name for this {@link User} instance.
-   * @param email The email address for this {@link User} instance.
    * @param photo The <code>Uri</code> of the profile picture for this {@link User} instance.
    */
-  public User(String name, String email, Uri photo) {
+  public User(String name, Uri photo) {
     this.name = name;
-    this.email = email;
     this.photo = photo;
   }
 
@@ -67,14 +60,6 @@ public class User {
    */
   public String getName() {
     return name;
-  }
-
-  /**
-   * Gets the email address of this {@link User} instance.
-   * @return Returns the {@link User} instance's email address.
-   */
-  public String getEmail() {
-    return email;
   }
 
   /**

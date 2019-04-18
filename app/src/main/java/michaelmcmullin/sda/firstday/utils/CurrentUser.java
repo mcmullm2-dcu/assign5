@@ -11,6 +11,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import java.util.HashMap;
+import java.util.Map;
 import michaelmcmullin.sda.firstday.LoginActivity;
 import michaelmcmullin.sda.firstday.MainActivity;
 import michaelmcmullin.sda.firstday.interfaces.User;
@@ -108,5 +112,18 @@ public class CurrentUser implements User {
   @Override
   public void reset() {
     user = FirebaseAuth.getInstance().getCurrentUser();
+  }
+
+  /**
+   * Saves or updates the current user's details in Firestore so they can be used for different
+   * functionality (e.g. attributing comments and adding profile pictures beside messages).
+   */
+  public void save() {
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    DocumentReference userDoc = db.collection("user").document(getUserId());
+    Map<String, Object> user = new HashMap<>();
+    user.put("name", getDisplayName());
+    user.put("picture", getPhoto().toString());
+    userDoc.set(user);
   }
 }

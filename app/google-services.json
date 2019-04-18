@@ -60,6 +60,14 @@
           }
         },
         {
+          "client_id": "359349161675-5dasu5effump02ek7u534qglbmr2lt2g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "michaelmcmullin.sda.firstday",
+            "certificate_hash": "fdc815a3e55638ecc7334dfaa5853f335bba6d20"
+          }
+        },
+        {
           "client_id": "359349161675-29o1j0fnhi98o23ked1jaa8agkfnlf0s.apps.googleusercontent.com",
           "client_type": 3
         }

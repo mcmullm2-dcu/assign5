@@ -1,6 +1,7 @@
 package michaelmcmullin.sda.firstday;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,6 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -19,8 +23,12 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.Query.Direction;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureIdGetter;
 import michaelmcmullin.sda.firstday.models.Comment;
+import michaelmcmullin.sda.firstday.models.User;
 
 /**
  * Fragment that displays comments for a procedure.
@@ -48,7 +56,12 @@ public class CommentsFragment extends Fragment {
   private CollectionReference commentCollection = db.collection("procedure_comment");
 
   /**
-   * Initilises the fragment's user interface.
+   * Holds a reference to the 'user' collection in Firestore
+   */
+  private CollectionReference userCollection = db.collection("user");
+
+  /**
+   * Initialises the fragment's user interface.
    * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment
    * @param container If non-null, this is the parent view that the fragment's UI should be attached
    *     to. The fragment should not add the view itself, but this can be used to generate the LayoutParams of the view.
@@ -93,6 +106,7 @@ public class CommentsFragment extends Fragment {
   @Override
   public void onStart() {
     super.onStart();
+    final ArrayList<Comment> comments = new ArrayList<>();
 
     // Populate comments from Firestore
     // Based on code from StackOverflow https://stackoverflow.com/a/48807510/5233918
@@ -109,25 +123,29 @@ public class CommentsFragment extends Fragment {
           return;
         }
 
-        ArrayList<Comment> comments = new ArrayList<>();
         if (queryDocumentSnapshots != null) {
           for (DocumentSnapshot comment : queryDocumentSnapshots) {
             String message = comment.getString("message");
-            String authorId = comment.getString("author");
+            String authorName = comment.getString("author_name");
+            String authorImage = comment.getString("author_picture");;
 
-            // TODO: Find best way to store author information and retrieve it here.
+            Uri photo = null;
+            if (authorImage != null && !authorImage.isEmpty()) {
+              photo = new Uri.Builder().path(authorImage).build();
+            }
 
-            comments.add(new Comment(null, null, message));
+            User author = new User(authorName, photo);
+            comments.add(new Comment(author, null, message));
           }
-        }
-
-        // Create a CommentAdapter class and tie it in with the comments list.
-        final CommentAdapter adapter = new CommentAdapter(getActivity(), comments);
-        ListView listView = getView().findViewById(R.id.list_view_comments);
-        if (listView != null) {
-          listView.setAdapter(adapter);
         }
       }
     });
+
+    // Create a CommentAdapter class and tie it in with the comments list.
+    final CommentAdapter adapter = new CommentAdapter(getActivity(), comments, Glide.with(this));
+    ListView listView = getView().findViewById(R.id.list_view_comments);
+    if (listView != null) {
+      listView.setAdapter(adapter);
+    }
   }
 }
