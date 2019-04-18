@@ -15,3 +15,4 @@ StackOverflow provided some helpful code snippets, which are licensed under CC B
 * [Firebase Timestamps in Java Objects](https://stackoverflow.com/a/33111791/5233918) by [Lyla](https://stackoverflow.com/users/497605/lyla)
 * [Architecture Components with Firestore](https://stackoverflow.com/a/50455288/5233918) by [Brian Begun](https://stackoverflow.com/users/6846268/brian-begun), based on an article by [Doug Stevenson](https://firebase.googleblog.com/2017/12/using-android-architecture-components.html).
 * [Reading from Firestore cache for faster offline retrieval](https://stackoverflow.com/a/48807510/5233918) by [Alex Mamo](https://stackoverflow.com/users/5246885/alex-mamo).
+* [Displaying text in a circle](https://stackoverflow.com/a/20168311) by [Joel Fernandes](https://stackoverflow.com/users/3025732/joel-fernandes).

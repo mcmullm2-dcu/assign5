@@ -20,10 +20,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"/>
 
-  <ListView
+  <fragment
     android:id="@+id/step_list"
+    android:name="michaelmcmullin.sda.firstday.StepsFragment"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+    android:layout_height="wrap_content"/>
 
   <fragment
     android:id="@+id/comment_list"

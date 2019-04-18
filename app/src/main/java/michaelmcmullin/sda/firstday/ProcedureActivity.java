@@ -42,16 +42,6 @@ public class ProcedureActivity extends AppCompatActivity implements ProcedureIdG
   public static final String PROCEDURE_KEY = "procedure_id";
 
   /**
-   * Name of the Step 'name' field in Firestore.
-   */
-  public static final String STEP_NAME_KEY = "name";
-
-  /**
-   * Name of the Step 'descriptino' field in Firestore.
-   */
-  public static final String STEP_DESCRIPTION_KEY = "description";
-
-  /**
    * Holds a reference to the Firestore database instance.
    */
   private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -103,37 +93,8 @@ public class ProcedureActivity extends AppCompatActivity implements ProcedureIdG
   }
 
   /**
-   * Called after onCreate and being used here to set up event listeners on Firestore.
+   * Populate the activity's view with a Procedure's details.
    */
-  @Override
-  protected void onStart() {
-    super.onStart();
-    /*
-    procedureDoc.addSnapshotListener(this,
-      new EventListener<DocumentSnapshot>() {
-        @Override
-        public void onEvent(@Nullable DocumentSnapshot documentSnapshot,
-          @Nullable FirebaseFirestoreException e) {
-            // App sometimes crashed around here when calling the exists() method, as documentSnapshot
-            // could sometimes be null, especially when logged out. Adding a null check fixes this.
-            if (documentSnapshot != null && documentSnapshot.exists()) {
-              String name = documentSnapshot.getString(NAME_KEY);
-              String description = documentSnapshot.getString(DESCRIPTION_KEY);
-
-              if (procedureHeading != null) {
-                procedureHeading.setText(name);
-              }
-              if (procedureDescription != null) {
-                procedureDescription.setText(description);
-              }
-            } else if (e != null) {
-              Log.w(AppConstants.TAG, "Got an exception", e);
-            }
-          }
-      });
-    */
-  }
-
   private void populateViews() {
     // Gets the main procedure details. Adding a Snapshot listener seems like it might be overkill,
     // so this assumes the procedure isn't going to be continually updated as users are watching it.
@@ -161,32 +122,6 @@ public class ProcedureActivity extends AppCompatActivity implements ProcedureIdG
           }
         } else {
           Log.d(AppConstants.TAG, "get failed with ", task.getException());
-        }
-      }
-    });
-
-    // Populate steps from Firestore
-    Query stepQuery = stepCollection.whereEqualTo(PROCEDURE_KEY, getProcedureId()).orderBy("sequence");
-    stepQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-      @Override
-      public void onComplete(@android.support.annotation.NonNull Task<QuerySnapshot> task) {
-        if (task.isSuccessful()) {
-          final ArrayList<Step> steps = new ArrayList<>();
-
-          QuerySnapshot result = task.getResult();
-          if (result != null) {
-            int sequence = 1;
-            for (QueryDocumentSnapshot document : result) {
-              String name = document.getString(STEP_NAME_KEY);
-              String description = document.getString(STEP_DESCRIPTION_KEY);
-              Step step = new Step(sequence++, name, description);
-              steps.add(step);
-            }
-          }
-
-          StepAdapter adapter = new StepAdapter(ProcedureActivity.this, steps);
-          ListView listView = findViewById(R.id.step_list);
-          listView.setAdapter(adapter);
         }
       }
     });

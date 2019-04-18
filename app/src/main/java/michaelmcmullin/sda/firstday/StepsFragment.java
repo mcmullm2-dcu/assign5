@@ -20,12 +20,12 @@ import com.google.firebase.firestore.Query.Direction;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureIdGetter;
-import michaelmcmullin.sda.firstday.models.Comment;
+import michaelmcmullin.sda.firstday.models.Step;
 
 /**
- * Fragment that displays comments for a procedure.
+ * Fragment that displays the steps involved in a procedure.
  */
-public class CommentsFragment extends Fragment {
+public class StepsFragment extends Fragment {
 
   /**
    * This is used to get the procedure Id from the calling activity.
@@ -38,14 +38,24 @@ public class CommentsFragment extends Fragment {
   public static final String PROCEDURE_KEY = "procedure_id";
 
   /**
+   * Name of the Step 'name' field in Firestore.
+   */
+  public static final String STEP_NAME_KEY = "name";
+
+  /**
+   * Name of the Step 'description' field in Firestore.
+   */
+  public static final String STEP_DESCRIPTION_KEY = "description";
+
+  /**
    * Holds a reference to the Firestore database instance.
    */
   private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
   /**
-   * Holds a reference to the 'comment' collection in Firestore
+   * Holds a reference to the 'step' collection in Firestore
    */
-  private CollectionReference commentCollection = db.collection("procedure_comment");
+  private CollectionReference stepCollection = db.collection("step");
 
   /**
    * Initilises the fragment's user interface.
@@ -60,7 +70,7 @@ public class CommentsFragment extends Fragment {
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    View v = inflater.inflate(R.layout.fragment_procedure_comments, container, false);
+    View v = inflater.inflate(R.layout.fragment_procedure_steps, container, false);
     return v;
   }
 
@@ -94,12 +104,12 @@ public class CommentsFragment extends Fragment {
   public void onStart() {
     super.onStart();
 
-    // Populate comments from Firestore
+    // Populate steps from Firestore
     // Based on code from StackOverflow https://stackoverflow.com/a/48807510/5233918
     // Author Alex Mamo https://stackoverflow.com/users/5246885/alex-mamo
-    Query query = commentCollection
+    Query query = stepCollection
         .whereEqualTo(PROCEDURE_KEY, procedureIdGetter.getProcedureId())
-        .orderBy("created", Direction.DESCENDING);
+        .orderBy("sequence");
     query.addSnapshotListener(new EventListener<QuerySnapshot>() {
       @Override
       public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots,
@@ -109,24 +119,21 @@ public class CommentsFragment extends Fragment {
           return;
         }
 
-        ArrayList<Comment> comments = new ArrayList<>();
+        ArrayList<Step> steps = new ArrayList<>();
         if (queryDocumentSnapshots != null) {
-          for (DocumentSnapshot comment : queryDocumentSnapshots) {
-            String message = comment.getString("message");
-            String authorId = comment.getString("author");
-
-            // TODO: Find best way to store author information and retrieve it here.
-
-            comments.add(new Comment(null, null, message));
+          int sequence = 1;
+          for (DocumentSnapshot document : queryDocumentSnapshots) {
+            String name = document.getString(STEP_NAME_KEY);
+            String description = document.getString(STEP_DESCRIPTION_KEY);
+            Step step = new Step(sequence++, name, description);
+            steps.add(step);
           }
         }
 
         // Create a CommentAdapter class and tie it in with the comments list.
-        final CommentAdapter adapter = new CommentAdapter(getActivity(), comments);
-        ListView listView = getView().findViewById(R.id.list_view_comments);
-        if (listView != null) {
-          listView.setAdapter(adapter);
-        }
+        final StepAdapter adapter = new StepAdapter(getActivity(), steps);
+        ListView listView = getView().findViewById(R.id.list_view_steps);
+        listView.setAdapter(adapter);
       }
     });
   }

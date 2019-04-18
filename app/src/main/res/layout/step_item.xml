@@ -4,32 +4,46 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:orientation="vertical">
+  android:orientation="horizontal"
+  android:paddingTop="@dimen/spacing_small"
+  android:paddingBottom="@dimen/spacing_small">
 
-  <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+  <!--
+    Displaying the sequence number in a circle, using a technique from StackOverflow:
+    https://stackoverflow.com/a/20168311
+    Author: Joel Fernandes, https://stackoverflow.com/users/3025732/joel-fernandes
+  -->
+  <RelativeLayout
+    android:layout_width="@dimen/profile_image"
+    android:layout_height="@dimen/profile_image"
+    android:background="@drawable/circle"
+    android:layout_gravity="center"
+    android:layout_marginEnd="@dimen/spacing_med">
     <TextView
       android:id="@+id/step_sequence"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content"/>
+      android:layout_height="wrap_content"
+      android:textColor="@android:color/white"
+      android:textStyle="bold"
+      android:layout_centerInParent="true"
+      android:textSize="@dimen/font_title"/>
+  </RelativeLayout>
+
+  <!--
+    Step title and text.
+  -->
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
     <TextView
       android:id="@+id/step_name"
       android:textStyle="bold"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"/>
-  </LinearLayout>
-
-  <LinearLayout
-    android:id="@+id/step_collapse"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
     <TextView
       android:id="@+id/step_description"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"/>
   </LinearLayout>
-
 </LinearLayout>
