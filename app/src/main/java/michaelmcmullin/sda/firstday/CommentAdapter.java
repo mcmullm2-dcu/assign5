@@ -16,6 +16,10 @@ import java.util.ArrayList;
 import michaelmcmullin.sda.firstday.models.Comment;
 import michaelmcmullin.sda.firstday.models.User;
 
+/**
+ * Class to describe how a single {@link Comment} object is rendered using the <code>comment_item</code>
+ * layout.
+ */
 public class CommentAdapter extends ArrayAdapter<Comment> {
 
   /**

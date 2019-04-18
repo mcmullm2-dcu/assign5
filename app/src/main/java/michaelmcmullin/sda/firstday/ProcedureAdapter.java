@@ -5,16 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
-import michaelmcmullin.sda.firstday.models.Step;
+import michaelmcmullin.sda.firstday.models.Procedure;
 
 /**
- * Class to describe how a single {@link Step} object is rendered using the <code>step_item</code>
- * layout.
+ * Class to describe how a single {@link Procedure} object is rendered using the
+ * <code>procedure_item</code> layout.
  */
-public class StepAdapter extends ArrayAdapter<Step> {
+public class ProcedureAdapter extends ArrayAdapter<Procedure> {
   /**
    * This is our own custom constructor (it doesn't mirror a superclass constructor). The context is
    * used to inflate the layout file, and the list is the data we want to populate into the lists.
@@ -22,7 +21,7 @@ public class StepAdapter extends ArrayAdapter<Step> {
    * @param context The current context. Used to inflate the layout file.
    * @param steps A List of Step objects to display in a list
    */
-  public StepAdapter(Activity context, ArrayList<Step> steps) {
+  public ProcedureAdapter(Activity context, ArrayList<Procedure> steps) {
     // Here, we initialize the ArrayAdapter's internal storage for the context and the list.
     // The second argument is used when the ArrayAdapter is populating a single TextView.
     // Because this is a custom adapter for a more complex layout view, the adapter is not
@@ -45,23 +44,19 @@ public class StepAdapter extends ArrayAdapter<Step> {
     View listItemView = convertView;
     if (listItemView == null) {
       listItemView = LayoutInflater.from(getContext()).inflate(
-          R.layout.step_item, parent, false);
+          R.layout.procedure_item, parent, false);
     }
 
-    // Get the Step object located at this position in the list
-    Step currentStep = getItem(position);
+    // Get the Procedure object located at this position in the list
+    Procedure currentItem = getItem(position);
 
-    // Find the TextView in the step_item.xml layout with the ID step_sequence and populate.
-    TextView sequenceTextView = listItemView.findViewById(R.id.step_sequence);
-    sequenceTextView.setText(Integer.toString(currentStep.getSequence()));
+    // Find the procedure name in the layout file and populate it.
+    TextView nameTextView = listItemView.findViewById(R.id.procedure_name_text_view);
+    nameTextView.setText(currentItem.getName());
 
-    // Find the TextView in the step_item.xml layout with the ID step_name and populate.
-    TextView nameTextView = listItemView.findViewById(R.id.step_name);
-    nameTextView.setText(currentStep.getName());
-
-    // Find the TextView in the step_item.xml layout with the ID step_description and populate
-    TextView descriptionTextView = listItemView.findViewById(R.id.step_description);
-    descriptionTextView.setText(currentStep.getDescription());
+    // Find the procedure description in the layout file and populate it.
+    TextView descriptionTextView = listItemView.findViewById(R.id.procedure_description_text_view);
+    descriptionTextView.setText(currentItem.getDescription());
 
     // Return the whole step item layout so it can be shown in the ListView
     return listItemView;
