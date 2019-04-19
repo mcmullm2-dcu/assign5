@@ -30,23 +30,12 @@
       />
 
     <Button
-      android:id="@+id/launch_procedure"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="View Procedure"
-      android:layout_marginTop="@dimen/spacing_med"
-      app:layout_constraintTop_toBottomOf="@id/profile_image"
-      app:layout_constraintLeft_toLeftOf="parent"
-      app:layout_constraintRight_toRightOf="parent"
-      android:onClick="launchProcedure"/>
-
-    <Button
       android:id="@+id/launch_qr_code"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/button_scan_qrcode"
       android:layout_marginTop="@dimen/spacing_med"
-      app:layout_constraintTop_toBottomOf="@id/launch_procedure"
+      app:layout_constraintTop_toBottomOf="@id/profile_image"
       app:layout_constraintLeft_toLeftOf="parent"
       app:layout_constraintRight_toRightOf="parent"
       android:onClick="TakePhoto"/>

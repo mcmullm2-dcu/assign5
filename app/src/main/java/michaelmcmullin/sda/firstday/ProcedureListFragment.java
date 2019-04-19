@@ -1,6 +1,7 @@
 package michaelmcmullin.sda.firstday;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -141,8 +144,7 @@ public class ProcedureListFragment extends Fragment {
       return;
     }
 
-    // TODO: Add onclick handlers to launch ProcedureActivity
-
+    // Fetch the procedures that apply to the filtered query
     query.addSnapshotListener(new EventListener<QuerySnapshot>() {
       @Override
       public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots,
@@ -152,7 +154,7 @@ public class ProcedureListFragment extends Fragment {
           return;
         }
 
-        ArrayList<Procedure> procedures = new ArrayList<>();
+        final ArrayList<Procedure> procedures = new ArrayList<>();
         if (queryDocumentSnapshots != null) {
           int sequence = 1;
           for (DocumentSnapshot document : queryDocumentSnapshots) {
@@ -165,10 +167,21 @@ public class ProcedureListFragment extends Fragment {
           }
         }
 
-        // Create a CommentAdapter class and tie it in with the comments list.
+        // Create a ProcedureAdapter class and tie it in with the procedures list.
         final ProcedureAdapter adapter = new ProcedureAdapter(getActivity(), procedures);
         ListView listView = getView().findViewById(R.id.list_view_procedures);
         listView.setAdapter(adapter);
+
+        // Add click event listener to each procedure to open up its details
+        listView.setOnItemClickListener(new OnItemClickListener() {
+          @Override
+          public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            Procedure clicked = procedures.get(i);
+            Intent procedureIntent = new Intent(getActivity(), ProcedureActivity.class);
+            procedureIntent.putExtra(ProcedureActivity.EXTRA_ID, clicked.getId());
+            startActivity(procedureIntent);
+          }
+        });
       }
     });
   }
