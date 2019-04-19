@@ -12,10 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import de.hdodenhof.circleimageview.CircleImageView;
+import michaelmcmullin.sda.firstday.interfaces.ProcedureFilterGetter;
 import michaelmcmullin.sda.firstday.interfaces.User;
 import michaelmcmullin.sda.firstday.utils.CurrentUser;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ProcedureFilterGetter {
 
   /**
    * A reference to the currently signed-in user
@@ -109,14 +110,25 @@ public class MainActivity extends AppCompatActivity {
     if (requestCode == AppConstants.REQUEST_TAKE_QR_PHOTO) {
       if (resultCode == MainActivity.RESULT_OK) {
         qrCode = intent.getStringExtra(QrReaderActivity.EXTRA_QR_CODE);
-        if (qrCode != null && !qrCode.isEmpty()) {
+        if (qrCode != null && !qrCode.isEmpty() && qrCode != getString(R.string.message_no_qr_code)) {
           Intent procedureIntent = new Intent(this, ProcedureActivity.class);
           procedureIntent.putExtra(ProcedureActivity.EXTRA_ID, qrCode);
           startActivity(procedureIntent);
         } else {
-          Toast.makeText(this, "No QR code recognised...", Toast.LENGTH_LONG).show();
+          Toast.makeText(this, getString(R.string.message_no_qr_code), Toast.LENGTH_LONG).show();
         }
       }
     }
+  }
+
+  /**
+   * Gets the filter to apply to procedure searches. For this activity, it returns all procedures
+   * belong to the current user (MINE).
+   *
+   * @return Returns the filter to apply to procedure searches.
+   */
+  @Override
+  public ProcedureFilter getFilter() {
+    return ProcedureFilter.MINE;
   }
 }

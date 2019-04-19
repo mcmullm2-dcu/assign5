@@ -64,6 +64,16 @@ public class Procedure {
   }
 
   /**
+   * Creates a new instance of {@link Procedure} setting the name and description.
+   * @param name The name of this {@link Procedure} instance.
+   * @param description The description or summary of this {@link Procedure} instance.
+   */
+  public Procedure(String name, String description) {
+    this.name = name;
+    this.description = description;
+  }
+
+  /**
    * Gets the unique ID of this {@link Procedure} instance.
    * @return Returns the unique ID of this {@link Procedure} instance.
    */
