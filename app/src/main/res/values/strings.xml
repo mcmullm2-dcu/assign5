@@ -43,4 +43,5 @@
   <string name="message_signin_failed">Signin failed.</string>
   <string name="message_procedure_added">Procedure "%s" added successfully.</string>
   <string name="message_step_added">Step added.</string>
+  <string name="message_no_qr_code">No QR code detected.</string>
 </resources>

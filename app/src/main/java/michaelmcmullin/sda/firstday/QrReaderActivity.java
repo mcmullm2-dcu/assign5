@@ -62,14 +62,14 @@ public class QrReaderActivity extends AppCompatActivity {
             if (barcodes != null && barcodes.size() > 0) {
               returnIntent(barcodes.get(0).getRawValue());
             } else {
-              returnIntent("No QR Code Detected");
+              returnIntent(getString(R.string.message_no_qr_code));
             }
           }
         })
         .addOnFailureListener(new OnFailureListener() {
           @Override
           public void onFailure(@NonNull Exception e) {
-            returnIntent("No QR Code Detected");
+            returnIntent(getString(R.string.message_no_qr_code));
           }
         });
   }
