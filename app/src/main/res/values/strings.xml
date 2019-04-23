@@ -36,6 +36,9 @@
   <string name="option_step_last">After last step</string>
   <string name="option_step_first">Before first step</string>
   <string name="option_step_position_format">After step %d</string>
+  <string name="hint_tag_name">Tag Name</string>
+  <string name="hint_add_tag">Add Tag</string>
+  <string name="tags_instructions">Enter tags that users can search for to find this procedure.</string>
   <string name="menu_signout">Sign out</string>
   <string name="menu_signin">Sign in</string>
   <string name="menu_like">Like</string>

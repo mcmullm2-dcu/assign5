@@ -72,9 +72,9 @@ public class ProcedureFormAdapter extends FragmentStatePagerAdapter {
       case TAB_MAIN:
         return ProcedureFormDetailsFragment.newInstance(procedureStorer);
       case TAB_STEPS:
-        return new Fragment();
+        return ProcedureFormStepFragment.newInstance(procedureStorer);
       case TAB_TAGS:
-        return new Fragment();
+        return ProcedureFormTagFragment.newInstance(procedureStorer);
       default:
         return null;
     }

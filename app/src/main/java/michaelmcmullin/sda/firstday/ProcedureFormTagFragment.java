@@ -1,24 +1,19 @@
 package michaelmcmullin.sda.firstday;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+import me.gujun.android.taggroup.TagGroup;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureStorer;
 
-
 /**
- * A simple {@link Fragment} subclass. Activities that contain this fragment must implement the
- * {@link ProcedureStorer} interface to handle interaction events. Use the
- * {@link ProcedureFormStepFragment#newInstance} factory method to create an instance of this
- * fragment.
+ * A Fragment that displays a form for entering a Procedure's tags.
  */
-public class ProcedureFormStepFragment extends Fragment {
-
-
+public class ProcedureFormTagFragment extends Fragment {
   /**
    * An interface implemented by the parent activity to allow this fragment to store and retrieve
    * its details.
@@ -26,20 +21,30 @@ public class ProcedureFormStepFragment extends Fragment {
   private ProcedureStorer procedureStorer;
 
   /**
+   * A reference to the TagGroup widget
+   */
+  private TagGroup tagGroup;
+
+  /**
+   * An array of tag strings used to populate the TagGroup
+   */
+  private String[] tags = {"Tag 1", "Tag 2", "Another Tag"};
+
+  /**
    * A required empty public constructor.
    */
-  public ProcedureFormStepFragment() {
+  public ProcedureFormTagFragment() {
     // Required empty public constructor
   }
 
   /**
-   * Creates a new instance of the {@link ProcedureFormStepFragment} class.
+   * Creates a new instance of the {@link ProcedureFormTagFragment} class.
    * @param storer The ProcedureStorer class to associate with this fragment.
-   * @return A new {@link ProcedureFormStepFragment} instance with its {@link ProcedureStorer}
+   * @return A new {@link ProcedureFormTagFragment} instance with its {@link ProcedureStorer}
    * property set.
    */
-  public static final ProcedureFormStepFragment newInstance(ProcedureStorer storer) {
-    ProcedureFormStepFragment fragment = new ProcedureFormStepFragment();
+  public static final ProcedureFormTagFragment newInstance(ProcedureStorer storer) {
+    ProcedureFormTagFragment fragment = new ProcedureFormTagFragment();
     fragment.setProcedureStorer(storer);
     return fragment;
   }
@@ -51,7 +56,6 @@ public class ProcedureFormStepFragment extends Fragment {
   public void setProcedureStorer(ProcedureStorer storer) {
     this.procedureStorer = storer;
   }
-
   /**
    * Initialises the fragment's user interface.
    * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment
@@ -65,7 +69,13 @@ public class ProcedureFormStepFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_procedure_form_step, container, false);
+    View v = inflater.inflate(R.layout.fragment_procedure_form_tags, container, false);
+    tagGroup = v.findViewById(R.id.tag_group);
+    if (tagGroup != null) {
+      tagGroup.setTags(tags);
+    }
+
+    return v;
   }
 
   /**

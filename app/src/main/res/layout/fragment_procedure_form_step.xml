@@ -8,13 +8,6 @@
   tools:context=".ProcedureFormStepFragment"
   android:padding="@dimen/spacing_med">
 
-  <TextView
-    android:id="@+id/edit_text_procedure_form_step_title"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:text="@string/title_new_step"
-    android:textStyle="bold"/>
-
   <EditText
     android:id="@+id/edit_text_procedure_form_step_name"
     android:layout_width="match_parent"
@@ -22,26 +15,63 @@
     android:hint="@string/hint_step_name"
     android:maxLines="1"
     android:inputType="text"
-    android:layout_marginTop="@dimen/spacing_med"
-    app:layout_constraintTop_toBottomOf="@+id/edit_text_procedure_form_step_title"/>
+    android:layout_marginTop="@dimen/spacing_med"/>
 
   <EditText
     android:id="@+id/edit_text_procedure_form_step_description"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:hint="@string/hint_step_description"
-    android:lines="5"
     android:scrollbars="vertical"
     android:layout_marginTop="@dimen/spacing_med"
     app:layout_constraintTop_toBottomOf="@+id/edit_text_procedure_form_step_name"/>
 
-  <ImageButton
-    android:id="@+id/image_button_procedure_form_step_photo"
+  <Button
+    android:id="@+id/button_procedure_form_add_step"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/title_new_step"
+    android:layout_marginTop="@dimen/spacing_med"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/edit_text_procedure_form_step_description"
+    />
+
+  <ImageView
+    android:id="@+id/image_view_procedure_form_step_photo"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:src="@drawable/ic_add_photo"
+    app:layout_constraintBottom_toBottomOf="@+id/button_procedure_form_add_step"
+    app:layout_constraintEnd_toEndOf="parent"/>
+
+  <ImageView
+    android:id="@+id/image_view_procedure_form_step_gallery"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/ic_add_from_gallery"
+    android:layout_marginEnd="@dimen/spacing_med"
+    app:layout_constraintBottom_toBottomOf="@+id/button_procedure_form_add_step"
+    app:layout_constraintEnd_toStartOf="@+id/image_view_procedure_form_step_photo"/>
+
+  <View
+    android:id="@+id/horizontal_rule"
+    android:layout_width="fill_parent"
+    android:layout_height="2dp"
     android:layout_marginTop="@dimen/spacing_med"
     android:layout_marginBottom="@dimen/spacing_med"
-    app:layout_constraintTop_toBottomOf="@+id/edit_text_procedure_form_step_description"
-    app:layout_constraintEnd_toEndOf="parent"/>
+    android:background="@color/colorMuted"
+    app:layout_constraintTop_toBottomOf="@+id/button_procedure_form_add_step"/>
+
+  <ScrollView
+    android:id="@+id/fragment_procedure_form_step_list"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spacing_med"
+    app:layout_constraintTop_toBottomOf="@+id/horizontal_rule">
+    <fragment
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:name="michaelmcmullin.sda.firstday.ProcedureFormStepListFragment"
+    />
+  </ScrollView>
 </android.support.constraint.ConstraintLayout>

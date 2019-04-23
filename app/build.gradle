@@ -64,6 +64,11 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 
+    // AndroidTagGroup
+    // https://github.com/2dxgujun/AndroidTagGroup
+    // Apache 2.0 license
+    implementation 'me.gujun.android.taggroup:library:1.4@aar'
+
     // Lifecycle/Architecture Components dependencies
     // https://developer.android.com/topic/libraries/architecture
     // Proprietary with Apache 2.0 code samples.

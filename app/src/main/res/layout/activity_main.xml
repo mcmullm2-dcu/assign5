@@ -40,9 +40,17 @@
       app:layout_constraintRight_toRightOf="parent"
       android:onClick="TakePhoto"/>
 
+    <View
+      android:id="@+id/horizontal_rule"
+      android:layout_width="fill_parent"
+      android:layout_height="2dp"
+      android:layout_margin="@dimen/spacing_med"
+      android:background="@color/colorMuted"
+      app:layout_constraintTop_toBottomOf="@+id/launch_qr_code"/>
+
     <TextView
       android:id="@+id/title_my_procedures"
-      app:layout_constraintTop_toBottomOf="@id/launch_qr_code"
+      app:layout_constraintTop_toBottomOf="@id/horizontal_rule"
       android:layout_marginTop="@dimen/spacing_med"
       android:paddingLeft="@dimen/spacing_med"
       android:paddingRight="@dimen/spacing_med"

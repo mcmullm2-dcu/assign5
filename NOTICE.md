@@ -9,6 +9,7 @@ license can be found in the [LICENSE](https://github.com/mcmullm2-dcu/assign5/bl
 stability and reliability of photo and video capture on all Android devices.
 * [CircleImageView](https://github.com/hdodenhof/CircleImageView): A fast circular ImageView perfect for profile images.
 * [Glide](https://github.com/bumptech/glide): An image loading and caching library for Android focused on smooth scrolling.
+* [AndroidTagGroup](https://github.com/2dxgujun/AndroidTagGroup): An Android Tag Group widget.
 
 StackOverflow provided some helpful code snippets, which are licensed under CC BY-SA 3.0 (Creative Commons Attribution-ShareAlike 3.0 Unported). These are attributed throughout the code with links to the relevant answers. Some notable examples include:
 

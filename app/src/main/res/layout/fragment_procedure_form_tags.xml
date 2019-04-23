@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:padding="@dimen/spacing_med">
+
+  <TextView
+    android:id="@+id/tag_instructions"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/font_title"
+    android:layout_marginBottom="@dimen/spacing_med"
+    android:text="@string/tags_instructions"/>
+
+  <me.gujun.android.taggroup.TagGroup
+    android:id="@+id/tag_group"
+    style="@style/TagGroup"
+    android:layout_marginTop="@dimen/spacing_med"
+    app:atg_textColor="@color/colorWhite"
+    app:atg_borderColor="@color/colorNeutral"
+    app:atg_dashBorderColor="@color/colorMuted"
+    app:atg_borderStrokeWidth="2dp"
+    app:atg_backgroundColor="@color/colorNeutral"
+    app:atg_checkedBackgroundColor="@color/colorPrimary"
+    app:atg_checkedBorderColor="@color/colorPrimary"
+    app:atg_inputHintColor="@color/colorMuted"
+    app:atg_inputTextColor="@color/colorWhite"
+    app:atg_horizontalSpacing="@dimen/spacing_med"
+    app:atg_verticalSpacing="@dimen/spacing_med"
+    app:atg_horizontalPadding="@dimen/spacing_med"
+    app:atg_verticalPadding="@dimen/spacing_small"
+    app:atg_textSize="@dimen/font_title"
+    app:atg_inputHint="@string/hint_add_tag"
+    app:atg_isAppendMode="true"
+    app:layout_constraintTop_toBottomOf="@+id/tag_instructions"/>
+</android.support.constraint.ConstraintLayout>
