@@ -22,6 +22,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureFilterGetter;
+import michaelmcmullin.sda.firstday.interfaces.Searchable;
 import michaelmcmullin.sda.firstday.models.Procedure;
 import michaelmcmullin.sda.firstday.utils.CurrentUser;
 
@@ -49,6 +50,12 @@ public class ProcedureListFragment extends Fragment {
    * This is used to get the procedure Id from the calling activity.
    */
   private ProcedureFilterGetter procedureFilterGetter;
+
+  /**
+   * If search results are required, use this field to give access to the calling activity's search
+   * term.
+   */
+  private Searchable searchable;
 
   /**
    * Holds a reference to the Firestore database instance.
@@ -89,6 +96,11 @@ public class ProcedureListFragment extends Fragment {
   @Override
   public void onAttach(Context context) {
     super.onAttach(context);
+
+    if (context instanceof Searchable) {
+      searchable = (Searchable)context;
+    }
+
     if (context instanceof ProcedureFilterGetter) {
       procedureFilterGetter = (ProcedureFilterGetter)context;
       setQuery();
@@ -122,11 +134,17 @@ public class ProcedureListFragment extends Fragment {
         query = procedureCollection
             .whereEqualTo("owner", user.getUserId());
         break;
+      case SEARCH_RESULTS:
+        if (searchable == null) {
+          throw new RuntimeException("Searchable interface has not been implemented");
+        }
+        // TODO: Add query to search labels
+        break;
       case PUBLIC:
         query = procedureCollection
             .whereEqualTo("is_public", true);
         break;
-      // TODO: Populated other query filters
+      // TODO: Populate other query filters
       default:
         break;
     }
@@ -141,6 +159,12 @@ public class ProcedureListFragment extends Fragment {
 
     // Only run a query if it exists
     if (query == null) {
+      return;
+    }
+
+    // Don't run a search query if there's nothing to search for
+    if (searchable != null
+        && (searchable.getSearchTerm() == null || searchable.getSearchTerm().isEmpty())) {
       return;
     }
 

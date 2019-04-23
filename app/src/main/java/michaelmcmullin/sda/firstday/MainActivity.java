@@ -2,6 +2,7 @@ package michaelmcmullin.sda.firstday;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -52,6 +53,16 @@ public class MainActivity extends AppCompatActivity implements ProcedureFilterGe
     // Demo user display name
     TextView msg = findViewById(R.id.welcome);
     msg.setText(user.getDisplayName());
+
+    // Set up the 'add procedure' button
+    FloatingActionButton AddProcedureButton = findViewById(R.id.procedure_add_button);
+    AddProcedureButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent(MainActivity.this, ProcedureFormActivity.class);
+        startActivity(intent);
+      }
+    });
   }
 
   /**

@@ -12,7 +12,12 @@ public enum ProcedureFilter {
   /**
    * Displays only my draft procedures.
    */
-  MYDRAFTS,
+  MY_DRAFTS,
+
+  /**
+   * Displays only procedures matching a search term
+   */
+  SEARCH_RESULTS,
 
   /**
    * Displays procedures that have been shared with me.

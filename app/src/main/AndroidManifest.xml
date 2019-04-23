@@ -36,11 +36,10 @@
     <activity android:name=".LoginActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
-
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
-    <activity android:name=".MainActivity">
+    <activity android:name=".MainActivity" android:launchMode="singleTop">
     </activity>
     <activity android:name=".QrReaderActivity">
     </activity>
@@ -48,8 +47,7 @@
     </activity>
     <activity android:name=".ProcedureActivity">
     </activity>
-    <activity android:name=".ProcedureFormActivity">
-    </activity>
+    <activity android:name=".ProcedureFormActivity" android:parentActivityName=".MainActivity"/>
   </application>
 
 </manifest>
