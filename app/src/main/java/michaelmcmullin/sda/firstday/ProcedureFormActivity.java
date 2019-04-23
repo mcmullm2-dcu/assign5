@@ -1,6 +1,8 @@
 package michaelmcmullin.sda.firstday;
 
+import android.content.SharedPreferences;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,12 +12,26 @@ import android.view.MenuItem;
 
 public class ProcedureFormActivity extends AppCompatActivity {
 
+  // Indices to each tab
   private final int MAIN_TAB_INDEX = 0;
   private final int STEPS_TAB_INDEX = MAIN_TAB_INDEX + 1;
-  private final int LABELS_TAB_INDEX = STEPS_TAB_INDEX + 1;
+  private final int TAGS_TAB_INDEX = STEPS_TAB_INDEX + 1;
 
+  /**
+   * The names of each tab
+   */
   String[] tabTitles;
+
+  /**
+   * The layout that contains the tabs themselves.
+   */
   TabLayout tabLayout;
+
+  /**
+   * An instance of this app's shared preferences.
+   * TODO: may not be necessary for this activity, consider removing and updating the ProcedureFormAdapter code.
+   */
+  SharedPreferences prefs;
 
   /**
    * Called when {@link ProcedureFormActivity} is started, initialising the Activity and inflating
@@ -29,10 +45,14 @@ public class ProcedureFormActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_procedure_form);
 
+    prefs = getPreferences(MODE_PRIVATE);
+
     // Set up toolbar and set a 'close' button in the top-left
     Toolbar toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
+    setTitle(R.string.title_new_procedure);
 
     // Set up tabs
     tabLayout = findViewById(R.id.tab_layout);
@@ -42,6 +62,15 @@ public class ProcedureFormActivity extends AppCompatActivity {
     }
     // Ensure 'Main' tab is presented to the user
     setTab(MAIN_TAB_INDEX);
+
+    // Create the adapter that will return a fragment for each of the
+    // primary sections of the activity.
+    final ViewPager pager = findViewById(R.id.pager);
+    final ProcedureFormAdapter formAdapter = new ProcedureFormAdapter(getSupportFragmentManager(), tabTitles, prefs);
+
+    pager.setAdapter(formAdapter);
+
+    tabLayout.setupWithViewPager(pager);
   }
 
   /**

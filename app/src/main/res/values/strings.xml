@@ -16,7 +16,7 @@
     <item>Steps</item>
     <item>Tags</item>
   </string-array>
-  <string name="title_new_procedure">Add a new procedure:</string>
+  <string name="title_new_procedure">Add a new procedure</string>
   <string name="hint_procedure_name">Procedure Name</string>
   <string name="hint_procedure_description">Description</string>
   <string name="title_status">Status:</string>
