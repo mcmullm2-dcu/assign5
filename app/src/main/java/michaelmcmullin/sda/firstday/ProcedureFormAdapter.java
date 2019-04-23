@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import michaelmcmullin.sda.firstday.interfaces.ProcedureStorer;
 
 public class ProcedureFormAdapter extends FragmentStatePagerAdapter {
 
@@ -34,9 +35,14 @@ public class ProcedureFormAdapter extends FragmentStatePagerAdapter {
 
   /**
    * An instance of this app's shared preferences.
-   * TODO: may not be necessary for this adapter, consider removing and updating the constructor code.
    */
   SharedPreferences prefs;
+
+  /**
+   * An interface implemented by the parent activity to allow this adapter to store and retrieve
+   * its details.
+   */
+  ProcedureStorer procedureStorer;
 
   /**
    * Creates an instance of the {@link ProcedureFormAdapter} class.
@@ -46,10 +52,11 @@ public class ProcedureFormAdapter extends FragmentStatePagerAdapter {
    * @param prefs This app's shared preferences
    * TODO: consider removing prefs, unless there's a good reason to use it.
    */
-  public ProcedureFormAdapter(FragmentManager fm, String[] titles, SharedPreferences prefs) {
+  public ProcedureFormAdapter(FragmentManager fm, String[] titles, ProcedureStorer storer, SharedPreferences prefs) {
     super(fm);
     this.numOfTabs = titles.length;
     tabTitles = titles;
+    this.procedureStorer = storer;
     this.prefs = prefs;
   }
 
@@ -63,7 +70,7 @@ public class ProcedureFormAdapter extends FragmentStatePagerAdapter {
     // TODO: Return correct fragments
     switch (position) {
       case TAB_MAIN:
-        return new Fragment();
+        return ProcedureFormDetailsFragment.newInstance(procedureStorer);
       case TAB_STEPS:
         return new Fragment();
       case TAB_TAGS:

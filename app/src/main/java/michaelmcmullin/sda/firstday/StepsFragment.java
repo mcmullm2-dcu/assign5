@@ -58,6 +58,13 @@ public class StepsFragment extends Fragment {
   private CollectionReference stepCollection = db.collection("step");
 
   /**
+   * A required empty public constructor.
+   */
+  public StepsFragment() {
+    // Required empty public constructor
+  }
+
+  /**
    * Initilises the fragment's user interface.
    * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment
    * @param container If non-null, this is the parent view that the fragment's UI should be attached

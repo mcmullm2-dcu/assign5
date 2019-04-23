@@ -8,13 +8,6 @@
   tools:context=".ProcedureFormDetailsFragment"
   android:padding="@dimen/spacing_med">
 
-  <TextView
-    android:id="@+id/procedure_form_title"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:text="@string/title_new_procedure"
-    android:textStyle="bold"/>
-
   <EditText
     android:id="@+id/edit_text_procedure_form_name"
     android:layout_width="match_parent"
@@ -23,14 +16,13 @@
     android:maxLines="1"
     android:inputType="text"
     android:layout_marginTop="@dimen/spacing_med"
-    app:layout_constraintTop_toBottomOf="@+id/procedure_form_title"/>
+    />
 
   <EditText
     android:id="@+id/edit_text_procedure_form_description"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:hint="@string/hint_procedure_description"
-    android:lines="5"
     android:scrollbars="vertical"
     android:layout_marginTop="@dimen/spacing_med"
     app:layout_constraintTop_toBottomOf="@+id/edit_text_procedure_form_name"/>
@@ -41,6 +33,7 @@
     android:layout_height="wrap_content"
     android:entries="@array/procedure_status"
     android:prompt="@string/title_status"
+    android:layout_marginTop="@dimen/spacing_med"
     app:layout_constraintTop_toBottomOf="@+id/edit_text_procedure_form_description"
     app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -49,7 +42,7 @@
     android:text="@string/title_status"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toStartOf="@id/spinner_procedure_form_status"
+    android:theme="@style/AppTheme.FormLabel"
     app:layout_constraintBaseline_toBaselineOf="@id/spinner_procedure_form_status"/>
+
 </android.support.constraint.ConstraintLayout>

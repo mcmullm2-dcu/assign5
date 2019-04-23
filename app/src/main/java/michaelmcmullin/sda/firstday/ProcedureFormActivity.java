@@ -9,8 +9,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import michaelmcmullin.sda.firstday.interfaces.ProcedureStorer;
+import michaelmcmullin.sda.firstday.models.Procedure;
+import michaelmcmullin.sda.firstday.models.Step;
 
-public class ProcedureFormActivity extends AppCompatActivity {
+public class ProcedureFormActivity extends AppCompatActivity implements ProcedureStorer {
 
   // Indices to each tab
   private final int MAIN_TAB_INDEX = 0;
@@ -29,9 +35,23 @@ public class ProcedureFormActivity extends AppCompatActivity {
 
   /**
    * An instance of this app's shared preferences.
-   * TODO: may not be necessary for this activity, consider removing and updating the ProcedureFormAdapter code.
    */
   SharedPreferences prefs;
+
+  /**
+   * Stores a working Procedure instance that will eventually get saved to Firestore.
+   */
+  Procedure workingProcedure;
+
+  /**
+   * Stores a working list of Step instances that will eventually get saved to Firestore.
+   */
+  ArrayList<Step> workingSteps;
+
+  /**
+   * Stores a working set of tag strings that will eventually get saved to Firestore.
+   */
+  Set<String> workingTags;
 
   /**
    * Called when {@link ProcedureFormActivity} is started, initialising the Activity and inflating
@@ -66,7 +86,8 @@ public class ProcedureFormActivity extends AppCompatActivity {
     // Create the adapter that will return a fragment for each of the
     // primary sections of the activity.
     final ViewPager pager = findViewById(R.id.pager);
-    final ProcedureFormAdapter formAdapter = new ProcedureFormAdapter(getSupportFragmentManager(), tabTitles, prefs);
+    final ProcedureFormAdapter formAdapter = new ProcedureFormAdapter(getSupportFragmentManager(),
+        tabTitles, (ProcedureStorer)this, prefs);
 
     pager.setAdapter(formAdapter);
 
@@ -119,5 +140,69 @@ public class ProcedureFormActivity extends AppCompatActivity {
     if (tabLayout != null && tabLayout.getTabCount() > index) {
       tabLayout.getTabAt(index).select();
     }
+  }
+
+  /**
+   * Stores a Procedure instance for later retrieval.
+   *
+   * @param procedure The Procedure instance to store.
+   */
+  @Override
+  public void StoreProcedure(Procedure procedure) {
+    // TODO: Save procedure to workingProcedure via SharedPrefs.
+  }
+
+  /**
+   * Retrieves a previously stored Procedure instance.
+   *
+   * @return Returns an instance of a previously stored instance, or null.
+   */
+  @Override
+  public Procedure GetProcedure() {
+    // TODO: Recreate a Procedure instance from SharedPrefs.
+    return null;
+  }
+
+  /**
+   * Stores a list of steps associated with a stored Procedure instance for later retrieval.
+   *
+   * @param steps The list of Step instances to store.
+   */
+  @Override
+  public void StoreSteps(List<Step> steps) {
+    // TODO: Save steps to workingSteps via SharedPrefs.
+  }
+
+  /**
+   * Retrieves a previously stored list of Step instances associated with a single procedure.
+   *
+   * @return Returns a list of Step instances, or null.
+   */
+  @Override
+  public List<Step> GetSteps() {
+    // TODO: Recreate the Step instances from SharedPrefs.
+    return null;
+  }
+
+  /**
+   * Stores a set of distinct tags for a particular Procedure instance for later retrieval.
+   *
+   * @param tags The set of tags to store.
+   */
+  @Override
+  public void StoreTags(Set<String> tags) {
+    // TODO: Save tags to workingTags via SharedPrefs.
+  }
+
+  /**
+   * Retrieves a previously stored list of tag strings, used for searching, associated with a
+   * particular Procedure instance.
+   *
+   * @return Returns a set of tag strings, or null.
+   */
+  @Override
+  public Set<String> GetTags() {
+    // TODO: Recreate the Tag instances from SharedPrefs.
+    return null;
   }
 }

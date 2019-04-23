@@ -17,7 +17,7 @@
     <item name="android:layout_gravity">center</item>
   </style>
 
-  <!-- -->
+  <!-- Alternative style for activities using Toolbars -->
   <style name="AppTheme.NoActionBar">
     <item name="windowActionBar">false</item>
     <item name="windowNoTitle">true</item>
@@ -27,4 +27,15 @@
 
   <style name="AppTheme.PopupOverlay" parent="Base.ThemeOverlay.AppCompat.Light" />
 
+  <!-- Section Headings -->
+  <style name="AppTheme.SectionHeading">
+    <item name="android:textStyle">bold</item>
+    <item name="android:textColor">@color/colorPrimary</item>
+    <item name="android:textSize">@dimen/font_edit_text</item>
+  </style>
+
+  <!-- Form Headings -->
+  <style name="AppTheme.FormLabel">
+    <item name="android:textSize">@dimen/font_edit_text</item>
+  </style>
 </resources>

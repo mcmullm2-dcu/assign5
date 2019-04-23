@@ -56,6 +56,13 @@ public class CommentsFragment extends Fragment {
   private CollectionReference userCollection = db.collection("user");
 
   /**
+   * A required empty public constructor.
+   */
+  public CommentsFragment() {
+    // Required empty public constructor
+  }
+
+  /**
    * Initialises the fragment's user interface.
    * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment
    * @param container If non-null, this is the parent view that the fragment's UI should be attached
