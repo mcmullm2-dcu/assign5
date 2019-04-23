@@ -11,6 +11,11 @@
   <string name="title_comments">Comments (newest first):</string>
   <string name="comment_owner_format">%s (Owner)</string>
   <string name="modal_dismiss_text">Dismiss</string>
+  <string-array name="procedure_form_tabs">
+    <item>Details</item>
+    <item>Steps</item>
+    <item>Tags</item>
+  </string-array>
   <string name="title_new_procedure">Add a new procedure:</string>
   <string name="hint_procedure_name">Procedure Name</string>
   <string name="hint_procedure_description">Description</string>

@@ -1,12 +1,21 @@
 package michaelmcmullin.sda.firstday;
 
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class ProcedureFormActivity extends AppCompatActivity {
+
+  private final int MAIN_TAB_INDEX = 0;
+  private final int STEPS_TAB_INDEX = MAIN_TAB_INDEX + 1;
+  private final int LABELS_TAB_INDEX = STEPS_TAB_INDEX + 1;
+
+  String[] tabTitles;
+  TabLayout tabLayout;
 
   /**
    * Called when {@link ProcedureFormActivity} is started, initialising the Activity and inflating
@@ -20,8 +29,19 @@ public class ProcedureFormActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_procedure_form);
 
-    // Set a 'close' button in the top-left
+    // Set up toolbar and set a 'close' button in the top-left
+    Toolbar toolbar = findViewById(R.id.toolbar);
+    setSupportActionBar(toolbar);
     getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
+
+    // Set up tabs
+    tabLayout = findViewById(R.id.tab_layout);
+    tabTitles = getResources().getStringArray(R.array.procedure_form_tabs);
+    for(int i=0; i<tabTitles.length; i++) {
+      tabLayout.addTab(tabLayout.newTab());
+    }
+    // Ensure 'Main' tab is presented to the user
+    setTab(MAIN_TAB_INDEX);
   }
 
   /**
@@ -60,5 +80,15 @@ public class ProcedureFormActivity extends AppCompatActivity {
   private void SaveProcedure() {
     // TODO: Save this procedure to Firestore
     finish();
+  }
+
+  /**
+   * Sets the given tab index as the selected tab.
+   * @param index The index of the tab to display.
+   */
+  private void setTab(int index) {
+    if (tabLayout != null && tabLayout.getTabCount() > index) {
+      tabLayout.getTabAt(index).select();
+    }
   }
 }
