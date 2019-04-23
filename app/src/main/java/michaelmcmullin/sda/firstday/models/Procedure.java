@@ -3,8 +3,10 @@ package michaelmcmullin.sda.firstday.models;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.ServerTimestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import michaelmcmullin.sda.firstday.AppConstants;
 
 /**
  * Class for storing information about a single {@link Procedure} instance.
@@ -43,6 +45,11 @@ public class Procedure {
   private boolean is_public;
 
   /**
+   * Flag indicating if this {@link Procedure} is still a draft, or only available to its owner.
+   */
+  private boolean is_draft;
+
+  /**
    * Firestore requires a constructor with no arguments.
    */
   public Procedure() {}
@@ -54,13 +61,15 @@ public class Procedure {
    * @param owner The {@link User} who owns this {@link Procedure} instance.
    * @param created The timestamp indicating when this {@link Procedure} was first created.
    * @param is_public Indicates if this {@link Procedure} instance is publicly available.
+   * @param is_draft Indicates if this {@link Procedure} instance is a draft copy.
    */
-  public Procedure(String name, String description, User owner, Date created, boolean is_public) {
+  public Procedure(String name, String description, User owner, Date created, boolean is_public, boolean is_draft) {
     this.name = name;
     this.description = description;
     this.owner = owner;
     this.created = created;
     this.is_public = is_public;
+    this.is_draft = is_draft;
   }
 
   /**
@@ -128,5 +137,13 @@ public class Procedure {
    */
   public boolean isPublic() {
     return is_public;
+  }
+
+  /**
+   * Gets a value indicating if this {@link Procedure} instance is a draft.
+   * @return Returns <code>true</code> if this {@link Procedure} instance is a draft.
+   */
+  public boolean isDraft() {
+    return is_draft;
   }
 }

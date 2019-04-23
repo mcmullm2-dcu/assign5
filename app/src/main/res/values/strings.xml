@@ -54,7 +54,5 @@
   <string name="message_procedure_added">Procedure "%s" added successfully.</string>
   <string name="message_step_added">Step added.</string>
   <string name="message_no_qr_code">No QR code detected.</string>
-
-  <!-- TODO: Remove or change this placeholder text -->
-  <string name="hello_blank_fragment">Hello blank fragment</string>
+  <string name="error_parse_date">Error parsing Date</string>
 </resources>

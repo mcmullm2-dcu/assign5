@@ -9,12 +9,19 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureStorer;
 import michaelmcmullin.sda.firstday.models.Procedure;
 import michaelmcmullin.sda.firstday.models.Step;
+import michaelmcmullin.sda.firstday.models.User;
+import michaelmcmullin.sda.firstday.utils.CurrentUser;
 
 public class ProcedureFormActivity extends AppCompatActivity implements ProcedureStorer {
 
@@ -51,7 +58,7 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
   /**
    * Stores a working set of tag strings that will eventually get saved to Firestore.
    */
-  Set<String> workingTags;
+  HashSet<String> workingTags;
 
   /**
    * Called when {@link ProcedureFormActivity} is started, initialising the Activity and inflating
@@ -149,7 +156,17 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
    */
   @Override
   public void StoreProcedure(Procedure procedure) {
-    // TODO: Save procedure to workingProcedure via SharedPrefs.
+    if (prefs != null) {
+      SharedPreferences.Editor editor = prefs.edit();
+      editor.putString(AppConstants.PREFS_PROCEDURE_NAME, procedure.getName());
+      editor.putString(AppConstants.PREFS_PROCEDURE_DESCRIPTION, procedure.getDescription());
+      editor.putString(AppConstants.PREFS_PROCEDURE_CREATED, procedure.getCreated().toString());
+      editor.putBoolean(AppConstants.PREFS_PROCEDURE_IS_DRAFT, procedure.isDraft());
+      editor.putBoolean(AppConstants.PREFS_PROCEDURE_IS_PUBLIC, procedure.isPublic());
+      editor.commit();
+
+      workingProcedure = procedure;
+    }
   }
 
   /**
@@ -159,7 +176,26 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
    */
   @Override
   public Procedure GetProcedure() {
-    // TODO: Recreate a Procedure instance from SharedPrefs.
+    if (workingProcedure != null) {
+      return workingProcedure;
+    }
+
+    if (prefs != null) {
+      String name = prefs.getString(AppConstants.PREFS_PROCEDURE_NAME, "");
+      String description = prefs.getString(AppConstants.PREFS_PROCEDURE_DESCRIPTION, "");
+      SimpleDateFormat date = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", new Locale("us"));
+      Date created = new Date();
+      try {
+        date.parse(prefs.getString(AppConstants.PREFS_PROCEDURE_CREATED, ""));
+      } catch (ParseException e) {
+        Log.e(AppConstants.TAG, getString(R.string.error_parse_date));
+      }
+      User user = new User(new CurrentUser());
+      boolean isDraft = prefs.getBoolean(AppConstants.PREFS_PROCEDURE_IS_DRAFT, true);
+      boolean isPublic = prefs.getBoolean(AppConstants.PREFS_PROCEDURE_IS_PUBLIC, false);
+      workingProcedure = new Procedure(name, description, user, created, isPublic, isDraft);
+      return workingProcedure;
+    }
     return null;
   }
 
@@ -170,7 +206,25 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
    */
   @Override
   public void StoreSteps(List<Step> steps) {
-    // TODO: Save steps to workingSteps via SharedPrefs.
+    if (prefs == null) {
+      return;
+    }
+
+    SharedPreferences.Editor editor = prefs.edit();
+
+    if (steps != null && steps.size() > 0) {
+      editor.putInt(AppConstants.PREFS_STEP_COUNT, steps.size());
+      for (int i = 0; i < steps.size(); i++) {
+        Step current = steps.get(i);
+        editor.putString(AppConstants.PREFS_STEP_NAME + "." + i, current.getName());
+        editor.putString(AppConstants.PREFS_STEP_DESCRIPTION + "." + i, current.getDescription());
+      }
+    } else {
+      editor.putInt(AppConstants.PREFS_STEP_COUNT, 0);
+    }
+    editor.commit();
+
+    workingSteps = (ArrayList<Step>) steps;
   }
 
   /**
@@ -180,7 +234,26 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
    */
   @Override
   public List<Step> GetSteps() {
-    // TODO: Recreate the Step instances from SharedPrefs.
+    if (workingSteps != null && workingSteps.size() > 0) {
+      return workingSteps;
+    }
+
+    if (prefs != null) {
+      List<Step> steps = new ArrayList<Step>();
+      int count = prefs.getInt(AppConstants.PREFS_STEP_COUNT, 0);
+      if (count > 0) {
+        int sequence = 0;
+        for (int i = 0; i < count; i++) {
+          sequence = i + 1;
+          String name = prefs.getString(AppConstants.PREFS_STEP_NAME + "." + i, "");
+          String description = prefs.getString(AppConstants.PREFS_STEP_DESCRIPTION + "." + i, "");
+          Step step = new Step(sequence, name, description);
+          steps.add(step);
+        }
+      }
+      workingSteps = (ArrayList<Step>)steps;
+      return steps;
+    }
     return null;
   }
 
@@ -191,7 +264,15 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
    */
   @Override
   public void StoreTags(Set<String> tags) {
-    // TODO: Save tags to workingTags via SharedPrefs.
+    if (prefs == null) {
+      return;
+    }
+
+    SharedPreferences.Editor editor = prefs.edit();
+    editor.putStringSet(AppConstants.PREFS_TAGS, tags);
+    editor.commit();
+
+    workingTags = (HashSet<String>) tags;
   }
 
   /**
@@ -202,7 +283,13 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
    */
   @Override
   public Set<String> GetTags() {
-    // TODO: Recreate the Tag instances from SharedPrefs.
+    if (workingTags != null && workingTags.size() > 0) {
+      return workingTags;
+    }
+
+    if (prefs != null) {
+      return prefs.getStringSet(AppConstants.PREFS_TAGS, null);
+    }
     return null;
   }
 }

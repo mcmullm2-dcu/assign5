@@ -1,6 +1,7 @@
 package michaelmcmullin.sda.firstday.models;
 
 import android.net.Uri;
+import michaelmcmullin.sda.firstday.utils.CurrentUser;
 
 /**
  * Class to store basic information about a {@link User}. This is usually used for information
@@ -36,6 +37,15 @@ public class User {
   public User(String name, Uri photo) {
     this.name = name;
     this.photo = photo;
+  }
+
+  /**
+   * Create a new instance of {@link User} from the current user.
+   * @param current The currently logged in user.
+   */
+  public User(CurrentUser current) {
+    this.name = current.getDisplayName();
+    this.photo = current.getPhoto();
   }
 
   /**
