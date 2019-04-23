@@ -44,6 +44,12 @@
     <activity android:name=".QrReaderActivity">
     </activity>
     <activity android:name=".SearchResultsActivity">
+      <!-- Ref: https://developer.android.com/guide/topics/search/search-dialog -->
+      <intent-filter>
+        <action android:name="android.intent.action.SEARCH" />
+      </intent-filter>
+      <meta-data android:name="android.app.searchable"
+        android:resource="@xml/searchable"/>
     </activity>
     <activity android:name=".ProcedureActivity">
     </activity>

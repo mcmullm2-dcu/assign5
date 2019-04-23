@@ -3,7 +3,7 @@
   <string name="app_summary">Whether it\'s your first day in a new job, a new role, or covering holidays, get the instructions you need, when you need them.</string>
   <string name="app_signin">Sign in with your Google account or email address.</string>
   <string name="button_signin">Sign in</string>
-  <string name="hint_search_procedures">Search for a procedure</string>
+  <string name="hint_search_procedures">Search procedures</string>
   <string name="button_scan_qrcode">Scan QR Code</string>
   <string name="button_browse">Browse</string>
   <string name="title_my_procedures">My Procedures:</string>

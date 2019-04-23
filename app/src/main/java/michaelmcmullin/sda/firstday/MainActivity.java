@@ -1,5 +1,8 @@
 package michaelmcmullin.sda.firstday;
 
+import android.app.SearchManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
@@ -9,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.support.v7.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
@@ -23,6 +27,11 @@ public class MainActivity extends AppCompatActivity implements ProcedureFilterGe
    * A reference to the currently signed-in user
    */
   User user = new CurrentUser();
+
+  /**
+   * The search view widget to search for procedures.
+   */
+  SearchView searchView;
 
   /**
    * A value to hold the scanned in QR code
@@ -54,6 +63,14 @@ public class MainActivity extends AppCompatActivity implements ProcedureFilterGe
     TextView msg = findViewById(R.id.welcome);
     msg.setText(user.getDisplayName());
 
+    // Set up the search dialog
+    // Main instructions from https://developer.android.com/guide/topics/search/search-dialog
+    // Amendments from: https://stackoverflow.com/a/45536817
+    SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+    searchView = (SearchView) findViewById(R.id.search_view);
+    searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this, SearchResultsActivity.class)));
+    searchView.setIconifiedByDefault(false);
+
     // Set up the 'add procedure' button
     FloatingActionButton AddProcedureButton = findViewById(R.id.procedure_add_button);
     AddProcedureButton.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements ProcedureFilterGe
       }
     });
   }
+
 
   /**
    * Specify the menu to display for this activity.
