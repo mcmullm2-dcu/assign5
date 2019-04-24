@@ -7,19 +7,51 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Spinner;
+import java.util.Date;
+import michaelmcmullin.sda.firstday.interfaces.GetterSetter;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureStorer;
+import michaelmcmullin.sda.firstday.models.Procedure;
+import michaelmcmullin.sda.firstday.models.User;
+import michaelmcmullin.sda.firstday.utils.CurrentUser;
 
 
 /**
- * A Fragment that displays a form for entering a Procedure's details.
+ * A Fragment that displays a form for entering a Procedure's details. Activities that contain this
+ * fragment must implement the {@link ProcedureStorer} interface.
  */
-public class ProcedureFormDetailsFragment extends Fragment {
+public class ProcedureFormDetailsFragment extends Fragment implements GetterSetter<Procedure> {
+
+  private static final int SPINNER_DRAFT = 0;
+  private static final int SPINNER_PRIVATE = 1;
+  private static final int SPINNER_PUBLIC = 2;
 
   /**
    * An interface implemented by the parent activity to allow this fragment to store and retrieve
    * its details.
    */
   private ProcedureStorer procedureStorer;
+
+  /**
+   * Reference to the 'Name' edit text view.
+   */
+  private EditText editName;
+
+  /**
+   * Reference to the 'Description' edit text view.
+   */
+  private EditText editDescription;
+
+  /**
+   * Reference to the 'Status' spinner.
+   */
+  private Spinner spinnerStatus;
+
+  /**
+   * The date this procedure was created.
+   */
+  private Date createdDate;
 
   /**
    * A required empty public constructor.
@@ -61,7 +93,11 @@ public class ProcedureFormDetailsFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_procedure_form_details, container, false);
+    View v = inflater.inflate(R.layout.fragment_procedure_form_details, container, false);
+    editName = v.findViewById(R.id.edit_text_procedure_form_name);
+    editDescription = v.findViewById(R.id.edit_text_procedure_form_description);
+    spinnerStatus = v.findViewById(R.id.spinner_procedure_form_status);
+    return v;
   }
 
   /**
@@ -85,5 +121,51 @@ public class ProcedureFormDetailsFragment extends Fragment {
   public void onDetach() {
     super.onDetach();
     procedureStorer = null;
+  }
+
+  /**
+   * Gets the date this procedure was created.
+   * @return The date this procedure was created.
+   */
+  public Date GetCreatedDate() {
+    if (createdDate == null) {
+      createdDate = new Date();
+    }
+    return createdDate;
+  }
+
+  /**
+   * Sets the date this procedure was created.
+   * @param date The date this procedure was created.
+   */
+  public void SetCreatedDate(Date date) {
+    this.createdDate = date;
+  }
+
+  /**
+   * Persists its data in a form that can be read by other classes.
+   */
+  @Override
+  public void SetData() {
+    String name = editName.getText().toString();
+    String description = editDescription.getText().toString();
+    int spinnerIndex = spinnerStatus.getSelectedItemPosition();
+    boolean is_draft = spinnerIndex == SPINNER_DRAFT;
+    boolean is_public = spinnerIndex == SPINNER_PUBLIC;
+    User owner = new User(new CurrentUser());
+    Date created = GetCreatedDate();
+
+    Procedure procedure = new Procedure(name, description, owner, created, is_public, is_draft);
+    procedureStorer.StoreProcedure(procedure);
+  }
+
+  /**
+   * Gets the persisted data.
+   *
+   * @return The persisted data, or null.
+   */
+  @Override
+  public Procedure GetData() {
+    return procedureStorer.GetProcedure();
   }
 }

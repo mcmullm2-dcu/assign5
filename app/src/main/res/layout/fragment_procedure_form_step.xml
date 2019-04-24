@@ -62,16 +62,18 @@
     android:background="@color/colorMuted"
     app:layout_constraintTop_toBottomOf="@+id/button_procedure_form_add_step"/>
 
-  <ScrollView
-    android:id="@+id/fragment_procedure_form_step_list"
-    android:layout_width="fill_parent"
+  <TextView
+    android:id="@+id/steps_title"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/spacing_med"
-    app:layout_constraintTop_toBottomOf="@+id/horizontal_rule">
-    <fragment
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:name="michaelmcmullin.sda.firstday.ProcedureFormStepListFragment"
-    />
-  </ScrollView>
+    android:layout_marginBottom="@dimen/spacing_med"
+    android:text="@string/title_steps"
+    android:theme="@style/AppTheme.SectionHeading"
+    app:layout_constraintTop_toBottomOf="@+id/horizontal_rule"/>
+
+  <ListView
+    android:id="@+id/list_view_steps"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toBottomOf="@+id/steps_title"/>
 </android.support.constraint.ConstraintLayout>

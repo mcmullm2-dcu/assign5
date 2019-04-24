@@ -7,13 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import java.util.HashSet;
+import java.util.Set;
 import me.gujun.android.taggroup.TagGroup;
+import michaelmcmullin.sda.firstday.interfaces.GetterSetter;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureStorer;
 
 /**
- * A Fragment that displays a form for entering a Procedure's tags.
+ * A Fragment that displays a form for entering a Procedure's tags. Activities that contain this
+ * fragment must implement the {@link ProcedureStorer} interface.
  */
-public class ProcedureFormTagFragment extends Fragment {
+public class ProcedureFormTagFragment extends Fragment implements GetterSetter<Set<String>> {
   /**
    * An interface implemented by the parent activity to allow this fragment to store and retrieve
    * its details.
@@ -28,7 +32,7 @@ public class ProcedureFormTagFragment extends Fragment {
   /**
    * An array of tag strings used to populate the TagGroup
    */
-  private String[] tags = {"Tag 1", "Tag 2", "Another Tag"};
+  private String[] tags = {};
 
   /**
    * A required empty public constructor.
@@ -71,9 +75,7 @@ public class ProcedureFormTagFragment extends Fragment {
     // Inflate the layout for this fragment
     View v = inflater.inflate(R.layout.fragment_procedure_form_tags, container, false);
     tagGroup = v.findViewById(R.id.tag_group);
-    if (tagGroup != null) {
-      tagGroup.setTags(tags);
-    }
+    GetData();
 
     return v;
   }
@@ -99,5 +101,39 @@ public class ProcedureFormTagFragment extends Fragment {
   public void onDetach() {
     super.onDetach();
     procedureStorer = null;
+  }
+
+  /**
+   * Persists its data in a form that can be read by other classes.
+   */
+  @Override
+  public void SetData() {
+    Set<String> data = new HashSet<>();
+    if (tagGroup != null) {
+      for (String s : tagGroup.getTags()) {
+        data.add(s);
+      }
+    }
+    procedureStorer.StoreTags(data);
+  }
+
+  /**
+   * Gets the persisted data.
+   *
+   * @return The persisted data, or null.
+   */
+  @Override
+  public Set<String> GetData() {
+    Set<String> savedTags = procedureStorer.GetTags();
+    if (savedTags == null) {
+      return null;
+    }
+    int size = savedTags.size();
+    tags = new String[size];
+    tags = savedTags.toArray(tags);
+    if (tagGroup != null) {
+      tagGroup.setTags(tags);
+    }
+    return savedTags;
   }
 }

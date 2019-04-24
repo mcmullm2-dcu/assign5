@@ -137,7 +137,7 @@ public class StepsFragment extends Fragment {
           }
         }
 
-        // Create a CommentAdapter class and tie it in with the comments list.
+        // Create a StepAdapter class and tie it in with the steps list.
         final StepAdapter adapter = new StepAdapter(getActivity(), steps);
         ListView listView = getView().findViewById(R.id.list_view_steps);
         listView.setAdapter(adapter);

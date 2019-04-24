@@ -6,24 +6,50 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import java.util.ArrayList;
+import java.util.List;
+import michaelmcmullin.sda.firstday.interfaces.GetterSetter;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureStorer;
+import michaelmcmullin.sda.firstday.models.Step;
 
 
 /**
- * A simple {@link Fragment} subclass. Activities that contain this fragment must implement the
- * {@link ProcedureStorer} interface to handle interaction events. Use the
- * {@link ProcedureFormStepFragment#newInstance} factory method to create an instance of this
- * fragment.
+ * A Fragment that displays a form for entering a Procedure's steps. Activities that contain this
+ * fragment must implement the {@link ProcedureStorer} interface.
  */
-public class ProcedureFormStepFragment extends Fragment {
-
+public class ProcedureFormStepFragment extends Fragment
+    implements GetterSetter<List<Step>>, OnClickListener {
 
   /**
    * An interface implemented by the parent activity to allow this fragment to store and retrieve
    * its details.
    */
   private ProcedureStorer procedureStorer;
+
+  /**
+   * A list of steps already entered.
+   */
+  private List<Step> steps;
+
+  /**
+   * Reference to the 'Name' edit text view.
+   */
+  private EditText editName;
+
+  /**
+   * Reference to the 'Description' edit text view.
+   */
+  private EditText editDescription;
+
+  /**
+   * Reference to the 'Steps' list view.
+   */
+  private ListView stepsList;
 
   /**
    * A required empty public constructor.
@@ -41,6 +67,7 @@ public class ProcedureFormStepFragment extends Fragment {
   public static final ProcedureFormStepFragment newInstance(ProcedureStorer storer) {
     ProcedureFormStepFragment fragment = new ProcedureFormStepFragment();
     fragment.setProcedureStorer(storer);
+    fragment.steps = fragment.GetData();
     return fragment;
   }
 
@@ -65,7 +92,14 @@ public class ProcedureFormStepFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_procedure_form_step, container, false);
+    View v = inflater.inflate(R.layout.fragment_procedure_form_step, container, false);
+    editName = v.findViewById(R.id.edit_text_procedure_form_step_name);
+    editDescription = v.findViewById(R.id.edit_text_procedure_form_step_description);
+    Button button = v.findViewById(R.id.button_procedure_form_add_step);
+    stepsList = v.findViewById(R.id.list_view_steps);
+    button.setOnClickListener(this);
+
+    return v;
   }
 
   /**
@@ -89,5 +123,58 @@ public class ProcedureFormStepFragment extends Fragment {
   public void onDetach() {
     super.onDetach();
     procedureStorer = null;
+  }
+
+  /**
+   * Saves a newly added step.
+   */
+  public void SaveStep() {
+    if (steps == null) {
+      steps = new ArrayList<>();
+    }
+    int sequence = steps.size() + 1;
+    String name = editName.getText().toString();
+    String description = editDescription.getText().toString();
+    Step step = new Step(sequence, name, description);
+    steps.add(step);
+
+    editName.getText().clear();
+    editDescription.getText().clear();
+  }
+
+  /**
+   * Persists its data in a form that can be read by other classes.
+   */
+  @Override
+  public void SetData() {
+    procedureStorer.StoreSteps(steps);
+  }
+
+  /**
+   * Gets the persisted data.
+   *
+   * @return The persisted data, or null.
+   */
+  @Override
+  public List<Step> GetData() {
+    steps = procedureStorer.GetSteps();
+    return steps;
+  }
+
+  /**
+   * Called when a view has been clicked.
+   *
+   * @param v The view that was clicked.
+   */
+  @Override
+  public void onClick(View v) {
+    switch (v.getId()) {
+      case R.id.button_procedure_form_add_step:
+        SaveStep();
+        // Create a StepAdapter class and tie it in with the steps list.
+        final StepAdapter adapter = new StepAdapter(getActivity(), (ArrayList<Step>)steps);
+        stepsList.setAdapter(adapter);
+        break;
+    }
   }
 }
