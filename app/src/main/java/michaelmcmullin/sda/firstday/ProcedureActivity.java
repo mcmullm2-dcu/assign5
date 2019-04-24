@@ -2,8 +2,11 @@ package michaelmcmullin.sda.firstday;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -18,6 +21,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureIdGetter;
 import michaelmcmullin.sda.firstday.models.Step;
+import michaelmcmullin.sda.firstday.utils.CurrentUser;
 
 public class ProcedureActivity extends AppCompatActivity implements ProcedureIdGetter {
 
@@ -90,15 +94,48 @@ public class ProcedureActivity extends AppCompatActivity implements ProcedureIdG
     // Ensure we have a reference to the selected procedure document
     procedureDoc = db.collection("procedure").document(getProcedureId());
     populateViews();
+
+    // Add back button
+    ActionBar actionBar = getSupportActionBar();
+    if (actionBar != null) {
+      actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+  }
+
+  /**
+   * Specify the menu to display for this activity.
+   * @param menu The options menu to place the menu items into.
+   * @return Returns <code>true</code> if the menu is to be displayed.
+   */
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    // Inflate the menu; this adds items to the action bar if it is present.
+    getMenuInflater().inflate(R.menu.main_menu, menu);
+    return true;
+  }
+
+  /**
+   * Responds to a menu item being selected.
+   * @param item The menu item selected by the user
+   * @return Returns <code>true</code> if the menu item functionality is being handled here rather
+   *     than by the normal system menu processing.
+   */
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.menuitem_log_out:
+        CurrentUser user = new CurrentUser();
+        user.logOut(this);
+        return true;
+    }
+    return false;
   }
 
   /**
    * Populate the activity's view with a Procedure's details.
    */
   private void populateViews() {
-    Log.i(AppConstants.TAG, "==================================");
-    Log.i(AppConstants.TAG, getProcedureId());
-
     // Gets the main procedure details. Adding a Snapshot listener seems like it might be overkill,
     // so this assumes the procedure isn't going to be continually updated as users are watching it.
     // The snapshot listeners will be more appropriate for, say, the comments section.

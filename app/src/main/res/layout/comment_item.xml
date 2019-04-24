@@ -13,7 +13,6 @@
     android:id="@+id/profile_photo_comment_author"
     android:layout_width="@dimen/profile_image"
     android:layout_height="@dimen/profile_image"
-    app:layout_constraintTop_toBottomOf="@id/welcome"
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintRight_toRightOf="parent"
     android:layout_marginEnd="@dimen/spacing_med"

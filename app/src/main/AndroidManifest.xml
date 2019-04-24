@@ -41,9 +41,11 @@
     </activity>
     <activity android:name=".MainActivity" android:launchMode="singleTop">
     </activity>
-    <activity android:name=".QrReaderActivity">
+    <activity android:name=".QrReaderActivity" android:launchMode="singleTop">
     </activity>
-    <activity android:name=".SearchResultsActivity">
+    <activity android:name=".SearchResultsActivity"
+      android:launchMode="singleTop"
+      android:parentActivityName=".MainActivity">
       <!-- Ref: https://developer.android.com/guide/topics/search/search-dialog -->
       <intent-filter>
         <action android:name="android.intent.action.SEARCH" />
@@ -51,7 +53,8 @@
       <meta-data android:name="android.app.searchable"
         android:resource="@xml/searchable"/>
     </activity>
-    <activity android:name=".ProcedureActivity">
+    <activity android:name=".ProcedureActivity"
+      android:parentActivityName=".MainActivity">
     </activity>
     <activity android:name=".ProcedureFormActivity"
       android:parentActivityName=".MainActivity"

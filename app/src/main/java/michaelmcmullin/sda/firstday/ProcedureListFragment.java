@@ -138,14 +138,14 @@ public class ProcedureListFragment extends Fragment {
     switch(procedureFilterGetter.getFilter()) {
       case MINE:
         if (user != null && user.getUserId() != null && !user.getUserId().isEmpty())
-        query = procedureCollection
-            .whereEqualTo("owner", user.getUserId());
+        query = procedureCollection.whereEqualTo("owner", user.getUserId());
         break;
       case SEARCH_RESULTS:
         if (searchable == null) {
           throw new RuntimeException("Searchable interface has not been implemented");
         }
-        // TODO: Add query to search labels
+        String searchTerm = searchable.getSearchTerm();
+        query = procedureCollection.whereArrayContains("tags", searchTerm);
         break;
       case PUBLIC:
         query = procedureCollection

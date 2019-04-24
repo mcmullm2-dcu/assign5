@@ -5,6 +5,26 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:padding="@dimen/spacing_med"
   tools:context=".SearchResultsActivity">
+
+  <TextView
+    android:id="@+id/search_results_title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/AppTheme.SectionHeading"/>
+
+  <ScrollView
+    android:id="@+id/scroll_view_results"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toBottomOf="@+id/search_results_title"
+    android:scrollbars="vertical">
+    <fragment
+      android:id="@+id/procedures_list"
+      android:name="michaelmcmullin.sda.firstday.ProcedureListFragment"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"/>
+  </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements ProcedureFilterGe
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
+    /*
     // Demo profile picture. If it's null, show default image (or colour in this case).
     CircleImageView profile = findViewById(R.id.profile_image);
     Uri profile_picture = user.getPhoto();
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements ProcedureFilterGe
     // Demo user display name
     TextView msg = findViewById(R.id.welcome);
     msg.setText(user.getDisplayName());
+    */
 
     // Set up the search dialog
     // Main instructions from https://developer.android.com/guide/topics/search/search-dialog
@@ -81,7 +83,6 @@ public class MainActivity extends AppCompatActivity implements ProcedureFilterGe
       }
     });
   }
-
 
   /**
    * Specify the menu to display for this activity.
@@ -103,8 +104,6 @@ public class MainActivity extends AppCompatActivity implements ProcedureFilterGe
    */
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    Log.i(AppConstants.TAG, "Starting onOptionsItemSelected method");
-
     switch (item.getItemId()) {
       case R.id.menuitem_log_out:
         user.logOut(this);
