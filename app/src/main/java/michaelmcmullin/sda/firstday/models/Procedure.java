@@ -146,4 +146,12 @@ public class Procedure {
   public boolean isDraft() {
     return is_draft;
   }
+
+  /**
+   * Indicates if this is a new procedure (i.e. it has no ID set).
+   * @return Returns <code>true</code> if this {@link Procedure} instance is a new procedure.
+   */
+  public boolean isNew() {
+    return (this.id == null || this.id.isEmpty());
+  }
 }

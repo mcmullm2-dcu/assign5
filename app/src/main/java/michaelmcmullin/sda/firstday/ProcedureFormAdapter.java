@@ -50,7 +50,6 @@ public class ProcedureFormAdapter extends FragmentStatePagerAdapter {
    * calling activity.
    * @param titles An array of the titles of each tab.
    * @param prefs This app's shared preferences
-   * TODO: consider removing prefs, unless there's a good reason to use it.
    */
   public ProcedureFormAdapter(FragmentManager fm, String[] titles, ProcedureStorer storer, SharedPreferences prefs) {
     super(fm);
@@ -67,7 +66,6 @@ public class ProcedureFormAdapter extends FragmentStatePagerAdapter {
    */
   @Override
   public Fragment getItem(int position) {
-    // TODO: Return correct fragments
     switch (position) {
       case TAB_MAIN:
         return ProcedureFormDetailsFragment.newInstance(procedureStorer);

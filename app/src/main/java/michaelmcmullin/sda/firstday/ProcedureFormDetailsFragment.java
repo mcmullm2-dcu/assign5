@@ -147,16 +147,18 @@ public class ProcedureFormDetailsFragment extends Fragment implements GetterSett
    */
   @Override
   public void SetData() {
-    String name = editName.getText().toString();
-    String description = editDescription.getText().toString();
-    int spinnerIndex = spinnerStatus.getSelectedItemPosition();
-    boolean is_draft = spinnerIndex == SPINNER_DRAFT;
-    boolean is_public = spinnerIndex == SPINNER_PUBLIC;
-    User owner = new User(new CurrentUser());
-    Date created = GetCreatedDate();
+    if (editName != null && editDescription != null) {
+      String name = editName.getText().toString();
+      String description = editDescription.getText().toString();
+      int spinnerIndex = spinnerStatus.getSelectedItemPosition();
+      boolean is_draft = spinnerIndex == SPINNER_DRAFT;
+      boolean is_public = spinnerIndex == SPINNER_PUBLIC;
+      User owner = new User(new CurrentUser());
+      Date created = GetCreatedDate();
 
-    Procedure procedure = new Procedure(name, description, owner, created, is_public, is_draft);
-    procedureStorer.StoreProcedure(procedure);
+      Procedure procedure = new Procedure(name, description, owner, created, is_public, is_draft);
+      procedureStorer.StoreProcedure(procedure);
+    }
   }
 
   /**
