@@ -1,15 +1,21 @@
 package michaelmcmullin.sda.firstday;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +51,16 @@ public class ProcedureFormStepFragment extends Fragment
    * Reference to the 'Description' edit text view.
    */
   private EditText editDescription;
+
+  /**
+   * Reference to the 'Camera' button.
+   */
+  private ImageView buttonCamera;
+
+  /**
+   * Reference to the 'Gallery' button.
+   */
+  private ImageView buttonGallery;
 
   /**
    * Reference to the 'Steps' list view.
@@ -95,9 +111,18 @@ public class ProcedureFormStepFragment extends Fragment
     View v = inflater.inflate(R.layout.fragment_procedure_form_step, container, false);
     editName = v.findViewById(R.id.edit_text_procedure_form_step_name);
     editDescription = v.findViewById(R.id.edit_text_procedure_form_step_description);
+
+    // Set up the 'Add Step' button
     Button button = v.findViewById(R.id.button_procedure_form_add_step);
     stepsList = v.findViewById(R.id.list_view_steps);
     button.setOnClickListener(this);
+
+    // Set up the picture buttons
+    buttonCamera = v.findViewById(R.id.image_view_procedure_form_step_photo);
+    buttonGallery = v.findViewById(R.id.image_view_procedure_form_step_gallery);
+
+    buttonCamera.setOnClickListener(this);
+    buttonGallery.setOnClickListener(this);
 
     return v;
   }
@@ -174,6 +199,15 @@ public class ProcedureFormStepFragment extends Fragment
         // Create a StepAdapter class and tie it in with the steps list.
         final StepAdapter adapter = new StepAdapter(getActivity(), (ArrayList<Step>)steps);
         stepsList.setAdapter(adapter);
+        break;
+      case R.id.image_view_procedure_form_step_photo:
+        Log.i(AppConstants.TAG, "Taking Photo...");
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        TakePhotoDialogFragment photoDialog = TakePhotoDialogFragment.newInstance();
+        photoDialog.show(fm, "dialog_take_photo");
+        break;
+      case R.id.image_view_procedure_form_step_gallery:
+        Log.i(AppConstants.TAG, "Loading Gallery...");
         break;
     }
   }
