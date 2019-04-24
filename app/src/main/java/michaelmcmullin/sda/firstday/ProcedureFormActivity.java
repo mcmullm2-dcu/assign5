@@ -164,8 +164,6 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
    */
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    Log.i(AppConstants.TAG, "Starting onOptionsItemSelected method");
-
     switch (item.getItemId()) {
       case R.id.save_procedure:
         SaveProcedure();
@@ -183,6 +181,30 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
     GetSteps();
     GetTags();
 
+    /*
+    if (workingProcedure != null) {
+      Log.i(AppConstants.TAG, "Working Procedure:");
+      Log.i(AppConstants.TAG, workingProcedure.getName());
+      Log.i(AppConstants.TAG, workingProcedure.getDescription());
+      Log.i(AppConstants.TAG, workingProcedure.getOwner().getName());
+      Log.i(AppConstants.TAG, "Owner ID: " + workingProcedure.getOwner().getId());
+      Log.i(AppConstants.TAG, "Draft? " + Boolean.toString(workingProcedure.isDraft()));
+      Log.i(AppConstants.TAG, "Public? " + Boolean.toString(workingProcedure.isPublic()));
+    }
+
+    if (workingSteps != null && workingSteps.size() > 0) {
+      Log.i(AppConstants.TAG, "Working Steps:");
+      Log.i(AppConstants.TAG, "Count: " + workingSteps.size());
+      Log.i(AppConstants.TAG, workingSteps.get(0).getName());
+      Log.i(AppConstants.TAG, workingSteps.get(0).getDescription());
+    }
+
+    if (workingTags != null) {
+      for(String s : workingTags) {
+        Log.i(AppConstants.TAG, s);
+      }
+    }
+    */
     if (workingProcedure != null && workingProcedure.isNew()) {
       Map<String, Object> newProcedure = new HashMap<>();
       newProcedure.put("name", workingProcedure.getName());
@@ -279,10 +301,6 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
    */
   @Override
   public Procedure GetProcedure() {
-    if (workingProcedure != null) {
-      return workingProcedure;
-    }
-
     if (prefs != null) {
       String name = prefs.getString(AppConstants.PREFS_PROCEDURE_NAME, "");
       String description = prefs.getString(AppConstants.PREFS_PROCEDURE_DESCRIPTION, "");

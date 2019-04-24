@@ -34,7 +34,7 @@ public class ProcedureFormStepFragment extends Fragment
   /**
    * A list of steps already entered.
    */
-  private List<Step> steps;
+  private static List<Step> steps;
 
   /**
    * Reference to the 'Name' edit text view.

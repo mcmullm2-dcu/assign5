@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +25,8 @@ import michaelmcmullin.sda.firstday.utils.CurrentUser;
 public class ProcedureFormDetailsFragment extends Fragment implements GetterSetter<Procedure> {
 
   private static final int SPINNER_DRAFT = 0;
-  private static final int SPINNER_PRIVATE = 1;
-  private static final int SPINNER_PUBLIC = 2;
+  private static final int SPINNER_PRIVATE = SPINNER_DRAFT + 1;
+  private static final int SPINNER_PUBLIC = SPINNER_PRIVATE + 1;
 
   /**
    * An interface implemented by the parent activity to allow this fragment to store and retrieve
@@ -36,17 +37,17 @@ public class ProcedureFormDetailsFragment extends Fragment implements GetterSett
   /**
    * Reference to the 'Name' edit text view.
    */
-  private EditText editName;
+  private static EditText editName;
 
   /**
    * Reference to the 'Description' edit text view.
    */
-  private EditText editDescription;
+  private static EditText editDescription;
 
   /**
    * Reference to the 'Status' spinner.
    */
-  private Spinner spinnerStatus;
+  private static Spinner spinnerStatus;
 
   /**
    * The date this procedure was created.
@@ -90,8 +91,7 @@ public class ProcedureFormDetailsFragment extends Fragment implements GetterSett
    * @return Return the View for the fragment's UI, or null.
    */
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
-      Bundle savedInstanceState) {
+  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     // Inflate the layout for this fragment
     View v = inflater.inflate(R.layout.fragment_procedure_form_details, container, false);
     editName = v.findViewById(R.id.edit_text_procedure_form_name);
@@ -147,7 +147,7 @@ public class ProcedureFormDetailsFragment extends Fragment implements GetterSett
    */
   @Override
   public void SetData() {
-    if (editName != null && editDescription != null) {
+    if (editName != null && editDescription != null && spinnerStatus != null) {
       String name = editName.getText().toString();
       String description = editDescription.getText().toString();
       int spinnerIndex = spinnerStatus.getSelectedItemPosition();

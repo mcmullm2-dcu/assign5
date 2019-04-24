@@ -27,7 +27,7 @@ public class ProcedureFormTagFragment extends Fragment implements GetterSetter<S
   /**
    * A reference to the TagGroup widget
    */
-  private TagGroup tagGroup;
+  private static TagGroup tagGroup;
 
   /**
    * An array of tag strings used to populate the TagGroup

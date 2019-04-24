@@ -44,6 +44,7 @@ public class User {
    * @param current The currently logged in user.
    */
   public User(CurrentUser current) {
+    this.id = current.getUserId();
     this.name = current.getDisplayName();
     this.photo = current.getPhoto();
   }
