@@ -31,7 +31,7 @@
         -->
     <meta-data
       android:name="com.google.firebase.ml.vision.DEPENDENCIES"
-      android:value="barcode"/>
+      android:value="barcode,label"/>
 
     <activity android:name=".LoginActivity">
       <intent-filter>
@@ -42,6 +42,8 @@
     <activity android:name=".MainActivity" android:launchMode="singleTop">
     </activity>
     <activity android:name=".QrReaderActivity" android:launchMode="singleTop">
+    </activity>
+    <activity android:name=".ImageReaderActivity" android:launchMode="singleTop">
     </activity>
     <activity android:name=".SearchResultsActivity"
       android:launchMode="singleTop"

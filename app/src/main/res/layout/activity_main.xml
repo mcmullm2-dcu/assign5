@@ -17,16 +17,29 @@
       android:layout_height="wrap_content"
       android:layout_marginBottom="@dimen/spacing_med"/>
 
-    <Button
-      android:id="@+id/launch_qr_code"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/button_scan_qrcode"
+    <LinearLayout
+      android:id="@+id/main_buttons"
       android:layout_marginTop="@dimen/spacing_med"
-      app:layout_constraintTop_toBottomOf="@id/search_view"
-      app:layout_constraintLeft_toLeftOf="parent"
-      app:layout_constraintRight_toRightOf="parent"
-      android:onClick="TakePhoto"/>
+      app:layout_constraintTop_toBottomOf="@+id/search_view"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content">
+      <Button
+        android:id="@+id/launch_qr_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_scan_qrcode"
+        android:onClick="TakeQrCodePhoto"/>
+
+      <Button
+        android:id="@+id/launch_image_reader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_scan_image"
+        android:layout_marginStart="@dimen/spacing_med"
+        android:onClick="TakeLabelledImagePhoto"/>
+    </LinearLayout>
 
     <View
       android:id="@+id/horizontal_rule"
@@ -34,7 +47,7 @@
       android:layout_height="2dp"
       android:layout_margin="@dimen/spacing_med"
       android:background="@color/colorMuted"
-      app:layout_constraintTop_toBottomOf="@+id/launch_qr_code"/>
+      app:layout_constraintTop_toBottomOf="@+id/main_buttons"/>
 
     <TextView
       android:id="@+id/title_my_procedures"

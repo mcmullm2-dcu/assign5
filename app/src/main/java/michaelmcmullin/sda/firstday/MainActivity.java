@@ -116,11 +116,22 @@ public class MainActivity extends AppCompatActivity implements ProcedureFilterGe
    * Launches the QR scanner activity.
    * @param view
    */
-  public void TakePhoto(View view) {
+  public void TakeQrCodePhoto(View view) {
     Intent qrIntent = new Intent(this, QrReaderActivity.class);
     qrIntent.putExtra(QrReaderActivity.EXTRA_QR_CODE, qrCode);
     // startActivityForResult(qrIntent, AppConstants.REQUEST_TAKE_QR_PHOTO);
     startActivity(qrIntent);
+  }
+
+  /**
+   * Launches the image labelling activity.
+   * @param view
+   */
+  public void TakeLabelledImagePhoto(View view) {
+    Intent imageIntent = new Intent(this, ImageReaderActivity.class);
+    // qrIntent.putExtra(QrReaderActivity.EXTRA_QR_CODE, qrCode);
+    // startActivityForResult(qrIntent, AppConstants.REQUEST_TAKE_QR_PHOTO);
+    startActivity(imageIntent);
   }
 
   @Override
