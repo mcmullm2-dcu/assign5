@@ -36,6 +36,7 @@ public class AppConstants {
   public static final String PREFS_STEP_COUNT = PREFS_BASE + ".Step.Count";
   public static final String PREFS_STEP_NAME = PREFS_BASE + ".Step.Name";
   public static final String PREFS_STEP_DESCRIPTION = PREFS_BASE + ".Step.Description";
+  public static final String PREFS_STEP_PHOTOID = PREFS_BASE + ".Step.PhotoId";
   public static final String PREFS_TAGS = PREFS_BASE + ".Tags";
 
   // ===============================================================================================

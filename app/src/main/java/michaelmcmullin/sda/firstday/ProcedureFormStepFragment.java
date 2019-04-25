@@ -76,6 +76,11 @@ public class ProcedureFormStepFragment extends Fragment
   private ListView stepsList;
 
   /**
+   * Stores the photo
+   */
+  private Bitmap photo;
+
+  /**
    * A required empty public constructor.
    */
   public ProcedureFormStepFragment() {
@@ -170,6 +175,9 @@ public class ProcedureFormStepFragment extends Fragment
     String name = editName.getText().toString();
     String description = editDescription.getText().toString();
     Step step = new Step(sequence, name, description);
+    step.generatePhotoId();
+    step.setPhoto(photo);
+    step.savePhoto();
     steps.add(step);
 
     editName.getText().clear();
@@ -224,14 +232,13 @@ public class ProcedureFormStepFragment extends Fragment
   }
 
   /**
-   * Passes a Bitmap instance to another entity.
+   * Stores the bitmap taken by the camera.
    *
    * @param bitmap The Bitmap instance to pass.
    */
   @Override
   public void PassBitmap(Bitmap bitmap) {
-    // TODO: store the image somewhere
-    Toast.makeText(getContext(), "Bitmap Returned: " + bitmap.getHeight(), Toast.LENGTH_SHORT).show();
-    previewImage.setImageBitmap(bitmap);
+    previewImage.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 96, 96, true));
+    photo = bitmap;
   }
 }
