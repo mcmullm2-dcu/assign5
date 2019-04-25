@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements ProcedureFilterGe
     searchView = (SearchView) findViewById(R.id.search_view);
     searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this, SearchResultsActivity.class)));
     searchView.setIconifiedByDefault(false);
+    searchView.clearFocus();
+    searchView.setFocusable(false);
 
     // Set up the 'add procedure' button
     FloatingActionButton AddProcedureButton = findViewById(R.id.procedure_add_button);

@@ -47,7 +47,8 @@
     </activity>
     <activity android:name=".SearchResultsActivity"
       android:launchMode="singleTop"
-      android:parentActivityName=".MainActivity">
+      android:parentActivityName=".MainActivity"
+      android:windowSoftInputMode="stateAlwaysHidden">
       <!-- Ref: https://developer.android.com/guide/topics/search/search-dialog -->
       <intent-filter>
         <action android:name="android.intent.action.SEARCH" />

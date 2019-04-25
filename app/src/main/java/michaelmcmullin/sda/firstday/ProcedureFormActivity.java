@@ -239,6 +239,7 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
                   String format = getString(R.string.message_procedure_added);
                   String message = String.format(format, workingProcedure.getName());
                   Toast.makeText(ProcedureFormActivity.this, message, Toast.LENGTH_SHORT).show();
+                  ClearData();
                   finish();
                 }
               });
@@ -262,6 +263,18 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
         tab.SetData();
       }
     }
+  }
+
+  /**
+   * Cleans up existing data so it doesn't interfere with the next procedure added
+   */
+  private void ClearData() {
+    workingProcedure = null;
+    workingSteps = null;
+    workingTags = null;
+    workingTabs = null;
+
+    prefs.edit().clear().apply();
   }
 
   /**

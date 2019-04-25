@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
-  android:layout_height="match_parent"
+  android:layout_height="wrap_content"
   android:padding="@dimen/spacing_med"
   tools:context=".SearchResultsActivity">
 
@@ -14,17 +13,11 @@
     android:layout_height="wrap_content"
     android:theme="@style/AppTheme.SectionHeading"/>
 
-  <ScrollView
-    android:id="@+id/scroll_view_results"
+  <fragment
+    android:id="@+id/procedures_list"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:layout_constraintTop_toBottomOf="@+id/search_results_title"
-    android:scrollbars="vertical">
-    <fragment
-      android:id="@+id/procedures_list"
-      android:name="michaelmcmullin.sda.firstday.ProcedureListFragment"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"/>
-  </ScrollView>
+    android:name="michaelmcmullin.sda.firstday.ProcedureListFragment"
+    app:layout_constraintTop_toBottomOf="@+id/search_results_title"/>
 
 </android.support.constraint.ConstraintLayout>

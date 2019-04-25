@@ -58,7 +58,7 @@
   <string name="message_no_image_labels">No image labels detected.</string>
   <string name="error_parse_date">Error parsing Date</string>
   <string name="error_failed_adding_procedure">Error Adding Procedure</string>
-  <string name="title_search_results">Search Results for \'%s\'</string>
+  <string name="title_search_results">Search Results: \'%s\'</string>
   <string name="no_results">No Results.</string>
   <string name="button_take_photo">Take Photo</string>
 
