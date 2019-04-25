@@ -53,6 +53,14 @@
     app:layout_constraintBottom_toBottomOf="@+id/button_procedure_form_add_step"
     app:layout_constraintEnd_toStartOf="@+id/image_view_procedure_form_step_photo"/>
 
+  <ImageView
+    android:id="@+id/image_view_preview"
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:layout_marginEnd="@dimen/spacing_med"
+    app:layout_constraintBottom_toBottomOf="@+id/button_procedure_form_add_step"
+    app:layout_constraintEnd_toStartOf="@+id/image_view_procedure_form_step_gallery"/>
+
   <View
     android:id="@+id/horizontal_rule"
     android:layout_width="fill_parent"

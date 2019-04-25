@@ -3,6 +3,7 @@ package michaelmcmullin.sda.firstday;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,8 +18,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
+import michaelmcmullin.sda.firstday.interfaces.BitmapSaver;
 import michaelmcmullin.sda.firstday.interfaces.GetterSetter;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureStorer;
 import michaelmcmullin.sda.firstday.models.Step;
@@ -29,7 +32,7 @@ import michaelmcmullin.sda.firstday.models.Step;
  * fragment must implement the {@link ProcedureStorer} interface.
  */
 public class ProcedureFormStepFragment extends Fragment
-    implements GetterSetter<List<Step>>, OnClickListener {
+    implements GetterSetter<List<Step>>, OnClickListener, BitmapSaver {
 
   /**
    * An interface implemented by the parent activity to allow this fragment to store and retrieve
@@ -61,6 +64,11 @@ public class ProcedureFormStepFragment extends Fragment
    * Reference to the 'Gallery' button.
    */
   private ImageView buttonGallery;
+
+  /**
+   * Reference to the 'Preview' image.
+   */
+  private ImageView previewImage;
 
   /**
    * Reference to the 'Steps' list view.
@@ -111,6 +119,7 @@ public class ProcedureFormStepFragment extends Fragment
     View v = inflater.inflate(R.layout.fragment_procedure_form_step, container, false);
     editName = v.findViewById(R.id.edit_text_procedure_form_step_name);
     editDescription = v.findViewById(R.id.edit_text_procedure_form_step_description);
+    previewImage = v.findViewById(R.id.image_view_preview);
 
     // Set up the 'Add Step' button
     Button button = v.findViewById(R.id.button_procedure_form_add_step);
@@ -165,6 +174,7 @@ public class ProcedureFormStepFragment extends Fragment
 
     editName.getText().clear();
     editDescription.getText().clear();
+    previewImage.setImageResource(android.R.color.transparent);
   }
 
   /**
@@ -204,11 +214,24 @@ public class ProcedureFormStepFragment extends Fragment
         Log.i(AppConstants.TAG, "Taking Photo...");
         FragmentManager fm = getActivity().getSupportFragmentManager();
         TakePhotoDialogFragment photoDialog = TakePhotoDialogFragment.newInstance();
+        photoDialog.setTargetFragment(this, 0);
         photoDialog.show(fm, "dialog_take_photo");
         break;
       case R.id.image_view_procedure_form_step_gallery:
         Log.i(AppConstants.TAG, "Loading Gallery...");
         break;
     }
+  }
+
+  /**
+   * Passes a Bitmap instance to another entity.
+   *
+   * @param bitmap The Bitmap instance to pass.
+   */
+  @Override
+  public void PassBitmap(Bitmap bitmap) {
+    // TODO: store the image somewhere
+    Toast.makeText(getContext(), "Bitmap Returned: " + bitmap.getHeight(), Toast.LENGTH_SHORT).show();
+    previewImage.setImageBitmap(bitmap);
   }
 }

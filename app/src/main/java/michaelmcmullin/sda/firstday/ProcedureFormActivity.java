@@ -167,8 +167,10 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
     switch (item.getItemId()) {
       case R.id.save_procedure:
         SaveProcedure();
+        ClearData();
         return true;
     }
+    ClearData();
     return false;
   }
 
