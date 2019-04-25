@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import michaelmcmullin.sda.firstday.AppConstants;
+import michaelmcmullin.sda.firstday.interfaces.CloudImageService;
 
 /**
  * Class for storing information about a single {@link Step} in a {@link Procedure}.
@@ -21,6 +22,7 @@ public class Step {
   private String description;
   private String photoId;
   private Bitmap photo;
+  private CloudImageService cloud;
 
   /**
    * Firestore requires a constructor with no arguments.
@@ -94,7 +96,7 @@ public class Step {
   /**
    * Saves a local copy of the photo.
    */
-  public void savePhoto() {
+  public void saveLocalPhoto() {
     if (!hasPhoto()) {
       Log.w(AppConstants.TAG, "No photo available to save");
       return;
@@ -127,7 +129,7 @@ public class Step {
   /**
    * Loads the local copy of the photo
    */
-  public void loadPhoto() {
+  public void loadLocalPhoto() {
     if (photoId == null || photoId.isEmpty()) {
       return;
     }
@@ -154,7 +156,18 @@ public class Step {
       return null;
     }
 
-    return new File(dir, photoId + ".jpg");
+    File localFile = new File(dir, photoId + ".jpg");
+
+    if (!localFile.exists()) {
+      try {
+        localFile.createNewFile();
+      } catch (IOException ex) {
+        Log.w(AppConstants.TAG, "Problem creating local file: " + ex.getMessage());
+        return null;
+      }
+    }
+
+    return localFile;
   }
 
   /**
@@ -216,6 +229,86 @@ public class Step {
    */
   public String getPhotoId() {
     return photoId;
+  }
+
+  /**
+   * Gets the cloud storage referenced to this photo.
+   * @return Returns the cloud reference path to download this photo
+   */
+  public String getCloudPath() {
+    if (photoId == null || photoId.isEmpty()) {
+      return null;
+    }
+
+    return "firstday/steps/" + photoId + ".jpg";
+  }
+
+  /**
+   * Sets a service that can be used to store images to the cloud and retrieve
+   * them later.
+   * @param cloud A {@link CloudImageService} implementation to use for cloud
+   * operations.
+   */
+  public void setCloud(CloudImageService cloud) {
+    this.cloud = cloud;
+  }
+
+  /**
+   * Gets the current service being used to store and retrieve images from the
+   * cloud.
+   * @return Returns a {@link CloudImageService} implementation used by this
+   * step to save and retrieve photos.
+   */
+  public CloudImageService getCloud() {
+    return cloud;
+  }
+
+  /**
+   * Saves this instance's photo to cloud storage.
+   */
+  public void saveCloudPhoto() {
+    String path = getCloudPath();
+    if (path == null) {
+      Log.w(AppConstants.TAG, "Can't get a path to cloud storage.");
+      return;
+    }
+
+    if (cloud == null) {
+      Log.w(AppConstants.TAG, "No cloud service defined.");
+      return;
+    }
+
+    if (photo != null) {
+      cloud.UploadBitmap(path, photo, CompressFormat.JPEG);
+      return;
+    }
+
+    File localPhotoFile = getLocalPhotoFile();
+    if (localPhotoFile != null) {
+      cloud.UploadFile(path, localPhotoFile);
+      return;
+    }
+
+    Log.w(AppConstants.TAG, "Couldn't find a bitmap or local file to upload.");
+  }
+
+  /**
+   * Downloads this instance's photo from cloud storage.
+   */
+  public void loadCloudPhoto() {
+    String path = getCloudPath();
+    if (path == null) {
+      Log.w(AppConstants.TAG, "Can't get a path to cloud storage.");
+      return;
+    }
+
+    if (cloud == null) {
+      Log.w(AppConstants.TAG, "No cloud service defined.");
+      return;
+    }
+
+    cloud.DownloadImage(path, getLocalPhotoFile());
+    loadLocalPhoto();
   }
 
   /**

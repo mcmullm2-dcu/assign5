@@ -1,14 +1,10 @@
 package michaelmcmullin.sda.firstday;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 import michaelmcmullin.sda.firstday.interfaces.BitmapSaver;
@@ -177,7 +172,7 @@ public class ProcedureFormStepFragment extends Fragment
     Step step = new Step(sequence, name, description);
     step.generatePhotoId();
     step.setPhoto(photo);
-    step.savePhoto();
+    step.saveLocalPhoto();
     steps.add(step);
 
     editName.getText().clear();
@@ -238,7 +233,7 @@ public class ProcedureFormStepFragment extends Fragment
    */
   @Override
   public void PassBitmap(Bitmap bitmap) {
-    previewImage.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 96, 96, true));
+    previewImage.setImageBitmap(Step.resize(bitmap, 96, 96));
     photo = bitmap;
   }
 }

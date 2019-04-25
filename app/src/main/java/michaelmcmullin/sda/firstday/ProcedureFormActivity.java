@@ -167,7 +167,6 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
     switch (item.getItemId()) {
       case R.id.save_procedure:
         SaveProcedure();
-        ClearData();
         return true;
     }
     ClearData();
@@ -183,30 +182,6 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
     GetSteps();
     GetTags();
 
-    /*
-    if (workingProcedure != null) {
-      Log.i(AppConstants.TAG, "Working Procedure:");
-      Log.i(AppConstants.TAG, workingProcedure.getName());
-      Log.i(AppConstants.TAG, workingProcedure.getDescription());
-      Log.i(AppConstants.TAG, workingProcedure.getOwner().getName());
-      Log.i(AppConstants.TAG, "Owner ID: " + workingProcedure.getOwner().getId());
-      Log.i(AppConstants.TAG, "Draft? " + Boolean.toString(workingProcedure.isDraft()));
-      Log.i(AppConstants.TAG, "Public? " + Boolean.toString(workingProcedure.isPublic()));
-    }
-
-    if (workingSteps != null && workingSteps.size() > 0) {
-      Log.i(AppConstants.TAG, "Working Steps:");
-      Log.i(AppConstants.TAG, "Count: " + workingSteps.size());
-      Log.i(AppConstants.TAG, workingSteps.get(0).getName());
-      Log.i(AppConstants.TAG, workingSteps.get(0).getDescription());
-    }
-
-    if (workingTags != null) {
-      for(String s : workingTags) {
-        Log.i(AppConstants.TAG, s);
-      }
-    }
-    */
     if (workingProcedure != null && workingProcedure.isNew()) {
       Map<String, Object> newProcedure = new HashMap<>();
       newProcedure.put("name", workingProcedure.getName());
@@ -227,12 +202,20 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
               Log.i(AppConstants.TAG, "Procedure added, attempting to write steps.");
               WriteBatch batch = db.batch();
               for(Step step : workingSteps) {
+                // Add a step to Firestore batch.
                 DocumentReference doc = stepCollection.document();
                 Map<String, Object> newStep = new HashMap<>();
                 newStep.put("sequence", step.getSequence());
                 newStep.put("name", step.getName());
                 newStep.put("description", step.getDescription());
                 newStep.put("procedure_id", newId);
+                if (step.hasPhoto()) {
+                  newStep.put("photo_id", step.getPhotoId());
+
+                  // Save the image to Firebase Storage
+                  step.setCloud(new FirebaseImageStorage());
+                  step.saveCloudPhoto();
+                }
                 batch.set(doc, newStep);
               }
               batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -387,7 +370,7 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
           String photoId = prefs.getString(AppConstants.PREFS_STEP_PHOTOID + "." + i, "");
           Step step = new Step(sequence, name, description);
           step.setPhotoId(photoId);
-          step.loadPhoto();
+          step.loadLocalPhoto();
           steps.add(step);
         }
       }
