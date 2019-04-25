@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:orientation="horizontal"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content">
+
+  <RelativeLayout
+    android:id="@+id/padding_left"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_weight="0.15"/>
+
+  <RelativeLayout
+    android:id="@+id/container"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_weight="0.7">
+
+    <LinearLayout
+      android:id="@+id/content"
+      android:orientation="vertical"
+      android:padding="@dimen/spacing_med"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+      <EditText
+        android:id="@+id/edit_text_comment"
+        android:hint="@string/hint_add_comment"
+        android:layout_marginBottom="@dimen/spacing_med"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+      <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+          android:id="@+id/button_cancel"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="@dimen/spacing_small"
+          android:text="@string/button_cancel"/>
+        <Button
+          android:id="@+id/button_dialog_add_comment"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/button_add_comment"/>
+      </LinearLayout>
+    </LinearLayout>
+  </RelativeLayout>
+
+  <RelativeLayout
+    android:id="@+id/padding_right"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_weight="0.15"/>
+
+</LinearLayout>

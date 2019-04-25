@@ -12,6 +12,8 @@
   <string name="title_steps">Steps:</string>
   <string name="title_comments">Comments (newest first):</string>
   <string name="comment_owner_format">%s (Owner)</string>
+  <string name="hint_add_comment">Write a comment</string>
+  <string name="button_add_comment">Add Comment</string>
   <string name="modal_dismiss_text">Dismiss</string>
   <string-array name="procedure_form_tabs">
     <item>Details</item>

@@ -2,6 +2,7 @@ package michaelmcmullin.sda.firstday.models;
 
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.FieldValue;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -26,7 +27,7 @@ public class Comment {
    * https://stackoverflow.com/a/33111791/5233918
    * Author: Lyla (https://stackoverflow.com/users/497605/lyla)
    */
-  private HashMap<String, Object> created;
+  private Date created;
 
   /**
    * The content of this {@link Comment} instance.
@@ -44,7 +45,7 @@ public class Comment {
    * @param created The Timestamp indicating when this {@link Comment} instance was created.
    * @param message The content of this {@link Comment} instance.
    */
-  public Comment(User author, HashMap<String, Object> created, String message) {
+  public Comment(User author, Date created, String message) {
     this.author = author;
     this.created = created;
     this.message = message;
@@ -78,23 +79,11 @@ public class Comment {
    * Gets the timestamp indicating when this {@link Comment} instance was first created.
    * @return A timestamp indicating when this {@link Comment} instance was created.
    */
-  public HashMap<String, Object> getCreated() {
+  public Date getCreated() {
     if (created != null) {
       return created;
     }
-    // Otherwise make a new object set to FieldValue.serverTimestamp()
-    HashMap<String, Object> dateCreatedObj = new HashMap<String, Object>();
-    dateCreatedObj.put("created", FieldValue.serverTimestamp());
-    return dateCreatedObj;
-  }
-
-  /**
-   * Gets this {@link Comment} instance's timestamp represented as a <code>long</code> value.
-   * @return Returns the timestamp indicating when this {@link Comment} was created.
-   */
-  @Exclude
-  public long getCreatedLong() {
-    return (long)created.get("created");
+    return new Date();
   }
 
   /**

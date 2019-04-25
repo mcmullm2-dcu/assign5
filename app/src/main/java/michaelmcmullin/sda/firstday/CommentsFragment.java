@@ -6,10 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.CollectionReference;
@@ -56,6 +59,11 @@ public class CommentsFragment extends Fragment {
   private CollectionReference userCollection = db.collection("user");
 
   /**
+   * A reference to the 'New Comment' button
+   */
+  private ImageView addCommentButton;
+
+  /**
    * A required empty public constructor.
    */
   public CommentsFragment() {
@@ -76,6 +84,15 @@ public class CommentsFragment extends Fragment {
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
     View v = inflater.inflate(R.layout.fragment_procedure_comments, container, false);
+    addCommentButton = v.findViewById(R.id.button_add_comment);
+    addCommentButton.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        AddCommentDialogFragment commentDialog = AddCommentDialogFragment.newInstance(procedureIdGetter.getProcedureId());
+        commentDialog.show(fm, "dialog_add_comment");
+      }
+    });
     return v;
   }
 
@@ -108,6 +125,13 @@ public class CommentsFragment extends Fragment {
   @Override
   public void onStart() {
     super.onStart();
+    loadComments();
+  }
+
+  /**
+   * Loads the comments to the screen
+   */
+  private void loadComments() {
     final ArrayList<Comment> comments = new ArrayList<>();
 
     // Populate comments from Firestore
@@ -126,6 +150,7 @@ public class CommentsFragment extends Fragment {
         }
 
         if (queryDocumentSnapshots != null) {
+          comments.clear();
           for (DocumentSnapshot comment : queryDocumentSnapshots) {
             String message = comment.getString("message");
             String authorName = comment.getString("author_name");
@@ -149,5 +174,6 @@ public class CommentsFragment extends Fragment {
     if (listView != null) {
       listView.setAdapter(adapter);
     }
+
   }
 }
