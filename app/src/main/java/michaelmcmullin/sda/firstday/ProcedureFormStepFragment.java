@@ -178,6 +178,7 @@ public class ProcedureFormStepFragment extends Fragment
     editName.getText().clear();
     editDescription.getText().clear();
     previewImage.setImageResource(android.R.color.transparent);
+    photo = null;
   }
 
   /**
