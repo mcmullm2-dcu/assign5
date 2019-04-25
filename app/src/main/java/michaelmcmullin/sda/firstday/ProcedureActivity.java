@@ -2,12 +2,12 @@ package michaelmcmullin.sda.firstday;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -15,12 +15,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import java.util.ArrayList;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureIdGetter;
-import michaelmcmullin.sda.firstday.models.Step;
 import michaelmcmullin.sda.firstday.utils.CurrentUser;
 
 public class ProcedureActivity extends AppCompatActivity implements ProcedureIdGetter {
@@ -111,7 +106,7 @@ public class ProcedureActivity extends AppCompatActivity implements ProcedureIdG
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     // Inflate the menu; this adds items to the action bar if it is present.
-    getMenuInflater().inflate(R.menu.main_menu, menu);
+    getMenuInflater().inflate(R.menu.procedure_menu, menu);
     return true;
   }
 
@@ -124,6 +119,12 @@ public class ProcedureActivity extends AppCompatActivity implements ProcedureIdG
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
+      case R.id.menuitem_share:
+        // TODO: find the Procedure and Steps and pass them to the dialog.
+        FragmentManager fm = getSupportFragmentManager();
+        ProcedureShareDialogFragment shareDialog = ProcedureShareDialogFragment.newInstance(null, null);
+        shareDialog.show(fm, "dialog_share_procedure");
+        return true;
       case R.id.menuitem_log_out:
         CurrentUser user = new CurrentUser();
         user.logOut(this);
