@@ -102,7 +102,7 @@ public class Step {
       return;
     }
 
-    if (photoId == null || photoId.isEmpty()) {
+    if (!hasPhotoId()) {
       generatePhotoId();
     }
 
@@ -130,7 +130,7 @@ public class Step {
    * Loads the local copy of the photo
    */
   public void loadLocalPhoto() {
-    if (photoId == null || photoId.isEmpty()) {
+    if (!hasPhotoId()) {
       return;
     }
 
@@ -148,7 +148,7 @@ public class Step {
    * @return Returns the file where the photo is stored.
    */
   public File getLocalPhotoFile() {
-    if (photoId == null || photoId.isEmpty()) {
+    if (!hasPhotoId()) {
       return null;
     }
     File dir = getLocalDirectory();
@@ -204,6 +204,15 @@ public class Step {
    */
   public boolean hasPhoto() {
     return photo != null;
+  }
+
+  /**
+   * Indicates whether this step has a photo ID available.
+   * @return Returns <code>true</code> if there is a photo
+   * ID assigned to this step.
+   */
+  public boolean hasPhotoId() {
+    return !(photoId == null || photoId.isEmpty());
   }
 
   /**

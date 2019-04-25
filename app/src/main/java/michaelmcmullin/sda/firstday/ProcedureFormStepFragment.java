@@ -211,7 +211,7 @@ public class ProcedureFormStepFragment extends Fragment
       case R.id.button_procedure_form_add_step:
         SaveStep();
         // Create a StepAdapter class and tie it in with the steps list.
-        final StepAdapter adapter = new StepAdapter(getActivity(), (ArrayList<Step>)steps);
+        final StepAdapter adapter = new StepAdapter(getActivity(), (ArrayList<Step>)steps, true);
         stepsList.setAdapter(adapter);
         break;
       case R.id.image_view_procedure_form_step_photo:

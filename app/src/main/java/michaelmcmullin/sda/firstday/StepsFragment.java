@@ -48,6 +48,11 @@ public class StepsFragment extends Fragment {
   public static final String STEP_DESCRIPTION_KEY = "description";
 
   /**
+   * Name of the Step 'photo_id' field in Firestore.
+   */
+  public static final String STEP_PHOTOID_KEY = "photo_id";
+
+  /**
    * Holds a reference to the Firestore database instance.
    */
   private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -132,13 +137,15 @@ public class StepsFragment extends Fragment {
           for (DocumentSnapshot document : queryDocumentSnapshots) {
             String name = document.getString(STEP_NAME_KEY);
             String description = document.getString(STEP_DESCRIPTION_KEY);
+            String photoId = document.getString(STEP_PHOTOID_KEY);
             Step step = new Step(sequence++, name, description);
+            step.setPhotoId(photoId);
             steps.add(step);
           }
         }
 
         // Create a StepAdapter class and tie it in with the steps list.
-        final StepAdapter adapter = new StepAdapter(getActivity(), steps);
+        final StepAdapter adapter = new StepAdapter(getActivity(), steps, false);
         ListView listView = getView().findViewById(R.id.list_view_steps);
         listView.setAdapter(adapter);
       }
