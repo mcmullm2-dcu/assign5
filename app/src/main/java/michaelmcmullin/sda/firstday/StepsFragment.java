@@ -20,6 +20,7 @@ import com.google.firebase.firestore.Query.Direction;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureIdGetter;
+import michaelmcmullin.sda.firstday.interfaces.StepsSetter;
 import michaelmcmullin.sda.firstday.models.Step;
 
 /**
@@ -31,6 +32,11 @@ public class StepsFragment extends Fragment {
    * This is used to get the procedure Id from the calling activity.
    */
   private ProcedureIdGetter procedureIdGetter;
+
+  /**
+   * Used to pass a list of steps back to the calling activity.
+   */
+  private StepsSetter stepsSetter;
 
   /**
    * Name of the procedure ID field in other collections.
@@ -95,6 +101,7 @@ public class StepsFragment extends Fragment {
     super.onAttach(context);
     if (context instanceof ProcedureIdGetter) {
       procedureIdGetter = (ProcedureIdGetter)context;
+      stepsSetter = (StepsSetter)context;
     } else {
       throw new RuntimeException(context.toString() + " must implement ProcedureIdGetter");
     }
@@ -148,6 +155,11 @@ public class StepsFragment extends Fragment {
         final StepAdapter adapter = new StepAdapter(getActivity(), steps, false);
         ListView listView = getView().findViewById(R.id.list_view_steps);
         listView.setAdapter(adapter);
+
+        // Pass the steps back to the calling activity
+        if (stepsSetter != null) {
+          stepsSetter.SetSteps(steps);
+        }
       }
     });
   }

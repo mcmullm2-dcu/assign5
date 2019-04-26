@@ -19,6 +19,7 @@ import java.util.List;
 import michaelmcmullin.sda.firstday.interfaces.BitmapSaver;
 import michaelmcmullin.sda.firstday.interfaces.GetterSetter;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureStorer;
+import michaelmcmullin.sda.firstday.interfaces.StepsSetter;
 import michaelmcmullin.sda.firstday.models.Step;
 
 
@@ -34,6 +35,11 @@ public class ProcedureFormStepFragment extends Fragment
    * its details.
    */
   private ProcedureStorer procedureStorer;
+
+  /**
+   * An interface that allows a list of steps to be processed.
+   */
+  private StepsSetter stepsSetter;
 
   /**
    * A list of steps already entered.

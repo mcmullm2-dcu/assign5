@@ -51,6 +51,8 @@
   <string name="description_share">Enter the email address of the person you\'d like to share this procedure with.</string>
   <string name="button_share">Share Procedure</string>
   <string name="hint_share_procedure">Email Address</string>
+  <string name="subject_share_procedure">FirstDay shared a procedure with you</string>
+  <string name="message_procedure_shared_see_qr">If you download the FirstDay app, you can scan the attached QR code to access this procedure directly!</string>
   <string name="message_procedure_shared">Procedure "%s" successfully shared with %s</string>
   <string name="message_procedure_not_shared">Problem sharing procedure with %s</string>
   <string name="message_procedure_not_found">Sorry, can\'t find that procedure.</string>

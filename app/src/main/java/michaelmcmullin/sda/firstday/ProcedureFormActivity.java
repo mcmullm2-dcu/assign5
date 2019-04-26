@@ -128,7 +128,7 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
     // primary sections of the activity.
     final ViewPager pager = findViewById(R.id.pager);
     final ProcedureFormAdapter formAdapter = new ProcedureFormAdapter(getSupportFragmentManager(),
-        tabTitles, this, prefs);
+        tabTitles, this, null, prefs);
 
     pager.setAdapter(formAdapter);
 

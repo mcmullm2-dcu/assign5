@@ -15,10 +15,16 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import java.util.List;
+import michaelmcmullin.sda.firstday.interfaces.ProcedureGetter;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureIdGetter;
+import michaelmcmullin.sda.firstday.interfaces.StepsSetter;
+import michaelmcmullin.sda.firstday.models.Procedure;
+import michaelmcmullin.sda.firstday.models.Step;
 import michaelmcmullin.sda.firstday.utils.CurrentUser;
 
-public class ProcedureActivity extends AppCompatActivity implements ProcedureIdGetter {
+public class ProcedureActivity extends AppCompatActivity implements ProcedureIdGetter,
+    ProcedureGetter, StepsSetter {
 
   /**
    * Used as an Intent Extra tag to pass the procedure ID to this activity.
@@ -71,6 +77,11 @@ public class ProcedureActivity extends AppCompatActivity implements ProcedureIdG
   private String procedureId;
 
   /**
+   * A list of steps associated with this procedure.
+   */
+  private List<Step> steps;
+
+  /**
    * Called when {@link ProcedureActivity} is started, initialising the Activity and inflating the
    * appropriate XML layout.
    *
@@ -120,9 +131,9 @@ public class ProcedureActivity extends AppCompatActivity implements ProcedureIdG
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case R.id.menuitem_share:
-        // TODO: find the Procedure and Steps and pass them to the dialog.
+        // Find the Procedure and Steps and pass them to the dialog.
         FragmentManager fm = getSupportFragmentManager();
-        ProcedureShareDialogFragment shareDialog = ProcedureShareDialogFragment.newInstance(null, null);
+        ProcedureShareDialogFragment shareDialog = ProcedureShareDialogFragment.newInstance(getProcedure(), steps);
         shareDialog.show(fm, "dialog_share_procedure");
         return true;
       case R.id.menuitem_log_out:
@@ -179,5 +190,45 @@ public class ProcedureActivity extends AppCompatActivity implements ProcedureIdG
       procedureId = intent.getStringExtra(EXTRA_ID);
     }
     return procedureId;
+  }
+
+  /**
+   * Gets a Procedure associated with an implementing interface.
+   *
+   * @return Returns a {@link Procedure} associated with the calling instance.
+   */
+  @Override
+  public Procedure getProcedure() {
+    String procedureId = getProcedureId();
+    String name = null;
+    String description = null;
+
+    if (procedureHeading != null) {
+      name = procedureHeading.getText().toString();
+    }
+
+    if (procedureDescription != null) {
+      description = procedureDescription.getText().toString();
+    }
+
+    if (procedureId == null || name == null || description == null) {
+      return null;
+    }
+
+    Procedure p = new Procedure();
+    p = new Procedure(name, description);
+    p.setId(procedureId);
+
+    return p;
+  }
+
+  /**
+   * Set a list of steps for further processing.
+   *
+   * @param steps The list of steps to process.
+   */
+  @Override
+  public void SetSteps(List<Step> steps) {
+    this.steps = steps;
   }
 }

@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureStorer;
+import michaelmcmullin.sda.firstday.interfaces.StepsSetter;
 
 public class ProcedureFormAdapter extends FragmentStatePagerAdapter {
 
@@ -45,17 +46,23 @@ public class ProcedureFormAdapter extends FragmentStatePagerAdapter {
   ProcedureStorer procedureStorer;
 
   /**
+   * An interface implemented by the parent activity to allow steps to be passed back to it.
+   */
+  StepsSetter stepsSetter;
+
+  /**
    * Creates an instance of the {@link ProcedureFormAdapter} class.
    * @param fm The FragmentManager that interacts with fragments associated with this adapter's
    * calling activity.
    * @param titles An array of the titles of each tab.
    * @param prefs This app's shared preferences
    */
-  public ProcedureFormAdapter(FragmentManager fm, String[] titles, ProcedureStorer storer, SharedPreferences prefs) {
+  public ProcedureFormAdapter(FragmentManager fm, String[] titles, ProcedureStorer storer, StepsSetter stepsSetter, SharedPreferences prefs) {
     super(fm);
     this.numOfTabs = titles.length;
     tabTitles = titles;
     this.procedureStorer = storer;
+    this.stepsSetter = stepsSetter;
     this.prefs = prefs;
   }
 

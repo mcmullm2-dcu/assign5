@@ -25,6 +25,17 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
 
+    <!-- Set up a FileProvider -->
+    <provider
+      android:authorities="michaelmcmullin.sda.firstday.provider"
+      android:exported="false"
+      android:grantUriPermissions="true"
+      android:name="android.support.v4.content.FileProvider">
+      <meta-data
+        android:name="android.support.FILE_PROVIDER_PATHS"
+        android:resource="@xml/provider_paths"/>
+    </provider>
+
     <!--
      App uses Firebase ML-Kit to recognise QR codes. This requires the appropriate Machine
      Learning models to be installed, 'barcode' in this case. By default, the model will be
