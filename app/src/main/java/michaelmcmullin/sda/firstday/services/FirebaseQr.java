@@ -13,7 +13,8 @@ import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOption
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import java.util.List;
 import android.support.v4.util.Consumer;
-import michaelmcmullin.sda.firstday.interfaces.QrService;
+import michaelmcmullin.sda.firstday.interfaces.services.QrService;
+import net.glxn.qrgen.android.QRCode;
 
 public class FirebaseQr implements QrService {
 
@@ -53,13 +54,12 @@ public class FirebaseQr implements QrService {
   }
 
   /**
-   * Converts a String into a QR code image, returning its Uri.
-   *
+   * Converts a String into a QR code Bitmap image.
    * @param code The String to convert to a QR code.
-   * @return The Uri of the generated QR code.
+   * @return Returns a Bitmap of the generated QR code.
    */
   @Override
-  public Uri GenerateQrCode(String code) {
-    return null;
+  public Bitmap GenerateQrCode(String code) {
+    return QRCode.from(code).bitmap();
   }
 }

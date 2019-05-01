@@ -20,6 +20,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import michaelmcmullin.sda.firstday.interfaces.services.QrService;
+import michaelmcmullin.sda.firstday.services.Services;
 import michaelmcmullin.sda.firstday.utils.AppConstants;
 import michaelmcmullin.sda.firstday.R;
 import michaelmcmullin.sda.firstday.models.Procedure;
@@ -29,6 +31,11 @@ import michaelmcmullin.sda.firstday.models.Step;
  * Dialog to enter a user's email address to share this procedure with.
  */
 public class ProcedureShareDialogFragment extends DialogFragment {
+  /**
+   * The service to use for QR codes
+   */
+  private QrService qr = Services.QrService;
+
   /**
    * The procedure to share.
    */
@@ -79,12 +86,16 @@ public class ProcedureShareDialogFragment extends DialogFragment {
         email.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.subject_share_procedure));
         email.putExtra(Intent.EXTRA_TEXT, emailText());
 
-        Bitmap attachment = BitmapFactory.decodeResource(getResources(), R.drawable.qrcode);
+        // Create a QR code to include in the email.
+        if (procedure != null) {
+          Bitmap attachment = qr.GenerateQrCode(procedure
+              .getId()); // = BitmapFactory.decodeResource(getResources(), R.drawable.qrcode);
 
-        // Converting a Bitmap to URI
-        Uri imageUri = saveImage(attachment);
-        email.putExtra(Intent.EXTRA_STREAM, imageUri);
-        email.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+          // Convert the Bitmap to a URI
+          Uri imageUri = saveImage(attachment);
+          email.putExtra(Intent.EXTRA_STREAM, imageUri);
+          email.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
 
         if (email.resolveActivity(getContext().getPackageManager()) != null) {
           startActivity(email);

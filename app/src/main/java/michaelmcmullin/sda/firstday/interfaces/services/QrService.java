@@ -1,4 +1,4 @@
-package michaelmcmullin.sda.firstday.interfaces;
+package michaelmcmullin.sda.firstday.interfaces.services;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -18,9 +18,9 @@ public interface QrService {
   void ReadQrCode(Bitmap image, final Consumer<String> consumer, final String error);
 
   /**
-   * Converts a String into a QR code image, returning its Uri.
+   * Converts a String into a QR code Bitmap image.
    * @param code The String to convert to a QR code.
-   * @return The Uri of the generated QR code.
+   * @return Returns a Bitmap of the generated QR code.
    */
-  Uri GenerateQrCode(String code);
+  Bitmap GenerateQrCode(String code);
 }

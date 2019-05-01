@@ -133,8 +133,15 @@ public class MainActivity extends AppCompatActivity implements ProcedureFilterGe
     startActivity(imageIntent);
   }
 
+  /**
+   * Responds to another activity returning control back to {@link MainActivity}.
+   * @param requestCode Identifies where the result is coming from.
+   * @param resultCode The result returned by the child activity.
+   * @param intent Additional data that may be returned from the child activity as 'extras'.
+   */
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    /*
     if (requestCode == AppConstants.REQUEST_TAKE_QR_PHOTO) {
       if (resultCode == MainActivity.RESULT_OK) {
         qrCode = intent.getStringExtra(QrReaderActivity.EXTRA_QR_CODE);
@@ -146,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements ProcedureFilterGe
           Toast.makeText(this, getString(R.string.message_no_qr_code), Toast.LENGTH_LONG).show();
         }
       }
-    }
+    }*/
   }
 
   /**

@@ -16,7 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import michaelmcmullin.sda.firstday.interfaces.CloudImageService;
+import michaelmcmullin.sda.firstday.interfaces.services.CloudImageService;
 import michaelmcmullin.sda.firstday.utils.AppConstants;
 
 /**

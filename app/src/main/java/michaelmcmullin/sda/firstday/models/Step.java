@@ -10,7 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import michaelmcmullin.sda.firstday.utils.AppConstants;
-import michaelmcmullin.sda.firstday.interfaces.CloudImageService;
+import michaelmcmullin.sda.firstday.interfaces.services.CloudImageService;
 
 /**
  * Class for storing information about a single {@link Step} in a {@link Procedure}.
