@@ -23,8 +23,10 @@ import michaelmcmullin.sda.firstday.utils.ProcedureFilter;
  * Interface used for classes that need to filter a list of procedures.
  */
 public interface ProcedureFilterGetter {
+
   /**
    * Gets the filter to apply to procedure searches.
+   *
    * @return Returns the filter to apply to procedure searches.
    */
   ProcedureFilter getFilter();

@@ -64,10 +64,12 @@ public class Procedure {
   /**
    * Firestore requires a constructor with no arguments.
    */
-  public Procedure() {}
+  public Procedure() {
+  }
 
   /**
    * Creates a new instance of {@link Procedure} setting all the main fields.
+   *
    * @param name The name of this {@link Procedure} instance.
    * @param description The description or summary of this {@link Procedure} instance.
    * @param owner The {@link User} who owns this {@link Procedure} instance.
@@ -75,7 +77,8 @@ public class Procedure {
    * @param is_public Indicates if this {@link Procedure} instance is publicly available.
    * @param is_draft Indicates if this {@link Procedure} instance is a draft copy.
    */
-  public Procedure(String name, String description, User owner, Date created, boolean is_public, boolean is_draft) {
+  public Procedure(String name, String description, User owner, Date created, boolean is_public,
+      boolean is_draft) {
     this.name = name;
     this.description = description;
     this.owner = owner;
@@ -86,6 +89,7 @@ public class Procedure {
 
   /**
    * Creates a new instance of {@link Procedure} setting the name and description.
+   *
    * @param name The name of this {@link Procedure} instance.
    * @param description The description or summary of this {@link Procedure} instance.
    */
@@ -96,6 +100,7 @@ public class Procedure {
 
   /**
    * Gets the unique ID of this {@link Procedure} instance.
+   *
    * @return Returns the unique ID of this {@link Procedure} instance.
    */
   public String getId() {
@@ -104,6 +109,7 @@ public class Procedure {
 
   /**
    * Sets the unique ID of this {@link Procedure} instance.
+   *
    * @param id The unique ID to assign to this {@link Procedure} instance.
    */
   public void setId(String id) {
@@ -112,6 +118,7 @@ public class Procedure {
 
   /**
    * Gets the name of this {@link Procedure} instance.
+   *
    * @return Returns the name of this {@link Procedure} instance.
    */
   public String getName() {
@@ -120,6 +127,7 @@ public class Procedure {
 
   /**
    * Gets the description, or summary, of this {@link Procedure} instance.
+   *
    * @return Returns the description of this {@link Procedure} instance.
    */
   public String getDescription() {
@@ -128,6 +136,7 @@ public class Procedure {
 
   /**
    * Gets the {@link User} who owns this {@link Procedure} instance.
+   *
    * @return Returns the {@link User} who owns this {@link Procedure} instance.
    */
   public User getOwner() {
@@ -136,6 +145,7 @@ public class Procedure {
 
   /**
    * Gets the timestamp indicating when this {@link Procedure} instance was first created.
+   *
    * @return A timestamp indicating when this {@link Procedure} instance was created.
    */
   @ServerTimestamp
@@ -145,7 +155,9 @@ public class Procedure {
 
   /**
    * Gets a value indicating if this {@link Procedure} instance is publicly available.
-   * @return Returns <code>true</code> if this {@link Procedure} instance is available to the public.
+   *
+   * @return Returns <code>true</code> if this {@link Procedure} instance is available to the
+   *     public.
    */
   public boolean isPublic() {
     return is_public;
@@ -153,6 +165,7 @@ public class Procedure {
 
   /**
    * Gets a value indicating if this {@link Procedure} instance is a draft.
+   *
    * @return Returns <code>true</code> if this {@link Procedure} instance is a draft.
    */
   public boolean isDraft() {
@@ -161,6 +174,7 @@ public class Procedure {
 
   /**
    * Indicates if this is a new procedure (i.e. it has no ID set).
+   *
    * @return Returns <code>true</code> if this {@link Procedure} instance is a new procedure.
    */
   public boolean isNew() {

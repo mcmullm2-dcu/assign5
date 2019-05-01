@@ -27,7 +27,8 @@ public interface StepsGetter {
 
   /**
    * Gets a list of {@link Step} objects related to this instance.
+   *
    * @return Returns a list of {@link Step} objects.
    */
-  public List<Step> getSteps();
+  List<Step> getSteps();
 }

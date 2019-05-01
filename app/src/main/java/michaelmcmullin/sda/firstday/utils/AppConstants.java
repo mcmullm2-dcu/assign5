@@ -41,7 +41,7 @@ public class AppConstants {
   // Shared Preference Keys
   // ===============================================================================================
 
-  public static final String PREFS_BASE = "michaelmcmullin.sda.firstday";
+  private static final String PREFS_BASE = "michaelmcmullin.sda.firstday";
 
   public static final String PREFS_PROCEDURE_NAME = PREFS_BASE + ".Procedure.Name";
   public static final String PREFS_PROCEDURE_DESCRIPTION = PREFS_BASE + ".Procedure.Description";
@@ -51,7 +51,7 @@ public class AppConstants {
   public static final String PREFS_STEP_COUNT = PREFS_BASE + ".Step.Count";
   public static final String PREFS_STEP_NAME = PREFS_BASE + ".Step.Name";
   public static final String PREFS_STEP_DESCRIPTION = PREFS_BASE + ".Step.Description";
-  public static final String PREFS_STEP_PHOTOID = PREFS_BASE + ".Step.PhotoId";
+  public static final String PREFS_STEP_PHOTO_ID = PREFS_BASE + ".Step.PhotoId";
   public static final String PREFS_TAGS = PREFS_BASE + ".Tags";
 
   // ===============================================================================================

@@ -31,7 +31,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -354,7 +353,7 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
         Step current = steps.get(i);
         editor.putString(AppConstants.PREFS_STEP_NAME + "." + i, current.getName());
         editor.putString(AppConstants.PREFS_STEP_DESCRIPTION + "." + i, current.getDescription());
-        editor.putString(AppConstants.PREFS_STEP_PHOTOID + "." + i, current.getPhotoId());
+        editor.putString(AppConstants.PREFS_STEP_PHOTO_ID + "." + i, current.getPhotoId());
       }
     } else {
       editor.putInt(AppConstants.PREFS_STEP_COUNT, 0);
@@ -384,7 +383,7 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
           sequence = i + 1;
           String name = prefs.getString(AppConstants.PREFS_STEP_NAME + "." + i, "");
           String description = prefs.getString(AppConstants.PREFS_STEP_DESCRIPTION + "." + i, "");
-          String photoId = prefs.getString(AppConstants.PREFS_STEP_PHOTOID + "." + i, "");
+          String photoId = prefs.getString(AppConstants.PREFS_STEP_PHOTO_ID + "." + i, "");
           Step step = new Step(sequence, name, description);
           step.setPhotoId(photoId);
           step.loadLocalPhoto();

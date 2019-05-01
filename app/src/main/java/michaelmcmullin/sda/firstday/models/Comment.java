@@ -38,8 +38,7 @@ public class Comment {
    * The timestamp when this {@link Comment} instance was created.
    *
    * The technique for handling Firebase Timestamps is based on code found on StackOverflow:
-   * https://stackoverflow.com/a/33111791/5233918
-   * Author: Lyla (https://stackoverflow.com/users/497605/lyla)
+   * https://stackoverflow.com/a/33111791/5233918 Author: Lyla (https://stackoverflow.com/users/497605/lyla)
    */
   private Date created;
 
@@ -51,10 +50,12 @@ public class Comment {
   /**
    * Firestore requires a constructor with no arguments.
    */
-  public Comment() {}
+  public Comment() {
+  }
 
   /**
    * Creates an instance of {@link Comment} populating its fields.
+   *
    * @param author The {@link User} who created this {@link Comment} instance.
    * @param created The Timestamp indicating when this {@link Comment} instance was created.
    * @param message The content of this {@link Comment} instance.
@@ -67,6 +68,7 @@ public class Comment {
 
   /**
    * Gets the unique ID of this {@link Comment} instance.
+   *
    * @return Returns the unique ID of this {@link Comment} instance.
    */
   public String getId() {
@@ -75,6 +77,7 @@ public class Comment {
 
   /**
    * Sets the unique ID of this {@link Comment} instance.
+   *
    * @param id The unique ID of this {@link Comment} instance.
    */
   public void setId(String id) {
@@ -83,6 +86,7 @@ public class Comment {
 
   /**
    * Gets the author of this {@link Comment} instance.
+   *
    * @return Returns the {@link User} who created this {@link Comment} instance.
    */
   public User getAuthor() {
@@ -91,6 +95,7 @@ public class Comment {
 
   /**
    * Gets the timestamp indicating when this {@link Comment} instance was first created.
+   *
    * @return A timestamp indicating when this {@link Comment} instance was created.
    */
   public Date getCreated() {
@@ -102,6 +107,7 @@ public class Comment {
 
   /**
    * The content of this {@link Comment} instance text.
+   *
    * @return The text of this {@link Comment} instance.
    */
   public String getMessage() {

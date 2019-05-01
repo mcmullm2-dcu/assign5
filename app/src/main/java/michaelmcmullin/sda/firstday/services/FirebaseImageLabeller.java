@@ -19,7 +19,7 @@ import michaelmcmullin.sda.firstday.utils.AppConstants;
  * An {@link ImageLabelService} implementation that uses Firebase's ML-Kit service to label the
  * content of a Bitmap image.
  */
-public class FirebaseImageLabeller implements ImageLabelService {
+class FirebaseImageLabeller implements ImageLabelService {
 
   /**
    * Attempts to label any objects found in an image's content.

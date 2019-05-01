@@ -44,10 +44,12 @@ public class User {
   /**
    * Firestore requires a constructor with no arguments.
    */
-  public User() {}
+  public User() {
+  }
 
   /**
    * Create a new instance of {@link User} supplying their name and email address.
+   *
    * @param name The display name for this {@link User} instance.
    * @param photo The <code>Uri</code> of the profile picture for this {@link User} instance.
    */
@@ -58,6 +60,7 @@ public class User {
 
   /**
    * Create a new instance of {@link User} from the current user.
+   *
    * @param current The currently logged in user.
    */
   public User(CurrentUser current) {
@@ -68,6 +71,7 @@ public class User {
 
   /**
    * Gets the unique {@link User} ID of this instance.
+   *
    * @return Returns the unique ID of this {@link User} instance.
    */
   public String getId() {
@@ -76,6 +80,7 @@ public class User {
 
   /**
    * Sets the unique {@link User} ID of this instance.
+   *
    * @param id The unique {@link User} ID to apply to this instance.
    */
   public void setId(String id) {
@@ -84,6 +89,7 @@ public class User {
 
   /**
    * Gets the display name of this {@link User} instance.
+   *
    * @return Returns the {@link User} instance's display name.
    */
   public String getName() {
@@ -92,6 +98,7 @@ public class User {
 
   /**
    * Gets the profile picture <code>Uri</code> of this {@link User} instance.
+   *
    * @return Returns the {@link User} instance's photo <code>Uri</code>.
    */
   public Uri getPhoto() {

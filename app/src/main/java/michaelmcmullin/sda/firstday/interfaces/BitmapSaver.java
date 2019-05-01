@@ -26,7 +26,8 @@ public interface BitmapSaver {
 
   /**
    * Passes a Bitmap instance to another entity.
+   *
    * @param bitmap The Bitmap instance to pass.
    */
-  public void PassBitmap(Bitmap bitmap);
+  void PassBitmap(Bitmap bitmap);
 }

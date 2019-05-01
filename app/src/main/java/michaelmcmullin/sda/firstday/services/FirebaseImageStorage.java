@@ -19,15 +19,10 @@ package michaelmcmullin.sda.firstday.services;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
-import android.support.annotation.NonNull;
 import android.util.Log;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.google.firebase.storage.UploadTask.TaskSnapshot;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,15 +32,15 @@ import michaelmcmullin.sda.firstday.interfaces.services.CloudImageService;
 import michaelmcmullin.sda.firstday.utils.AppConstants;
 
 /**
- * Service for uploading and downloading images to Firebase Storage.
- * Code adapted from https://firebase.google.com/docs/storage/android/upload-files
+ * Service for uploading and downloading images to Firebase Storage. Code adapted from
+ * https://firebase.google.com/docs/storage/android/upload-files
  */
 public class FirebaseImageStorage implements CloudImageService {
 
   /**
    * A reference to Firebase storage
    */
-  private FirebaseStorage storage = FirebaseStorage.getInstance();
+  private final FirebaseStorage storage = FirebaseStorage.getInstance();
 
   /**
    * Uploads a local file to the cloud service.
@@ -61,17 +56,9 @@ public class FirebaseImageStorage implements CloudImageService {
       StorageReference imageRef = storageRef.child(path);
 
       UploadTask task = imageRef.putStream(stream);
-      task.addOnFailureListener(new OnFailureListener() {
-        @Override
-        public void onFailure(@NonNull Exception e) {
-          Log.w(AppConstants.TAG, "Upload error: " + e.getMessage());
-        }
-      }).addOnSuccessListener(new OnSuccessListener<TaskSnapshot>() {
-        @Override
-        public void onSuccess(TaskSnapshot taskSnapshot) {
-          Log.i(AppConstants.TAG, "File uploaded ok!");
-        }
-      });
+      task.addOnFailureListener(e -> Log.w(AppConstants.TAG, "Upload error: " + e.getMessage()))
+          .addOnSuccessListener(
+              taskSnapshot -> Log.i(AppConstants.TAG, "File uploaded ok!"));
     } catch (FileNotFoundException ex) {
       Log.w(AppConstants.TAG, ex.getMessage());
     }
@@ -94,17 +81,9 @@ public class FirebaseImageStorage implements CloudImageService {
     byte[] data = stream.toByteArray();
 
     UploadTask task = imageRef.putBytes(data);
-    task.addOnFailureListener(new OnFailureListener() {
-      @Override
-      public void onFailure(@NonNull Exception e) {
-        Log.w(AppConstants.TAG, "Upload error: " + e.getMessage());
-      }
-    }).addOnSuccessListener(new OnSuccessListener<TaskSnapshot>() {
-      @Override
-      public void onSuccess(TaskSnapshot taskSnapshot) {
-        Log.i(AppConstants.TAG, "File uploaded ok!");
-      }
-    });
+    task.addOnFailureListener(e -> Log.w(AppConstants.TAG, "Upload error: " + e.getMessage()))
+        .addOnSuccessListener(
+            taskSnapshot -> Log.i(AppConstants.TAG, "File uploaded ok!"));
   }
 
   /**
@@ -112,7 +91,6 @@ public class FirebaseImageStorage implements CloudImageService {
    *
    * @param path The cloud path to download the file from.
    * @param local A reference to the local file to save the download to.
-   * @return Returns a File reference to the locally downloaded image.
    */
   @Override
   public void DownloadImage(String path, File local) {
@@ -120,16 +98,7 @@ public class FirebaseImageStorage implements CloudImageService {
     StorageReference imageRef = storageRef.child(path);
 
     imageRef.getFile(local).addOnSuccessListener(
-        new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-          @Override
-          public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-            Log.i(AppConstants.TAG, "File downloaded.");
-          }
-        }).addOnFailureListener(new OnFailureListener() {
-      @Override
-      public void onFailure(@NonNull Exception e) {
-        Log.w(AppConstants.TAG, "File failed to download.");
-      }
-    });
+        taskSnapshot -> Log.i(AppConstants.TAG, "File downloaded.")).addOnFailureListener(
+        e -> Log.w(AppConstants.TAG, "File failed to download."));
   }
 }
