@@ -38,7 +38,7 @@ public class QrReaderActivity extends CameraKitBase {
   /**
    * The service to use for QR codes
    */
-  private QrService qr = Services.QrService;
+  private final QrService qr = Services.QrService;
 
   /**
    * The tag to uniquely identify extra data used by this activity.
@@ -65,25 +65,24 @@ public class QrReaderActivity extends CameraKitBase {
    * @param v The button that was pressed to trigger this handler.
    */
   public void takePhoto(View v) {
-    GetCameraKitView().captureImage(new CameraKitView.ImageCallback() {
-      @Override
-      public void onImage(CameraKitView cameraKitView, final byte[] capturedImage) {
-        // Sets up the consumer method that responds to the return value from the QR reading service.
-        // This uses a Lambda expression which requires using Java 1.8 in the project. However, it's
-        // still compatible with Android API 23 (Source:
-        // https://developer.android.com/studio/write/java8-support).
-        // The general approach of providing a callback function allows this app to decouple the
-        // implementation details (in this case, of reading QR codes) to a separate service, while
-        // allowing the service to operate asynchronously, as many Firebase services do.
-        Consumer<String> consumer = (x) -> returnIntent(x);
+    Log.i(AppConstants.TAG, "Handler Called: " + v.toString());
 
-        // capturedImage contains the image from the CameraKitView. Use the app's QrService to read it.
-        qr.ReadQrCode(
-            BitmapFactory.decodeByteArray(capturedImage, 0, capturedImage.length),
-            consumer,
-            getString(R.string.message_no_qr_code)
-        );
-      }
+    GetCameraKitView().captureImage((CameraKitView cameraKitView, final byte[] capturedImage) -> {
+      // Sets up the consumer method that responds to the return value from the QR reading service.
+      // This uses a Lambda expression which requires using Java 1.8 in the project. However, it's
+      // still compatible with Android API 23 (Source:
+      // https://developer.android.com/studio/write/java8-support).
+      // The general approach of providing a callback function allows this app to decouple the
+      // implementation details (in this case, of reading QR codes) to a separate service, while
+      // allowing the service to operate asynchronously, as many Firebase services do.
+      Consumer<String> consumer = this::returnIntent;
+
+      // capturedImage contains the image from the CameraKitView. Use the app's QrService to read it.
+      qr.ReadQrCode(
+          BitmapFactory.decodeByteArray(capturedImage, 0, capturedImage.length),
+          consumer,
+          getString(R.string.message_no_qr_code)
+      );
     });
   }
 
@@ -92,7 +91,7 @@ public class QrReaderActivity extends CameraKitBase {
    *
    * @param value The value picked up by the QR reading service.
    */
-  protected void returnIntent(String value) {
+  private void returnIntent(String value) {
     Log.i(AppConstants.TAG, "QR code: " + value);
     String error = getString(R.string.message_no_qr_code);
 

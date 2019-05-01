@@ -26,8 +26,6 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import com.camerakit.CameraKitView;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel;
@@ -62,6 +60,8 @@ public class ImageReaderActivity extends CameraKitBase {
    * @param v The button that was pressed to trigger this handler.
    */
   public void takePhoto(View v) {
+    Log.i(AppConstants.TAG, "Handler Called: " + v.toString());
+
     GetCameraKitView().captureImage((CameraKitView cameraKitView, final byte[] capturedImage) -> {
       // capturedImage contains the image from the CameraKitView.
       readImage(BitmapFactory.decodeByteArray(capturedImage, 0, capturedImage.length));
@@ -74,7 +74,7 @@ public class ImageReaderActivity extends CameraKitBase {
    *
    * @param bitmap The image to analyse for labels.
    */
-  public void readImage(Bitmap bitmap) {
+  private void readImage(Bitmap bitmap) {
     FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
     FirebaseVisionImageLabeler labeler = FirebaseVision.getInstance().getOnDeviceImageLabeler();
     // FirebaseVisionImageLabeler labeler = FirebaseVision.getInstance().getCloudImageLabeler();
