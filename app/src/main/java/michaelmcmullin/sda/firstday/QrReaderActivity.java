@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
+import android.support.v4.util.Consumer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,10 +19,18 @@ import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOptions;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import java.util.List;
+import michaelmcmullin.sda.firstday.interfaces.QrService;
+import michaelmcmullin.sda.firstday.services.FirebaseQr;
 
 public class QrReaderActivity extends AppCompatActivity {
 
   private CameraKitView cameraKitView;
+
+  /**
+   * The service to use for QR codes
+   */
+  private QrService qr = new FirebaseQr();
+
   public static final String EXTRA_QR_CODE = "michaelmcmullin.sda.firstday.QR_CODE";
 
   @Override
@@ -36,7 +45,13 @@ public class QrReaderActivity extends AppCompatActivity {
       @Override
       public void onImage(CameraKitView cameraKitView, final byte[] capturedImage) {
         // capturedImage contains the image from the CameraKitView.
-        readQrCode(BitmapFactory.decodeByteArray(capturedImage, 0, capturedImage.length));
+        // readQrCode(BitmapFactory.decodeByteArray(capturedImage, 0, capturedImage.length));
+        Consumer<String> consumer = (x) -> returnIntent(x);
+        qr.ReadQrCode(
+            BitmapFactory.decodeByteArray(capturedImage, 0, capturedImage.length),
+            consumer,
+            getString(R.string.message_no_qr_code)
+        );
       }
     });
   }
