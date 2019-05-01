@@ -18,6 +18,7 @@
 package michaelmcmullin.sda.firstday.adapters;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,8 +57,9 @@ public class ProcedureAdapter extends ArrayAdapter<Procedure> {
    * @param parent The parent ViewGroup that is used for inflation.
    * @return The View for the position in the AdapterView.
    */
+  @NonNull
   @Override
-  public View getView(int position, View convertView, ViewGroup parent) {
+  public View getView(int position, View convertView, @NonNull ViewGroup parent) {
     // Check if the existing view is being reused, otherwise inflate the view
     View listItemView = convertView;
     if (listItemView == null) {
@@ -68,13 +70,15 @@ public class ProcedureAdapter extends ArrayAdapter<Procedure> {
     // Get the Procedure object located at this position in the list
     Procedure currentItem = getItem(position);
 
-    // Find the procedure name in the layout file and populate it.
-    TextView nameTextView = listItemView.findViewById(R.id.procedure_name_text_view);
-    nameTextView.setText(currentItem.getName());
+    if (currentItem != null) {
+      // Find the procedure name in the layout file and populate it.
+      TextView nameTextView = listItemView.findViewById(R.id.procedure_name_text_view);
+      nameTextView.setText(currentItem.getName());
 
-    // Find the procedure description in the layout file and populate it.
-    TextView descriptionTextView = listItemView.findViewById(R.id.procedure_description_text_view);
-    descriptionTextView.setText(currentItem.getDescription());
+      // Find the procedure description in the layout file and populate it.
+      TextView descriptionTextView = listItemView.findViewById(R.id.procedure_description_text_view);
+      descriptionTextView.setText(currentItem.getDescription());
+    }
 
     // Return the whole step item layout so it can be shown in the ListView
     return listItemView;

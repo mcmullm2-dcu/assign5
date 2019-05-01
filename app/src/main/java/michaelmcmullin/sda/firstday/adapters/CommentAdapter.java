@@ -18,6 +18,7 @@
 package michaelmcmullin.sda.firstday.adapters;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,8 +32,8 @@ import michaelmcmullin.sda.firstday.models.Comment;
 import michaelmcmullin.sda.firstday.models.User;
 
 /**
- * Class to describe how a single {@link Comment} object is rendered using the <code>comment_item</code>
- * layout.
+ * Class to describe how a single {@link Comment} object is rendered using the
+ * <code>comment_item</code> layout.
  */
 public class CommentAdapter extends ArrayAdapter<Comment> {
 
@@ -68,8 +69,9 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
    * @param parent The parent ViewGroup that is used for inflation.
    * @return The View for the position in the AdapterView.
    */
+  @NonNull
   @Override
-  public View getView(int position, View convertView, ViewGroup parent) {
+  public View getView(int position, View convertView, @NonNull ViewGroup parent) {
     // Check if the existing view is being reused, otherwise inflate the view
     View listItemView = convertView;
     if (listItemView == null) {
@@ -79,26 +81,33 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
 
     // Get the Step object located at this position in the list
     Comment currentItem = getItem(position);
-    User author = currentItem.getAuthor();
+    User author;
 
-    // Find and populate the user profile picture
-    CircleImageView profileImageView = listItemView.findViewById(R.id.profile_photo_comment_author);
-    if (author == null || author.getPhoto() == null) {
-      profileImageView.setImageResource(R.drawable.ic_default_profile_picture);
-    } else {
-      glide
-          .load(author.getPhoto())
-          .placeholder(R.drawable.ic_default_profile_picture)
-          .into(profileImageView);
+    if (currentItem != null) {
+      author = currentItem.getAuthor();
+
+      // Find and populate the user profile picture
+      CircleImageView profileImageView = listItemView
+          .findViewById(R.id.profile_photo_comment_author);
+      if (author == null || author.getPhoto() == null) {
+        profileImageView.setImageResource(R.drawable.ic_default_profile_picture);
+      } else {
+        glide
+            .load(author.getPhoto())
+            .placeholder(R.drawable.ic_default_profile_picture)
+            .into(profileImageView);
+      }
+
+      // Find and populate the author's name
+      if (author != null) {
+        TextView authorTextView = listItemView.findViewById(R.id.text_view_comment_author);
+        authorTextView.setText(author.getName());
+      }
+
+      // Find and populate the comment message
+      TextView messageTextView = listItemView.findViewById(R.id.text_view_comment_messsage);
+      messageTextView.setText(currentItem.getMessage());
     }
-
-    // Find and populate the author's name
-    TextView authorTextView = listItemView.findViewById(R.id.text_view_comment_author);
-    authorTextView.setText(author.getName());
-
-    // Find and populate the comment message
-    TextView messageTextView = listItemView.findViewById(R.id.text_view_comment_messsage);
-    messageTextView.setText(currentItem.getMessage());
 
     // Return the whole step item layout so it can be shown in the ListView
     return listItemView;

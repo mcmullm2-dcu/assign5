@@ -18,16 +18,17 @@
 package michaelmcmullin.sda.firstday.adapters;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.Locale;
 import michaelmcmullin.sda.firstday.R;
 import michaelmcmullin.sda.firstday.dialogs.ShowPhotoDialogFragment;
 import michaelmcmullin.sda.firstday.models.Step;
@@ -37,8 +38,8 @@ import michaelmcmullin.sda.firstday.models.Step;
  * layout.
  */
 public class StepAdapter extends ArrayAdapter<Step> {
-  private Activity context;
-  private boolean localOnly;
+  private final Activity context;
+  private final boolean localOnly;
 
   /**
    * This is our own custom constructor (it doesn't mirror a superclass constructor). The context is
@@ -66,8 +67,9 @@ public class StepAdapter extends ArrayAdapter<Step> {
    * @param parent The parent ViewGroup that is used for inflation.
    * @return The View for the position in the AdapterView.
    */
+  @NonNull
   @Override
-  public View getView(int position, View convertView, ViewGroup parent) {
+  public View getView(int position, View convertView, @NonNull ViewGroup parent) {
     // Check if the existing view is being reused, otherwise inflate the view
     View listItemView = convertView;
     if (listItemView == null) {
@@ -78,33 +80,32 @@ public class StepAdapter extends ArrayAdapter<Step> {
     // Get the Step object located at this position in the list
     final Step currentStep = getItem(position);
 
-    // Find the TextView in the step_item.xml layout with the ID step_sequence and populate.
-    TextView sequenceTextView = listItemView.findViewById(R.id.step_sequence);
-    sequenceTextView.setText(Integer.toString(currentStep.getSequence()));
+    if (currentStep != null) {
+      // Find the TextView in the step_item.xml layout with the ID step_sequence and populate.
+      TextView sequenceTextView = listItemView.findViewById(R.id.step_sequence);
+      sequenceTextView.setText(String.format(Locale.getDefault(), "%d", currentStep.getSequence()));
 
-    // Find the TextView in the step_item.xml layout with the ID step_name and populate.
-    TextView nameTextView = listItemView.findViewById(R.id.step_name);
-    nameTextView.setText(currentStep.getName());
+      // Find the TextView in the step_item.xml layout with the ID step_name and populate.
+      TextView nameTextView = listItemView.findViewById(R.id.step_name);
+      nameTextView.setText(currentStep.getName());
 
-    // Find the TextView in the step_item.xml layout with the ID step_description and populate
-    TextView descriptionTextView = listItemView.findViewById(R.id.step_description);
-    descriptionTextView.setText(currentStep.getDescription());
+      // Find the TextView in the step_item.xml layout with the ID step_description and populate
+      TextView descriptionTextView = listItemView.findViewById(R.id.step_description);
+      descriptionTextView.setText(currentStep.getDescription());
 
-    // Add a photo icon if necessary
-    ImageView imageLauncher = listItemView.findViewById(R.id.image_launcher);
-    if (currentStep.hasPhotoId()) {
-      imageLauncher.setVisibility(View.VISIBLE);
-      imageLauncher.setOnClickListener(new OnClickListener() {
-        @Override
-        public void onClick(View view) {
+      // Add a photo icon if necessary
+      ImageView imageLauncher = listItemView.findViewById(R.id.image_launcher);
+      if (currentStep.hasPhotoId()) {
+        imageLauncher.setVisibility(View.VISIBLE);
+        imageLauncher.setOnClickListener(view -> {
           FragmentActivity activity = (FragmentActivity)context;
           FragmentManager fm = activity.getSupportFragmentManager();
           ShowPhotoDialogFragment photoDialog = ShowPhotoDialogFragment.newInstance(currentStep, localOnly);
           photoDialog.show(fm, "dialog_show_photo");
-        }
-      });
-    } else {
-      imageLauncher.setVisibility(View.GONE);
+        });
+      } else {
+        imageLauncher.setVisibility(View.GONE);
+      }
     }
 
     // Return the whole step item layout so it can be shown in the ListView

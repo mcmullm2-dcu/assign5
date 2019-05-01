@@ -32,43 +32,43 @@ public class ProcedureFormAdapter extends FragmentStatePagerAdapter {
   /**
    * Index of the main procedure details tab.
    */
-  public static final int TAB_MAIN = 0;
+  private static final int TAB_MAIN = 0;
 
   /**
    * Index of the 'procedure steps' tab.
    */
-  public static final int TAB_STEPS = TAB_MAIN + 1;
+  private static final int TAB_STEPS = TAB_MAIN + 1;
 
   /**
    * Index of the 'procedure tags' tab.
    */
-  public static final int TAB_TAGS = TAB_STEPS + 1;
+  private static final int TAB_TAGS = TAB_STEPS + 1;
 
   /**
    * The number of tabs in this adapter.
    */
-  int numOfTabs;
+  private final int numOfTabs;
 
   /**
    * An array of titles for each tab.
    */
-  String[] tabTitles;
+  private final String[] tabTitles;
 
   /**
    * An instance of this app's shared preferences.
    */
-  SharedPreferences prefs;
+  private final SharedPreferences prefs;
 
   /**
    * An interface implemented by the parent activity to allow this adapter to store and retrieve
    * its details.
    */
-  ProcedureStorer procedureStorer;
+  private final ProcedureStorer procedureStorer;
 
   /**
    * An interface implemented by the parent activity to allow steps to be passed back to it.
    */
-  StepsSetter stepsSetter;
+  private final StepsSetter stepsSetter;
 
   /**
    * Creates an instance of the {@link ProcedureFormAdapter} class.
