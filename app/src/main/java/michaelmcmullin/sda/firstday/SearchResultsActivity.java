@@ -19,9 +19,9 @@ package michaelmcmullin.sda.firstday;
 
 import android.app.SearchManager;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -31,8 +31,8 @@ import michaelmcmullin.sda.firstday.utils.CurrentUser;
 import michaelmcmullin.sda.firstday.utils.ProcedureFilter;
 
 /**
- * Activity to display any procedures found via a search query.
- * Reference: https://developer.android.com/guide/topics/search/search-dialog#java
+ * Activity to display any procedures found via a search query. Reference:
+ * https://developer.android.com/guide/topics/search/search-dialog#java
  */
 public class SearchResultsActivity extends AppCompatActivity
     implements ProcedureFilterGetter, Searchable {
@@ -41,6 +41,7 @@ public class SearchResultsActivity extends AppCompatActivity
    * The term to search for.
    */
   private String searchTerm;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,7 @@ public class SearchResultsActivity extends AppCompatActivity
 
   /**
    * Specify the menu to display for this activity.
+   *
    * @param menu The options menu to place the menu items into.
    * @return Returns <code>true</code> if the menu is to be displayed.
    */
@@ -73,6 +75,7 @@ public class SearchResultsActivity extends AppCompatActivity
 
   /**
    * Responds to a menu item being selected.
+   *
    * @param item The menu item selected by the user
    * @return Returns <code>true</code> if the menu item functionality is being handled here rather
    *     than by the normal system menu processing.
@@ -108,7 +111,15 @@ public class SearchResultsActivity extends AppCompatActivity
     Intent intent = getIntent();
     if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
       searchTerm = intent.getStringExtra(SearchManager.QUERY).trim().toLowerCase();
+
+      // Firestore has a limitation which means an array of search terms or wildcards can't be used.
+      // As a workaround, split the search term and just search for the first word.
+      String[] terms = searchTerm.split(" ", 2);
+      if (terms.length > 0) {
+        searchTerm = terms[0];
+      }
     }
+
     return searchTerm;
   }
 }

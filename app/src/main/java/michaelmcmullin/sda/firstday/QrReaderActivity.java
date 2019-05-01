@@ -41,11 +41,6 @@ public class QrReaderActivity extends CameraKitBase {
   private final QrService qr = Services.QrService;
 
   /**
-   * The tag to uniquely identify extra data used by this activity.
-   */
-  public static final String EXTRA_QR_CODE = "michaelmcmullin.sda.firstday.QR_CODE";
-
-  /**
    * Called when {@link QrReaderActivity} is started, initialising the Activity and inflating the
    * appropriate XML layout.
    *

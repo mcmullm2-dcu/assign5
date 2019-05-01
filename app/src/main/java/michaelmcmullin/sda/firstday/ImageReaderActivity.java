@@ -97,10 +97,17 @@ public class ImageReaderActivity extends CameraKitBase {
       Intent intent = new Intent(ImageReaderActivity.this, SearchResultsActivity.class);
       intent.setAction(Intent.ACTION_SEARCH);
 
-      // There's no practical way to query an array of values due to Firestore limitations.
-      // So for now, just grab the most confident label (which is the first one) and query that.
-      String query = labels.get(0).getText();
-      intent.putExtra(SearchManager.QUERY, query);
+      // Convert all labels to a list of processed strings
+      StringBuilder sb = new StringBuilder();
+
+      for (ImageLabel l : labels) {
+        String query = l.getText().trim().toLowerCase();
+        if (!query.isEmpty()) {
+          sb.append(query);
+          sb.append(" ");
+        }
+      }
+      intent.putExtra(SearchManager.QUERY, sb.toString());
       startActivity(intent);
       finish();
     } else {

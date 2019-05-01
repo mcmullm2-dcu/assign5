@@ -21,14 +21,14 @@ import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.support.v7.widget.SearchView;
-import android.widget.Toast;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureFilterGetter;
 import michaelmcmullin.sda.firstday.interfaces.User;
 import michaelmcmullin.sda.firstday.utils.AppConstants;
@@ -48,11 +48,6 @@ public class MainActivity extends AppCompatActivity implements ProcedureFilterGe
   SearchView searchView;
 
   /**
-   * A value to hold the scanned in QR code
-   */
-  String qrCode;
-
-  /**
    * Called when {@link MainActivity} is started, initialising the Activity and inflating the
    * appropriate XML layout.
    *
@@ -64,44 +59,30 @@ public class MainActivity extends AppCompatActivity implements ProcedureFilterGe
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    /*
-    // Demo profile picture. If it's null, show default image (or colour in this case).
-    CircleImageView profile = findViewById(R.id.profile_image);
-    Uri profile_picture = user.getPhoto();
-    if (profile_picture != null) {
-      Glide.with(this).load(profile_picture).into(profile);
-    } else {
-      profile.setImageResource(R.drawable.ic_default_profile_picture);
-    }
-
-    // Demo user display name
-    TextView msg = findViewById(R.id.welcome);
-    msg.setText(user.getDisplayName());
-    */
-
     // Set up the search dialog
     // Main instructions from https://developer.android.com/guide/topics/search/search-dialog
     // Amendments from: https://stackoverflow.com/a/45536817
     SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-    searchView = (SearchView) findViewById(R.id.search_view);
-    searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this, SearchResultsActivity.class)));
+    searchView = findViewById(R.id.search_view);
+    if (searchManager != null) {
+      searchView.setSearchableInfo(
+          searchManager.getSearchableInfo(new ComponentName(this, SearchResultsActivity.class)));
+    }
     searchView.setIconifiedByDefault(false);
     searchView.clearFocus();
     searchView.setFocusable(false);
 
     // Set up the 'add procedure' button
     FloatingActionButton AddProcedureButton = findViewById(R.id.procedure_add_button);
-    AddProcedureButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        Intent intent = new Intent(MainActivity.this, ProcedureFormActivity.class);
-        startActivity(intent);
-      }
+    AddProcedureButton.setOnClickListener(v -> {
+      Intent intent = new Intent(MainActivity.this, ProcedureFormActivity.class);
+      startActivity(intent);
     });
   }
 
   /**
    * Specify the menu to display for this activity.
+   *
    * @param menu The options menu to place the menu items into.
    * @return Returns <code>true</code> if the menu is to be displayed.
    */
@@ -114,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements ProcedureFilterGe
 
   /**
    * Responds to a menu item being selected.
+   *
    * @param item The menu item selected by the user
    * @return Returns <code>true</code> if the menu item functionality is being handled here rather
    *     than by the normal system menu processing.
@@ -130,47 +112,22 @@ public class MainActivity extends AppCompatActivity implements ProcedureFilterGe
 
   /**
    * Launches the QR scanner activity.
-   * @param view
    */
-  public void TakeQrCodePhoto(View view) {
+  public void TakeQrCodePhoto(View v) {
+    Log.i(AppConstants.TAG, "Handler Called: " + v.toString());
+
     Intent qrIntent = new Intent(this, QrReaderActivity.class);
-    qrIntent.putExtra(QrReaderActivity.EXTRA_QR_CODE, qrCode);
-    // startActivityForResult(qrIntent, AppConstants.REQUEST_TAKE_QR_PHOTO);
     startActivity(qrIntent);
   }
 
   /**
    * Launches the image labelling activity.
-   * @param view
    */
-  public void TakeLabelledImagePhoto(View view) {
-    Intent imageIntent = new Intent(this, ImageReaderActivity.class);
-    // qrIntent.putExtra(QrReaderActivity.EXTRA_QR_CODE, qrCode);
-    // startActivityForResult(qrIntent, AppConstants.REQUEST_TAKE_QR_PHOTO);
-    startActivity(imageIntent);
-  }
+  public void TakeLabelledImagePhoto(View v) {
+    Log.i(AppConstants.TAG, "Handler Called: " + v.toString());
 
-  /**
-   * Responds to another activity returning control back to {@link MainActivity}.
-   * @param requestCode Identifies where the result is coming from.
-   * @param resultCode The result returned by the child activity.
-   * @param intent Additional data that may be returned from the child activity as 'extras'.
-   */
-  @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-    /*
-    if (requestCode == AppConstants.REQUEST_TAKE_QR_PHOTO) {
-      if (resultCode == MainActivity.RESULT_OK) {
-        qrCode = intent.getStringExtra(QrReaderActivity.EXTRA_QR_CODE);
-        if (qrCode != null && !qrCode.isEmpty() && qrCode != getString(R.string.message_no_qr_code)) {
-          Intent procedureIntent = new Intent(this, ProcedureActivity.class);
-          procedureIntent.putExtra(ProcedureActivity.EXTRA_ID, qrCode);
-          startActivity(procedureIntent);
-        } else {
-          Toast.makeText(this, getString(R.string.message_no_qr_code), Toast.LENGTH_LONG).show();
-        }
-      }
-    }*/
+    Intent imageIntent = new Intent(this, ImageReaderActivity.class);
+    startActivity(imageIntent);
   }
 
   /**
