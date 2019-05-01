@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import java.util.Arrays;
 import java.util.List;
-import michaelmcmullin.sda.firstday.utils.CurrentUser;
+import michaelmcmullin.sda.firstday.utils.AppConstants;
 
 /**
  * {@link LoginActivity} is the first Activity displayed when the application is launched, featuring

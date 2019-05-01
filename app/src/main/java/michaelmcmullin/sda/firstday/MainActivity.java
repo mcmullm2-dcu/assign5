@@ -4,22 +4,19 @@ import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.v7.widget.SearchView;
-import android.widget.TextView;
 import android.widget.Toast;
-import com.bumptech.glide.Glide;
-import de.hdodenhof.circleimageview.CircleImageView;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureFilterGetter;
 import michaelmcmullin.sda.firstday.interfaces.User;
+import michaelmcmullin.sda.firstday.utils.AppConstants;
 import michaelmcmullin.sda.firstday.utils.CurrentUser;
+import michaelmcmullin.sda.firstday.utils.ProcedureFilter;
 
 public class MainActivity extends AppCompatActivity implements ProcedureFilterGetter {
 

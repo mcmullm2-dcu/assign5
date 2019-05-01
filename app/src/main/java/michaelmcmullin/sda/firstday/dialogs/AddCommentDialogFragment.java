@@ -1,7 +1,5 @@
-package michaelmcmullin.sda.firstday;
+package michaelmcmullin.sda.firstday.dialogs;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,7 +11,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import com.camerakit.CameraKitView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
@@ -22,8 +19,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import michaelmcmullin.sda.firstday.interfaces.BitmapSaver;
-import michaelmcmullin.sda.firstday.models.Comment;
+import michaelmcmullin.sda.firstday.utils.AppConstants;
+import michaelmcmullin.sda.firstday.R;
 import michaelmcmullin.sda.firstday.utils.CurrentUser;
 
 /**

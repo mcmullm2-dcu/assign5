@@ -5,7 +5,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-  tools:context=".ProcedureFormStepFragment"
+  tools:context=".fragments.ProcedureFormStepFragment"
   android:padding="@dimen/spacing_med">
 
   <EditText

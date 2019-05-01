@@ -1,4 +1,4 @@
-package michaelmcmullin.sda.firstday;
+package michaelmcmullin.sda.firstday.fragments;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -16,11 +16,15 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
+import michaelmcmullin.sda.firstday.R;
+import michaelmcmullin.sda.firstday.adapters.StepAdapter;
+import michaelmcmullin.sda.firstday.dialogs.TakePhotoDialogFragment;
 import michaelmcmullin.sda.firstday.interfaces.BitmapSaver;
 import michaelmcmullin.sda.firstday.interfaces.GetterSetter;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureStorer;
 import michaelmcmullin.sda.firstday.interfaces.StepsSetter;
 import michaelmcmullin.sda.firstday.models.Step;
+import michaelmcmullin.sda.firstday.utils.AppConstants;
 
 
 /**

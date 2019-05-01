@@ -61,7 +61,7 @@
       android:theme="@style/AppTheme.SectionHeading"/>
     <fragment
       android:id="@+id/procedures_list"
-      android:name="michaelmcmullin.sda.firstday.ProcedureListFragment"
+      android:name="michaelmcmullin.sda.firstday.fragments.ProcedureListFragment"
       android:layout_margin="@dimen/spacing_med"
       app:layout_constraintTop_toBottomOf="@id/title_my_procedures"
       android:layout_width="match_parent"

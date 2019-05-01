@@ -1,6 +1,6 @@
 package michaelmcmullin.sda.firstday.interfaces;
 
-import michaelmcmullin.sda.firstday.ProcedureFilter;
+import michaelmcmullin.sda.firstday.utils.ProcedureFilter;
 
 /**
  * Interface used for classes that need to filter a list of procedures.

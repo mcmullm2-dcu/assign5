@@ -1,12 +1,7 @@
 package michaelmcmullin.sda.firstday.models;
 
-import com.google.firebase.firestore.Exclude;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.ServerTimestamp;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import michaelmcmullin.sda.firstday.AppConstants;
 
 /**
  * Class for storing information about a single {@link Procedure} instance.

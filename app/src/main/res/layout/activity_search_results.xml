@@ -17,7 +17,7 @@
     android:id="@+id/procedures_list"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:name="michaelmcmullin.sda.firstday.ProcedureListFragment"
+    android:name="michaelmcmullin.sda.firstday.fragments.ProcedureListFragment"
     app:layout_constraintTop_toBottomOf="@+id/search_results_title"/>
 
 </android.support.constraint.ConstraintLayout>

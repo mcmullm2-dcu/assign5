@@ -30,11 +30,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import michaelmcmullin.sda.firstday.adapters.ProcedureFormAdapter;
 import michaelmcmullin.sda.firstday.interfaces.GetterSetter;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureStorer;
 import michaelmcmullin.sda.firstday.models.Procedure;
 import michaelmcmullin.sda.firstday.models.Step;
 import michaelmcmullin.sda.firstday.models.User;
+import michaelmcmullin.sda.firstday.services.FirebaseImageStorage;
+import michaelmcmullin.sda.firstday.utils.AppConstants;
 import michaelmcmullin.sda.firstday.utils.CurrentUser;
 
 public class ProcedureFormActivity extends AppCompatActivity implements ProcedureStorer {

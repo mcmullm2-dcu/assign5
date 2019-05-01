@@ -1,4 +1,4 @@
-package michaelmcmullin.sda.firstday;
+package michaelmcmullin.sda.firstday.dialogs;
 
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import michaelmcmullin.sda.firstday.GlideApp;
+import michaelmcmullin.sda.firstday.R;
 import michaelmcmullin.sda.firstday.models.Step;
 
 public class ShowPhotoDialogFragment extends DialogFragment {

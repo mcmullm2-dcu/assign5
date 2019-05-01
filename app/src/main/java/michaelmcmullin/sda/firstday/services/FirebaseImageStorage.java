@@ -1,4 +1,4 @@
-package michaelmcmullin.sda.firstday;
+package michaelmcmullin.sda.firstday.services;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -17,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import michaelmcmullin.sda.firstday.interfaces.CloudImageService;
+import michaelmcmullin.sda.firstday.utils.AppConstants;
 
 /**
  * Service for uploading and downloading images to Firebase Storage.

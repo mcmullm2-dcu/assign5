@@ -1,4 +1,4 @@
-package michaelmcmullin.sda.firstday;
+package michaelmcmullin.sda.firstday.fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -24,9 +24,13 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.Query.Direction;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
+import michaelmcmullin.sda.firstday.R;
+import michaelmcmullin.sda.firstday.adapters.CommentAdapter;
+import michaelmcmullin.sda.firstday.dialogs.AddCommentDialogFragment;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureIdGetter;
 import michaelmcmullin.sda.firstday.models.Comment;
 import michaelmcmullin.sda.firstday.models.User;
+import michaelmcmullin.sda.firstday.utils.AppConstants;
 
 /**
  * Fragment that displays comments for a procedure.

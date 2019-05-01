@@ -1,9 +1,8 @@
-package michaelmcmullin.sda.firstday;
+package michaelmcmullin.sda.firstday.adapters;
 
 import android.app.Activity;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
+import michaelmcmullin.sda.firstday.R;
+import michaelmcmullin.sda.firstday.dialogs.ShowPhotoDialogFragment;
 import michaelmcmullin.sda.firstday.models.Step;
 
 /**

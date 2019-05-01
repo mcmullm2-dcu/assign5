@@ -1,9 +1,12 @@
-package michaelmcmullin.sda.firstday;
+package michaelmcmullin.sda.firstday.adapters;
 
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import michaelmcmullin.sda.firstday.fragments.ProcedureFormDetailsFragment;
+import michaelmcmullin.sda.firstday.fragments.ProcedureFormStepFragment;
+import michaelmcmullin.sda.firstday.fragments.ProcedureFormTagFragment;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureStorer;
 import michaelmcmullin.sda.firstday.interfaces.StepsSetter;
 

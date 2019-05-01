@@ -1,4 +1,4 @@
-package michaelmcmullin.sda.firstday;
+package michaelmcmullin.sda.firstday.dialogs;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import com.camerakit.CameraKitView;
+import michaelmcmullin.sda.firstday.R;
 import michaelmcmullin.sda.firstday.interfaces.BitmapSaver;
 
 public class TakePhotoDialogFragment extends DialogFragment {

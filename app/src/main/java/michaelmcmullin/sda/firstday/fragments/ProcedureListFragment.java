@@ -1,4 +1,4 @@
-package michaelmcmullin.sda.firstday;
+package michaelmcmullin.sda.firstday.fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,9 +21,13 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
+import michaelmcmullin.sda.firstday.ProcedureActivity;
+import michaelmcmullin.sda.firstday.R;
+import michaelmcmullin.sda.firstday.adapters.ProcedureAdapter;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureFilterGetter;
 import michaelmcmullin.sda.firstday.interfaces.Searchable;
 import michaelmcmullin.sda.firstday.models.Procedure;
+import michaelmcmullin.sda.firstday.utils.AppConstants;
 import michaelmcmullin.sda.firstday.utils.CurrentUser;
 
 /**

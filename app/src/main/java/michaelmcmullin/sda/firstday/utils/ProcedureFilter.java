@@ -1,4 +1,4 @@
-package michaelmcmullin.sda.firstday;
+package michaelmcmullin.sda.firstday.utils;
 
 /**
  * A variety of methods to filter procedures.

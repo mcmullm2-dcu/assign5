@@ -1,4 +1,4 @@
-package michaelmcmullin.sda.firstday;
+package michaelmcmullin.sda.firstday.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -16,12 +16,14 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.Query.Direction;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
+import michaelmcmullin.sda.firstday.R;
+import michaelmcmullin.sda.firstday.adapters.StepAdapter;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureIdGetter;
 import michaelmcmullin.sda.firstday.interfaces.StepsSetter;
 import michaelmcmullin.sda.firstday.models.Step;
+import michaelmcmullin.sda.firstday.utils.AppConstants;
 
 /**
  * Fragment that displays the steps involved in a procedure.

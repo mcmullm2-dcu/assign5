@@ -5,15 +5,13 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureFilterGetter;
 import michaelmcmullin.sda.firstday.interfaces.Searchable;
 import michaelmcmullin.sda.firstday.utils.CurrentUser;
-import org.w3c.dom.Text;
+import michaelmcmullin.sda.firstday.utils.ProcedureFilter;
 
 /**
  * Activity to display any procedures found via a search query.

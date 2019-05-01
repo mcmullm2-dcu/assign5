@@ -1,4 +1,4 @@
-package michaelmcmullin.sda.firstday;
+package michaelmcmullin.sda.firstday.adapters;
 
 import android.app.Activity;
 import android.util.Log;
@@ -13,6 +13,7 @@ import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.RequestManager;
 import de.hdodenhof.circleimageview.CircleImageView;
 import java.util.ArrayList;
+import michaelmcmullin.sda.firstday.R;
 import michaelmcmullin.sda.firstday.models.Comment;
 import michaelmcmullin.sda.firstday.models.User;
 

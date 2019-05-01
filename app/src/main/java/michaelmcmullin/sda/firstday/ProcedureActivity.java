@@ -16,11 +16,13 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.List;
+import michaelmcmullin.sda.firstday.dialogs.ProcedureShareDialogFragment;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureGetter;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureIdGetter;
 import michaelmcmullin.sda.firstday.interfaces.StepsSetter;
 import michaelmcmullin.sda.firstday.models.Procedure;
 import michaelmcmullin.sda.firstday.models.Step;
+import michaelmcmullin.sda.firstday.utils.AppConstants;
 import michaelmcmullin.sda.firstday.utils.CurrentUser;
 
 public class ProcedureActivity extends AppCompatActivity implements ProcedureIdGetter,
