@@ -17,6 +17,7 @@
 
 package michaelmcmullin.sda.firstday.services;
 
+import michaelmcmullin.sda.firstday.interfaces.services.ImageLabelService;
 import michaelmcmullin.sda.firstday.interfaces.services.QrService;
 
 /**
@@ -28,4 +29,9 @@ public class Services {
    * Service used for reading and writing QR codes.
    */
   public static QrService QrService = new FirebaseQr();
+
+  /**
+   * Service used for labelling a Bitmap image.
+   */
+  public static ImageLabelService ImageLabelService = new FirebaseImageLabeller();
 }

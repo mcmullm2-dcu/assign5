@@ -55,6 +55,7 @@
   <string name="message_procedure_shared_see_qr">If you download the FirstDay app, you can scan the attached QR code to access this procedure directly!</string>
   <string name="message_procedure_added">Procedure "%s" added successfully.</string>
   <string name="message_no_qr_code">No QR code detected.</string>
+  <string name="message_no_image_labels">No image labels detected.</string>
   <string name="error_parse_date">Error parsing Date</string>
   <string name="error_failed_adding_procedure">Error Adding Procedure</string>
   <string name="title_search_results">Search Results: \'%s\'</string>

@@ -19,18 +19,17 @@ package michaelmcmullin.sda.firstday;
 
 import android.app.SearchManager;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.v4.util.Consumer;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 import com.camerakit.CameraKitView;
-import com.google.firebase.ml.vision.FirebaseVision;
-import com.google.firebase.ml.vision.common.FirebaseVisionImage;
-import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel;
-import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler;
 import java.util.List;
+import michaelmcmullin.sda.firstday.interfaces.services.ImageLabelService;
+import michaelmcmullin.sda.firstday.models.ImageLabel;
+import michaelmcmullin.sda.firstday.services.Services;
 import michaelmcmullin.sda.firstday.utils.AppConstants;
 import michaelmcmullin.sda.firstday.utils.CameraKitBase;
 
@@ -39,6 +38,11 @@ import michaelmcmullin.sda.firstday.utils.CameraKitBase;
  * interpret its contents.
  */
 public class ImageReaderActivity extends CameraKitBase {
+
+  /**
+   * The service to use for image labelling
+   */
+  private final ImageLabelService labeller = Services.ImageLabelService;
 
   /**
    * Called when {@link ImageReaderActivity} is started, initialising the Activity and inflating the
@@ -63,48 +67,45 @@ public class ImageReaderActivity extends CameraKitBase {
     Log.i(AppConstants.TAG, "Handler Called: " + v.toString());
 
     GetCameraKitView().captureImage((CameraKitView cameraKitView, final byte[] capturedImage) -> {
-      // capturedImage contains the image from the CameraKitView.
-      readImage(BitmapFactory.decodeByteArray(capturedImage, 0, capturedImage.length));
+      // Sets up the consumer method that responds to the return value from the image labelling
+      // service. This uses a Lambda expression which requires using Java 1.8 in the project.
+      // However, it's still compatible with Android API 23 (Source:
+      // https://developer.android.com/studio/write/java8-support). The general approach of
+      // providing a callback function allows this app to decouple the implementation details (in
+      // this case, of reading image labels) to a separate service, while allowing the service to
+      // operate asynchronously, as many Firebase services do.
+      Consumer<List<ImageLabel>> consumer = this::returnIntent;
+
+      labeller.ReadImageLabels(
+          BitmapFactory.decodeByteArray(capturedImage, 0, capturedImage.length),
+          consumer,
+          getString(R.string.message_no_image_labels)
+      );
     });
   }
 
   /**
-   * Utility function to take a captured image and interpret any image present. Adapted from code
-   * from the Firebase documentation: https://firebase.google.com/docs/ml-kit/android/label-images
+   * Method called when the camera image has been processed.
    *
-   * @param bitmap The image to analyse for labels.
+   * @param labels The values picked up by the image labelling service.
    */
-  private void readImage(Bitmap bitmap) {
-    FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
-    FirebaseVisionImageLabeler labeler = FirebaseVision.getInstance().getOnDeviceImageLabeler();
-    // FirebaseVisionImageLabeler labeler = FirebaseVision.getInstance().getCloudImageLabeler();
-    final Bitmap test = image.getBitmapForDebugging();
+  private void returnIntent(List<ImageLabel> labels) {
+    String error = getString(R.string.message_no_image_labels);
 
-    labeler.processImage(image)
-        .addOnSuccessListener((List<FirebaseVisionImageLabel> labels) -> {
-          Log.i(AppConstants.TAG, "Successfully labelled image");
+    // If there's a valid list of labels, pass it to the search results activity.
+    if (labels != null && labels.size() > 0) {
+      Intent intent = new Intent(ImageReaderActivity.this, SearchResultsActivity.class);
+      intent.setAction(Intent.ACTION_SEARCH);
 
-          if (labels.size() > 0) {
-            // Only grab one item, maybe the one with the greatest confidence.
-            String query = "";
-            float confidence = 0.0f;
-            for (FirebaseVisionImageLabel label : labels) {
-              if (label.getConfidence() > confidence) {
-                query = label.getText();
-                confidence = label.getConfidence();
-              }
-            }
-            Intent intent = new Intent(ImageReaderActivity.this, SearchResultsActivity.class);
-            intent.setAction(Intent.ACTION_SEARCH);
-            intent.putExtra(SearchManager.QUERY, query);
-            startActivity(intent);
-            finish();
-          }
-        })
-        .addOnFailureListener((@NonNull Exception e) -> {
-          Log.i(AppConstants.TAG, "Couldn't label image");
-          Log.i(AppConstants.TAG, Integer.toString(test.getHeight()));
-          finish();
-        });
+      // There's no practical way to query an array of values due to Firestore limitations.
+      // So for now, just grab the most confident label (which is the first one) and query that.
+      String query = labels.get(0).getText();
+      intent.putExtra(SearchManager.QUERY, query);
+      startActivity(intent);
+      finish();
+    } else {
+      Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+      finish();
+    }
   }
 }
