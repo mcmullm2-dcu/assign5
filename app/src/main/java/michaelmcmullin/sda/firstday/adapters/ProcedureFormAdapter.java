@@ -60,8 +60,8 @@ public class ProcedureFormAdapter extends FragmentStatePagerAdapter {
   private final SharedPreferences prefs;
 
   /**
-   * An interface implemented by the parent activity to allow this adapter to store and retrieve
-   * its details.
+   * An interface implemented by the parent activity to allow this adapter to store and retrieve its
+   * details.
    */
   private final ProcedureStorer procedureStorer;
 
@@ -72,12 +72,14 @@ public class ProcedureFormAdapter extends FragmentStatePagerAdapter {
 
   /**
    * Creates an instance of the {@link ProcedureFormAdapter} class.
+   *
    * @param fm The FragmentManager that interacts with fragments associated with this adapter's
-   * calling activity.
+   *     calling activity.
    * @param titles An array of the titles of each tab.
    * @param prefs This app's shared preferences
    */
-  public ProcedureFormAdapter(FragmentManager fm, String[] titles, ProcedureStorer storer, StepsSetter stepsSetter, SharedPreferences prefs) {
+  public ProcedureFormAdapter(FragmentManager fm, String[] titles, ProcedureStorer storer,
+      StepsSetter stepsSetter, SharedPreferences prefs) {
     super(fm);
     this.numOfTabs = titles.length;
     tabTitles = titles;
@@ -88,6 +90,7 @@ public class ProcedureFormAdapter extends FragmentStatePagerAdapter {
 
   /**
    * Get the fragment associated with the tab at a given position.
+   *
    * @param position The position of the tab to retrieve the associated fragment for.
    * @return The tab fragment at the given position, or null if none found.
    */
@@ -107,6 +110,7 @@ public class ProcedureFormAdapter extends FragmentStatePagerAdapter {
 
   /**
    * Gets the number of views available (in this case, the number of tabs).
+   *
    * @return The number of views available.
    */
   @Override
@@ -116,6 +120,7 @@ public class ProcedureFormAdapter extends FragmentStatePagerAdapter {
 
   /**
    * Gets the title of the tab at the given position.
+   *
    * @param position The position of the tab to retrieve the title for.
    * @return The title of the tab at the given position, or null.
    */

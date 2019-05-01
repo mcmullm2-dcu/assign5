@@ -33,6 +33,7 @@ import michaelmcmullin.sda.firstday.models.Procedure;
  * <code>procedure_item</code> layout.
  */
 public class ProcedureAdapter extends ArrayAdapter<Procedure> {
+
   /**
    * This is our own custom constructor (it doesn't mirror a superclass constructor). The context is
    * used to inflate the layout file, and the list is the data we want to populate into the lists.
@@ -76,7 +77,8 @@ public class ProcedureAdapter extends ArrayAdapter<Procedure> {
       nameTextView.setText(currentItem.getName());
 
       // Find the procedure description in the layout file and populate it.
-      TextView descriptionTextView = listItemView.findViewById(R.id.procedure_description_text_view);
+      TextView descriptionTextView = listItemView
+          .findViewById(R.id.procedure_description_text_view);
       descriptionTextView.setText(currentItem.getDescription());
     }
 

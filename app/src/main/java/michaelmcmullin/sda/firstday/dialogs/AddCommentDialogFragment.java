@@ -24,20 +24,16 @@ import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import michaelmcmullin.sda.firstday.utils.AppConstants;
 import michaelmcmullin.sda.firstday.R;
+import michaelmcmullin.sda.firstday.utils.AppConstants;
 import michaelmcmullin.sda.firstday.utils.CurrentUser;
 
 /**
@@ -65,6 +61,16 @@ public class AddCommentDialogFragment extends DialogFragment {
     return fragment;
   }
 
+  /**
+   * Instantiates this DialogFragment's user interface, called after onCreate.
+   *
+   * @param inflater The LayoutInflator object that can be used to inflate views within this
+   *     DialogFragment.
+   * @param container The parent view that the UI should be attached to, if not null.
+   * @param savedInstanceState Saved state data that can reconstruct this DialogFragment if
+   *     necessary.
+   * @return Returns the DialogFragment's UI view.
+   */
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -73,49 +79,41 @@ public class AddCommentDialogFragment extends DialogFragment {
     editComment = v.findViewById(R.id.edit_text_comment);
 
     Button button = v.findViewById(R.id.button_dialog_add_comment);
-    button.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        String comment = editComment.getText().toString().trim();
-        if (comment != null && !comment.isEmpty()) {
-          CurrentUser user = new CurrentUser();
-          Map<String, Object> newComment = new HashMap<>();
-          newComment.put("author_id", user.getUserId());
-          newComment.put("author_name", user.getDisplayName());
-          newComment.put("message", comment);
-          newComment.put("procedure_id", procedureId);
-          newComment.put("created", new Date());
+    button.setOnClickListener(view -> {
+      String comment = editComment.getText().toString().trim();
+      if (!comment.isEmpty()) {
+        CurrentUser user = new CurrentUser();
+        Map<String, Object> newComment = new HashMap<>();
+        newComment.put("author_id", user.getUserId());
+        newComment.put("author_name", user.getDisplayName());
+        newComment.put("message", comment);
+        newComment.put("procedure_id", procedureId);
+        newComment.put("created", new Date());
 
-          FirebaseFirestore db = FirebaseFirestore.getInstance();
-          CollectionReference collection = db.collection("procedure_comment");
-          collection.add(newComment).addOnSuccessListener(
-              new OnSuccessListener<DocumentReference>() {
-                @Override
-                public void onSuccess(DocumentReference documentReference) {
-                  Log.i(AppConstants.TAG, "Comment added");
-                }
-              }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-              Log.w(AppConstants.TAG, "Comment failed");
-            }
-          });
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference collection = db.collection("procedure_comment");
+        collection.add(newComment).addOnSuccessListener(
+            documentReference -> Log.i(AppConstants.TAG, "Comment added")).addOnFailureListener(
+            e -> Log.w(AppConstants.TAG, "Comment failed"));
 
-        }
-        dismiss();
       }
+      dismiss();
     });
 
     Button cancel = v.findViewById(R.id.button_cancel);
-    cancel.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        dismiss();
-      }
-    });
+    cancel.setOnClickListener(view -> dismiss());
     return v;
   }
 
+  /**
+   * Called when onCreateView has returned, but before saved state has been restored, giving an
+   * opportunity to initialise any element of this DialogFragment's view hierarchy (but not its
+   * parent's).
+   *
+   * @param view The view returned by onCreateView.
+   * @param savedInstanceState Saved state data that can reconstruct this DialogFragment if
+   *     necessary.
+   */
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);

@@ -38,6 +38,7 @@ import michaelmcmullin.sda.firstday.models.Step;
  * layout.
  */
 public class StepAdapter extends ArrayAdapter<Step> {
+
   private final Activity context;
   private final boolean localOnly;
 
@@ -98,9 +99,10 @@ public class StepAdapter extends ArrayAdapter<Step> {
       if (currentStep.hasPhotoId()) {
         imageLauncher.setVisibility(View.VISIBLE);
         imageLauncher.setOnClickListener(view -> {
-          FragmentActivity activity = (FragmentActivity)context;
+          FragmentActivity activity = (FragmentActivity) context;
           FragmentManager fm = activity.getSupportFragmentManager();
-          ShowPhotoDialogFragment photoDialog = ShowPhotoDialogFragment.newInstance(currentStep, localOnly);
+          ShowPhotoDialogFragment photoDialog = ShowPhotoDialogFragment
+              .newInstance(currentStep, localOnly);
           photoDialog.show(fm, "dialog_show_photo");
         });
       } else {

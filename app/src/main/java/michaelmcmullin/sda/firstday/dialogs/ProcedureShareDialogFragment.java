@@ -17,6 +17,7 @@
 
 package michaelmcmullin.sda.firstday.dialogs;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -28,7 +29,6 @@ import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,21 +36,22 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
-import michaelmcmullin.sda.firstday.interfaces.services.QrService;
-import michaelmcmullin.sda.firstday.services.Services;
-import michaelmcmullin.sda.firstday.utils.AppConstants;
 import michaelmcmullin.sda.firstday.R;
+import michaelmcmullin.sda.firstday.interfaces.services.QrService;
 import michaelmcmullin.sda.firstday.models.Procedure;
 import michaelmcmullin.sda.firstday.models.Step;
+import michaelmcmullin.sda.firstday.services.Services;
+import michaelmcmullin.sda.firstday.utils.AppConstants;
 
 /**
  * Dialog to enter a user's email address to share this procedure with.
  */
 public class ProcedureShareDialogFragment extends DialogFragment {
+
   /**
    * The service to use for QR codes
    */
-  private QrService qr = Services.QrService;
+  private final QrService qr = Services.QrService;
 
   /**
    * The procedure to share.
@@ -75,6 +76,7 @@ public class ProcedureShareDialogFragment extends DialogFragment {
 
   /**
    * Creates a new instance of this dialog.
+   *
    * @param procedure The procedure to share with users.
    * @param steps The list of steps that go with this procedure.
    * @return An instance of this dialog fragment.
@@ -85,6 +87,17 @@ public class ProcedureShareDialogFragment extends DialogFragment {
     fragment.steps = steps;
     return fragment;
   }
+
+  /**
+   * Instantiates this DialogFragment's user interface, called after onCreate.
+   *
+   * @param inflater The LayoutInflator object that can be used to inflate views within this
+   *     DialogFragment.
+   * @param container The parent view that the UI should be attached to, if not null.
+   * @param savedInstanceState Saved state data that can reconstruct this DialogFragment if
+   *     necessary.
+   * @return Returns the DialogFragment's UI view.
+   */
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -94,43 +107,47 @@ public class ProcedureShareDialogFragment extends DialogFragment {
     emailAddress = v.findViewById(R.id.edit_text_email);
 
     Button button = v.findViewById(R.id.button_dialog_share_procedure);
-    button.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        // Send email
-        Intent email = new Intent(Intent.ACTION_SEND);
-        email.setType("*/*");
-        email.putExtra(Intent.EXTRA_EMAIL, new String[]{emailAddress.getText().toString()});
-        email.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.subject_share_procedure));
-        email.putExtra(Intent.EXTRA_TEXT, emailText());
+    button.setOnClickListener(view -> {
+      // Send email
+      Intent email = new Intent(Intent.ACTION_SEND);
+      email.setType("*/*");
+      email.putExtra(Intent.EXTRA_EMAIL, new String[]{emailAddress.getText().toString()});
+      email.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.subject_share_procedure));
+      email.putExtra(Intent.EXTRA_TEXT, emailText());
 
-        // Create a QR code to include in the email.
-        if (procedure != null) {
-          Bitmap attachment = qr.GenerateQrCode(procedure.getId());
+      // Create a QR code to include in the email.
+      if (procedure != null) {
+        Bitmap attachment = qr.GenerateQrCode(procedure.getId());
 
-          // Convert the Bitmap to a URI
-          Uri imageUri = saveImage(attachment);
-          email.putExtra(Intent.EXTRA_STREAM, imageUri);
-          email.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        }
+        // Convert the Bitmap to a URI
+        Uri imageUri = saveImage(attachment);
+        email.putExtra(Intent.EXTRA_STREAM, imageUri);
+        email.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+      }
 
-        if (email.resolveActivity(getContext().getPackageManager()) != null) {
+      Context context = getContext();
+      if (context != null) {
+        if (email.resolveActivity(context.getPackageManager()) != null) {
           startActivity(email);
         }
-        dismiss();
       }
+      dismiss();
     });
 
     Button cancel = v.findViewById(R.id.button_cancel);
-    cancel.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        dismiss();
-      }
-    });
+    cancel.setOnClickListener(view -> dismiss());
     return v;
   }
 
+  /**
+   * Called when onCreateView has returned, but before saved state has been restored, giving an
+   * opportunity to initialise any element of this DialogFragment's view hierarchy (but not its
+   * parent's).
+   *
+   * @param view The view returned by onCreateView.
+   * @param savedInstanceState Saved state data that can reconstruct this DialogFragment if
+   *     necessary.
+   */
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
@@ -139,9 +156,10 @@ public class ProcedureShareDialogFragment extends DialogFragment {
 
   /**
    * Gets a string to use as the body of an email.
+   *
    * @return Returns the email body text.
    */
-  public String emailText() {
+  private String emailText() {
     StringBuilder sb = new StringBuilder();
 
     if (procedure != null) {
@@ -155,7 +173,7 @@ public class ProcedureShareDialogFragment extends DialogFragment {
       sb.append(getString(R.string.title_steps));
       sb.append("\n");
       int i = 1;
-      for(Step step : steps) {
+      for (Step step : steps) {
         sb.append(i++);
         sb.append(": ");
         sb.append(step.getName());
@@ -172,26 +190,33 @@ public class ProcedureShareDialogFragment extends DialogFragment {
 
   /**
    * Saves the image as PNG to the app's cache directory.
+   *
    * @param image Bitmap to save.
-   * @return Uri of the saved file or null
-   * Adapted from StackOverflow: https://stackoverflow.com/a/50924037
+   * @return Uri of the saved file or null Adapted from StackOverflow: https://stackoverflow.com/a/50924037
    */
   private Uri saveImage(Bitmap image) {
-    //TODO - Should be processed in another thread
-    File imagesFolder = new File(getContext().getCacheDir(), "images");
+    Context context = getContext();
     Uri uri = null;
-    try {
-      imagesFolder.mkdirs();
-      File file = new File(imagesFolder, "shared_image.png");
 
-      FileOutputStream stream = new FileOutputStream(file);
-      image.compress(Bitmap.CompressFormat.PNG, 90, stream);
-      stream.flush();
-      stream.close();
-      uri = FileProvider.getUriForFile(getContext(), "michaelmcmullin.sda.firstday.provider", file);
+    if (context != null) {
+      File imagesFolder = new File(getContext().getCacheDir(), "images");
+      try {
+        boolean folderExists = imagesFolder.isDirectory() || imagesFolder.mkdirs();
 
-    } catch (IOException e) {
-      Log.d(AppConstants.TAG, "IOException while trying to write file for sharing: " + e.getMessage());
+        if (folderExists) {
+          File file = new File(imagesFolder, "shared_image.png");
+
+          FileOutputStream stream = new FileOutputStream(file);
+          image.compress(Bitmap.CompressFormat.PNG, 90, stream);
+          stream.flush();
+          stream.close();
+          uri = FileProvider
+              .getUriForFile(getContext(), "michaelmcmullin.sda.firstday.provider", file);
+        }
+      } catch (IOException e) {
+        Log.d(AppConstants.TAG,
+            "IOException while trying to write file for sharing: " + e.getMessage());
+      }
     }
     return uri;
   }

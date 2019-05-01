@@ -24,7 +24,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -34,11 +33,15 @@ import michaelmcmullin.sda.firstday.GlideApp;
 import michaelmcmullin.sda.firstday.R;
 import michaelmcmullin.sda.firstday.models.Step;
 
+/**
+ * A DialogFragment to display a photo belonging to a procedure {@link Step}.
+ */
 public class ShowPhotoDialogFragment extends DialogFragment {
+
   /**
    * A reference to Firebase storage
    */
-  private FirebaseStorage storage = FirebaseStorage.getInstance();
+  private final FirebaseStorage storage = FirebaseStorage.getInstance();
 
   /**
    * A reference to the Firebase storage path.
@@ -50,10 +53,19 @@ public class ShowPhotoDialogFragment extends DialogFragment {
    */
   private boolean local;
 
+  /**
+   * Empty constructor required
+   */
   public ShowPhotoDialogFragment() {
-    // Empty constructor required.
   }
 
+  /**
+   * Creates a new instance of this dialog.
+   *
+   * @param step The step that contains the photo.
+   * @param local indicates whether to try and display a local copy of the photo.
+   * @return An instance of this dialog fragment.
+   */
   public static ShowPhotoDialogFragment newInstance(Step step, boolean local) {
     ShowPhotoDialogFragment fragment = new ShowPhotoDialogFragment();
     fragment.step = step;
@@ -61,6 +73,16 @@ public class ShowPhotoDialogFragment extends DialogFragment {
     return fragment;
   }
 
+  /**
+   * Instantiates this DialogFragment's user interface, called after onCreate.
+   *
+   * @param inflater The LayoutInflator object that can be used to inflate views within this
+   *     DialogFragment.
+   * @param container The parent view that the UI should be attached to, if not null.
+   * @param savedInstanceState Saved state data that can reconstruct this DialogFragment if
+   *     necessary.
+   * @return Returns the DialogFragment's UI view.
+   */
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -68,15 +90,19 @@ public class ShowPhotoDialogFragment extends DialogFragment {
     View v = inflater.inflate(R.layout.dialog_show_photo, container);
 
     Button button = v.findViewById(R.id.button_dismiss);
-    button.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        dismiss();
-      }
-    });
+    button.setOnClickListener(view -> dismiss());
     return v;
   }
 
+  /**
+   * Called when onCreateView has returned, but before saved state has been restored, giving an
+   * opportunity to initialise any element of this DialogFragment's view hierarchy (but not its
+   * parent's).
+   *
+   * @param view The view returned by onCreateView.
+   * @param savedInstanceState Saved state data that can reconstruct this DialogFragment if
+   *     necessary.
+   */
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
@@ -92,7 +118,8 @@ public class ShowPhotoDialogFragment extends DialogFragment {
         photo.setImageBitmap(step.getPhoto());
       } else {
         if (step.getLocalPhotoFile() != null) {
-          photo.setImageBitmap(BitmapFactory.decodeFile(step.getLocalPhotoFile().getAbsolutePath()));
+          photo
+              .setImageBitmap(BitmapFactory.decodeFile(step.getLocalPhotoFile().getAbsolutePath()));
         }
       }
     }
