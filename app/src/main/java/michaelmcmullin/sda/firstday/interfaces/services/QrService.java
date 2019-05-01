@@ -18,7 +18,6 @@
 package michaelmcmullin.sda.firstday.interfaces.services;
 
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.support.v4.util.Consumer;
 
 /**

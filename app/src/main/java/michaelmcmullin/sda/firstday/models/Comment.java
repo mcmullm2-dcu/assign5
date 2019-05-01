@@ -17,10 +17,7 @@
 
 package michaelmcmullin.sda.firstday.models;
 
-import com.google.firebase.firestore.Exclude;
-import com.google.firebase.firestore.FieldValue;
 import java.util.Date;
-import java.util.HashMap;
 
 /**
  * Class to store information about a {@link Comment} made about a {@link Procedure}.

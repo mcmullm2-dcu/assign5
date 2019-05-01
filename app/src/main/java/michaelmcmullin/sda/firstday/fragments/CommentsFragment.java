@@ -17,6 +17,7 @@
 
 package michaelmcmullin.sda.firstday.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,19 +28,15 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.Query.Direction;
-import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import michaelmcmullin.sda.firstday.R;
 import michaelmcmullin.sda.firstday.adapters.CommentAdapter;
@@ -62,42 +59,34 @@ public class CommentsFragment extends Fragment {
   /**
    * Name of the procedure ID field in other collections.
    */
-  public static final String PROCEDURE_KEY = "procedure_id";
+  private static final String PROCEDURE_KEY = "procedure_id";
 
   /**
    * Holds a reference to the Firestore database instance.
    */
-  private FirebaseFirestore db = FirebaseFirestore.getInstance();
+  private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
   /**
    * Holds a reference to the 'comment' collection in Firestore
    */
-  private CollectionReference commentCollection = db.collection("procedure_comment");
-
-  /**
-   * Holds a reference to the 'user' collection in Firestore
-   */
-  private CollectionReference userCollection = db.collection("user");
-
-  /**
-   * A reference to the 'New Comment' button
-   */
-  private ImageView addCommentButton;
+  private final CollectionReference commentCollection = db.collection("procedure_comment");
 
   /**
    * A required empty public constructor.
    */
   public CommentsFragment() {
-    // Required empty public constructor
   }
 
   /**
    * Initialises the fragment's user interface.
-   * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment
-   * @param container If non-null, this is the parent view that the fragment's UI should be attached
-   *     to. The fragment should not add the view itself, but this can be used to generate the LayoutParams of the view.
-   * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
-   *     saved state as given here.
+   *
+   * @param inflater The LayoutInflater object that can be used to inflate any views in the
+   *     fragment
+   * @param container If non-null, this is the parent view that the fragment's UI should be
+   *     attached to. The fragment should not add the view itself, but this can be used to generate
+   *     the LayoutParams of the view.
+   * @param savedInstanceState If non-null, this fragment is being re-constructed from a
+   *     previous saved state as given here.
    * @return Return the View for the fragment's UI, or null.
    */
   @Nullable
@@ -105,12 +94,13 @@ public class CommentsFragment extends Fragment {
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
     View v = inflater.inflate(R.layout.fragment_procedure_comments, container, false);
-    addCommentButton = v.findViewById(R.id.button_add_comment);
-    addCommentButton.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View view) {
+    ImageView addCommentButton = v.findViewById(R.id.button_add_comment);
+    addCommentButton.setOnClickListener(view -> {
+      Activity activity = getActivity();
+      if (activity != null) {
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        AddCommentDialogFragment commentDialog = AddCommentDialogFragment.newInstance(procedureIdGetter.getProcedureId());
+        AddCommentDialogFragment commentDialog = AddCommentDialogFragment
+            .newInstance(procedureIdGetter.getProcedureId());
         commentDialog.show(fm, "dialog_add_comment");
       }
     });
@@ -119,13 +109,14 @@ public class CommentsFragment extends Fragment {
 
   /**
    * Called when this fragment is first attached to its context.
+   *
    * @param context The context to attach this fragment to.
    */
   @Override
   public void onAttach(Context context) {
     super.onAttach(context);
     if (context instanceof ProcedureIdGetter) {
-      procedureIdGetter = (ProcedureIdGetter)context;
+      procedureIdGetter = (ProcedureIdGetter) context;
     } else {
       throw new RuntimeException(context.toString() + " must implement ProcedureIdGetter");
     }
@@ -161,40 +152,38 @@ public class CommentsFragment extends Fragment {
     Query query = commentCollection
         .whereEqualTo(PROCEDURE_KEY, procedureIdGetter.getProcedureId())
         .orderBy("created", Direction.DESCENDING);
-    query.addSnapshotListener(new EventListener<QuerySnapshot>() {
-      @Override
-      public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots,
-          @javax.annotation.Nullable FirebaseFirestoreException e) {
-        if (e != null) {
-          Log.w(AppConstants.TAG, "Listen failed.", e);
-          return;
-        }
+    query.addSnapshotListener((queryDocumentSnapshots, e) -> {
+      if (e != null) {
+        Log.w(AppConstants.TAG, "Listen failed.", e);
+        return;
+      }
 
-        if (queryDocumentSnapshots != null) {
-          comments.clear();
-          for (DocumentSnapshot comment : queryDocumentSnapshots) {
-            String message = comment.getString("message");
-            String authorName = comment.getString("author_name");
-            String authorImage = comment.getString("author_picture");;
+      if (queryDocumentSnapshots != null) {
+        comments.clear();
+        for (DocumentSnapshot comment : queryDocumentSnapshots) {
+          String message = comment.getString("message");
+          String authorName = comment.getString("author_name");
+          String authorImage = comment.getString("author_picture");
 
-            Uri photo = null;
-            if (authorImage != null && !authorImage.isEmpty()) {
-              photo = new Uri.Builder().path(authorImage).build();
-            }
-
-            User author = new User(authorName, photo);
-            comments.add(new Comment(author, null, message));
+          Uri photo = null;
+          if (authorImage != null && !authorImage.isEmpty()) {
+            photo = new Uri.Builder().path(authorImage).build();
           }
+
+          User author = new User(authorName, photo);
+          comments.add(new Comment(author, null, message));
         }
       }
     });
 
     // Create a CommentAdapter class and tie it in with the comments list.
     final CommentAdapter adapter = new CommentAdapter(getActivity(), comments, Glide.with(this));
-    ListView listView = getView().findViewById(R.id.list_view_comments);
-    if (listView != null) {
-      listView.setAdapter(adapter);
+    View v = getView();
+    if (v != null) {
+      ListView listView = getView().findViewById(R.id.list_view_comments);
+      if (listView != null) {
+        listView.setAdapter(adapter);
+      }
     }
-
   }
 }

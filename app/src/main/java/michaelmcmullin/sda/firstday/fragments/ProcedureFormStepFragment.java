@@ -17,9 +17,11 @@
 
 package michaelmcmullin.sda.firstday.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -39,7 +41,6 @@ import michaelmcmullin.sda.firstday.dialogs.TakePhotoDialogFragment;
 import michaelmcmullin.sda.firstday.interfaces.BitmapSaver;
 import michaelmcmullin.sda.firstday.interfaces.GetterSetter;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureStorer;
-import michaelmcmullin.sda.firstday.interfaces.StepsSetter;
 import michaelmcmullin.sda.firstday.models.Step;
 import michaelmcmullin.sda.firstday.utils.AppConstants;
 
@@ -58,14 +59,9 @@ public class ProcedureFormStepFragment extends Fragment
   private ProcedureStorer procedureStorer;
 
   /**
-   * An interface that allows a list of steps to be processed.
-   */
-  private StepsSetter stepsSetter;
-
-  /**
    * A list of steps already entered.
    */
-  private static List<Step> steps;
+  private List<Step> steps;
 
   /**
    * Reference to the 'Name' edit text view.
@@ -76,16 +72,6 @@ public class ProcedureFormStepFragment extends Fragment
    * Reference to the 'Description' edit text view.
    */
   private EditText editDescription;
-
-  /**
-   * Reference to the 'Camera' button.
-   */
-  private ImageView buttonCamera;
-
-  /**
-   * Reference to the 'Gallery' button.
-   */
-  private ImageView buttonGallery;
 
   /**
    * Reference to the 'Preview' image.
@@ -111,11 +97,12 @@ public class ProcedureFormStepFragment extends Fragment
 
   /**
    * Creates a new instance of the {@link ProcedureFormStepFragment} class.
+   *
    * @param storer The ProcedureStorer class to associate with this fragment.
    * @return A new {@link ProcedureFormStepFragment} instance with its {@link ProcedureStorer}
-   * property set.
+   *     property set.
    */
-  public static final ProcedureFormStepFragment newInstance(ProcedureStorer storer) {
+  public static ProcedureFormStepFragment newInstance(ProcedureStorer storer) {
     ProcedureFormStepFragment fragment = new ProcedureFormStepFragment();
     fragment.setProcedureStorer(storer);
     fragment.steps = fragment.GetData();
@@ -124,23 +111,27 @@ public class ProcedureFormStepFragment extends Fragment
 
   /**
    * Sets the ProcedureStorer activity for this fragment.
+   *
    * @param storer The ProcedureStorer class to associate with this fragment.
    */
-  public void setProcedureStorer(ProcedureStorer storer) {
+  private void setProcedureStorer(ProcedureStorer storer) {
     this.procedureStorer = storer;
   }
 
   /**
    * Initialises the fragment's user interface.
-   * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment
-   * @param container If non-null, this is the parent view that the fragment's UI should be attached
-   *     to. The fragment should not add the view itself, but this can be used to generate the LayoutParams of the view.
-   * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
-   *     saved state as given here.
+   *
+   * @param inflater The LayoutInflater object that can be used to inflate any views in the
+   *     fragment
+   * @param container If non-null, this is the parent view that the fragment's UI should be
+   *     attached to. The fragment should not add the view itself, but this can be used to generate
+   *     the LayoutParams of the view.
+   * @param savedInstanceState If non-null, this fragment is being re-constructed from a
+   *     previous saved state as given here.
    * @return Return the View for the fragment's UI, or null.
    */
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+  public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     // Inflate the layout for this fragment
     View v = inflater.inflate(R.layout.fragment_procedure_form_step, container, false);
@@ -154,8 +145,8 @@ public class ProcedureFormStepFragment extends Fragment
     button.setOnClickListener(this);
 
     // Set up the picture buttons
-    buttonCamera = v.findViewById(R.id.image_view_procedure_form_step_photo);
-    buttonGallery = v.findViewById(R.id.image_view_procedure_form_step_gallery);
+    ImageView buttonCamera = v.findViewById(R.id.image_view_procedure_form_step_photo);
+    ImageView buttonGallery = v.findViewById(R.id.image_view_procedure_form_step_gallery);
 
     buttonCamera.setOnClickListener(this);
     buttonGallery.setOnClickListener(this);
@@ -165,13 +156,14 @@ public class ProcedureFormStepFragment extends Fragment
 
   /**
    * Called when this fragment is first attached to its context.
+   *
    * @param context The context to attach this fragment to.
    */
   @Override
   public void onAttach(Context context) {
     super.onAttach(context);
     if (context instanceof ProcedureStorer) {
-      procedureStorer = (ProcedureStorer)context;
+      procedureStorer = (ProcedureStorer) context;
     } else {
       throw new RuntimeException(context.toString() + " must implement ProcedureStorer");
     }
@@ -189,7 +181,7 @@ public class ProcedureFormStepFragment extends Fragment
   /**
    * Saves a newly added step.
    */
-  public void SaveStep() {
+  private void SaveStep() {
     if (steps == null) {
       steps = new ArrayList<>();
     }
@@ -238,15 +230,18 @@ public class ProcedureFormStepFragment extends Fragment
       case R.id.button_procedure_form_add_step:
         SaveStep();
         // Create a StepAdapter class and tie it in with the steps list.
-        final StepAdapter adapter = new StepAdapter(getActivity(), (ArrayList<Step>)steps, true);
+        final StepAdapter adapter = new StepAdapter(getActivity(), (ArrayList<Step>) steps, true);
         stepsList.setAdapter(adapter);
         break;
       case R.id.image_view_procedure_form_step_photo:
         Log.i(AppConstants.TAG, "Taking Photo...");
-        FragmentManager fm = getActivity().getSupportFragmentManager();
-        TakePhotoDialogFragment photoDialog = TakePhotoDialogFragment.newInstance();
-        photoDialog.setTargetFragment(this, 0);
-        photoDialog.show(fm, "dialog_take_photo");
+        Activity activity = getActivity();
+        if (activity != null) {
+          FragmentManager fm = getActivity().getSupportFragmentManager();
+          TakePhotoDialogFragment photoDialog = TakePhotoDialogFragment.newInstance();
+          photoDialog.setTargetFragment(this, 0);
+          photoDialog.show(fm, "dialog_take_photo");
+        }
         break;
       case R.id.image_view_procedure_form_step_gallery:
         Log.i(AppConstants.TAG, "Loading Gallery...");

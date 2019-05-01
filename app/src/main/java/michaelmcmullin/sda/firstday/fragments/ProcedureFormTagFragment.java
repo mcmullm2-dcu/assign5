@@ -19,10 +19,12 @@ package michaelmcmullin.sda.firstday.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import me.gujun.android.taggroup.TagGroup;
@@ -35,6 +37,7 @@ import michaelmcmullin.sda.firstday.interfaces.ProcedureStorer;
  * fragment must implement the {@link ProcedureStorer} interface.
  */
 public class ProcedureFormTagFragment extends Fragment implements GetterSetter<Set<String>> {
+
   /**
    * An interface implemented by the parent activity to allow this fragment to store and retrieve
    * its details.
@@ -47,11 +50,6 @@ public class ProcedureFormTagFragment extends Fragment implements GetterSetter<S
   private static TagGroup tagGroup;
 
   /**
-   * An array of tag strings used to populate the TagGroup
-   */
-  private String[] tags = {};
-
-  /**
    * A required empty public constructor.
    */
   public ProcedureFormTagFragment() {
@@ -60,11 +58,12 @@ public class ProcedureFormTagFragment extends Fragment implements GetterSetter<S
 
   /**
    * Creates a new instance of the {@link ProcedureFormTagFragment} class.
+   *
    * @param storer The ProcedureStorer class to associate with this fragment.
    * @return A new {@link ProcedureFormTagFragment} instance with its {@link ProcedureStorer}
-   * property set.
+   *     property set.
    */
-  public static final ProcedureFormTagFragment newInstance(ProcedureStorer storer) {
+  public static ProcedureFormTagFragment newInstance(ProcedureStorer storer) {
     ProcedureFormTagFragment fragment = new ProcedureFormTagFragment();
     fragment.setProcedureStorer(storer);
     return fragment;
@@ -72,22 +71,27 @@ public class ProcedureFormTagFragment extends Fragment implements GetterSetter<S
 
   /**
    * Sets the ProcedureStorer activity for this fragment.
+   *
    * @param storer The ProcedureStorer class to associate with this fragment.
    */
-  public void setProcedureStorer(ProcedureStorer storer) {
+  private void setProcedureStorer(ProcedureStorer storer) {
     this.procedureStorer = storer;
   }
+
   /**
    * Initialises the fragment's user interface.
-   * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment
-   * @param container If non-null, this is the parent view that the fragment's UI should be attached
-   *     to. The fragment should not add the view itself, but this can be used to generate the LayoutParams of the view.
-   * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
-   *     saved state as given here.
+   *
+   * @param inflater The LayoutInflater object that can be used to inflate any views in the
+   *     fragment
+   * @param container If non-null, this is the parent view that the fragment's UI should be
+   *     attached to. The fragment should not add the view itself, but this can be used to generate
+   *     the LayoutParams of the view.
+   * @param savedInstanceState If non-null, this fragment is being re-constructed from a
+   *     previous saved state as given here.
    * @return Return the View for the fragment's UI, or null.
    */
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+  public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     // Inflate the layout for this fragment
     View v = inflater.inflate(R.layout.fragment_procedure_form_tags, container, false);
@@ -99,13 +103,14 @@ public class ProcedureFormTagFragment extends Fragment implements GetterSetter<S
 
   /**
    * Called when this fragment is first attached to its context.
+   *
    * @param context The context to attach this fragment to.
    */
   @Override
   public void onAttach(Context context) {
     super.onAttach(context);
     if (context instanceof ProcedureStorer) {
-      procedureStorer = (ProcedureStorer)context;
+      procedureStorer = (ProcedureStorer) context;
     } else {
       throw new RuntimeException(context.toString() + " must implement ProcedureStorer");
     }
@@ -127,9 +132,7 @@ public class ProcedureFormTagFragment extends Fragment implements GetterSetter<S
   public void SetData() {
     Set<String> data = new HashSet<>();
     if (tagGroup != null) {
-      for (String s : tagGroup.getTags()) {
-        data.add(s);
-      }
+      Collections.addAll(data, tagGroup.getTags());
     }
     procedureStorer.StoreTags(data);
   }
@@ -146,7 +149,7 @@ public class ProcedureFormTagFragment extends Fragment implements GetterSetter<S
       return null;
     }
     int size = savedTags.size();
-    tags = new String[size];
+    String[] tags = new String[size];
     tags = savedTags.toArray(tags);
     if (tagGroup != null) {
       tagGroup.setTags(tags);

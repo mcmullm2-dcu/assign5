@@ -18,7 +18,6 @@
 package michaelmcmullin.sda.firstday.utils;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -33,7 +32,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 import michaelmcmullin.sda.firstday.LoginActivity;
-import michaelmcmullin.sda.firstday.MainActivity;
 import michaelmcmullin.sda.firstday.interfaces.User;
 
 /**

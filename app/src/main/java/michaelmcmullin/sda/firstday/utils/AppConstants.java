@@ -17,8 +17,6 @@
 
 package michaelmcmullin.sda.firstday.utils;
 
-import android.app.Application;
-
 /**
  * A central class designed to hold internal constants that can be used throughout the app code.
  */

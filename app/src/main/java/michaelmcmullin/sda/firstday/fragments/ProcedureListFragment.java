@@ -46,6 +46,7 @@ import michaelmcmullin.sda.firstday.utils.CurrentUser;
  * Fragment that displays a list of procedures filtered appropriately.
  */
 public class ProcedureListFragment extends Fragment {
+
   /**
    * Name of the Procedure 'name' field in Firestore.
    */

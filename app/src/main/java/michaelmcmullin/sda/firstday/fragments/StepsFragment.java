@@ -29,11 +29,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import michaelmcmullin.sda.firstday.R;
 import michaelmcmullin.sda.firstday.adapters.StepAdapter;
@@ -60,32 +57,32 @@ public class StepsFragment extends Fragment {
   /**
    * Name of the procedure ID field in other collections.
    */
-  public static final String PROCEDURE_KEY = "procedure_id";
+  private static final String PROCEDURE_KEY = "procedure_id";
 
   /**
    * Name of the Step 'name' field in Firestore.
    */
-  public static final String STEP_NAME_KEY = "name";
+  private static final String STEP_NAME_KEY = "name";
 
   /**
    * Name of the Step 'description' field in Firestore.
    */
-  public static final String STEP_DESCRIPTION_KEY = "description";
+  private static final String STEP_DESCRIPTION_KEY = "description";
 
   /**
    * Name of the Step 'photo_id' field in Firestore.
    */
-  public static final String STEP_PHOTOID_KEY = "photo_id";
+  private static final String STEP_PHOTO_ID_KEY = "photo_id";
 
   /**
    * Holds a reference to the Firestore database instance.
    */
-  private FirebaseFirestore db = FirebaseFirestore.getInstance();
+  private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
   /**
    * Holds a reference to the 'step' collection in Firestore
    */
-  private CollectionReference stepCollection = db.collection("step");
+  private final CollectionReference stepCollection = db.collection("step");
 
   /**
    * A required empty public constructor.
@@ -95,32 +92,35 @@ public class StepsFragment extends Fragment {
   }
 
   /**
-   * Initilises the fragment's user interface.
-   * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment
-   * @param container If non-null, this is the parent view that the fragment's UI should be attached
-   *     to. The fragment should not add the view itself, but this can be used to generate the LayoutParams of the view.
-   * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
-   *     saved state as given here.
+   * Initialises the fragment's user interface.
+   *
+   * @param inflater The LayoutInflater object that can be used to inflate any views in the
+   *     fragment
+   * @param container If non-null, this is the parent view that the fragment's UI should be
+   *     attached to. The fragment should not add the view itself, but this can be used to generate
+   *     the LayoutParams of the view.
+   * @param savedInstanceState If non-null, this fragment is being re-constructed from a
+   *     previous saved state as given here.
    * @return Return the View for the fragment's UI, or null.
    */
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    View v = inflater.inflate(R.layout.fragment_procedure_steps, container, false);
-    return v;
+    return inflater.inflate(R.layout.fragment_procedure_steps, container, false);
   }
 
   /**
    * Called when this fragment is first attached to its context.
+   *
    * @param context The context to attach this fragment to.
    */
   @Override
   public void onAttach(Context context) {
     super.onAttach(context);
     if (context instanceof ProcedureIdGetter) {
-      procedureIdGetter = (ProcedureIdGetter)context;
-      stepsSetter = (StepsSetter)context;
+      procedureIdGetter = (ProcedureIdGetter) context;
+      stepsSetter = (StepsSetter) context;
     } else {
       throw new RuntimeException(context.toString() + " must implement ProcedureIdGetter");
     }
@@ -148,37 +148,36 @@ public class StepsFragment extends Fragment {
     Query query = stepCollection
         .whereEqualTo(PROCEDURE_KEY, procedureIdGetter.getProcedureId())
         .orderBy("sequence");
-    query.addSnapshotListener(new EventListener<QuerySnapshot>() {
-      @Override
-      public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots,
-          @javax.annotation.Nullable FirebaseFirestoreException e) {
-        if (e != null) {
-          Log.w(AppConstants.TAG, "Listen failed.", e);
-          return;
-        }
+    query.addSnapshotListener((queryDocumentSnapshots, e) -> {
+      if (e != null) {
+        Log.w(AppConstants.TAG, "Listen failed.", e);
+        return;
+      }
 
-        ArrayList<Step> steps = new ArrayList<>();
-        if (queryDocumentSnapshots != null) {
-          int sequence = 1;
-          for (DocumentSnapshot document : queryDocumentSnapshots) {
-            String name = document.getString(STEP_NAME_KEY);
-            String description = document.getString(STEP_DESCRIPTION_KEY);
-            String photoId = document.getString(STEP_PHOTOID_KEY);
-            Step step = new Step(sequence++, name, description);
-            step.setPhotoId(photoId);
-            steps.add(step);
-          }
+      ArrayList<Step> steps = new ArrayList<>();
+      if (queryDocumentSnapshots != null) {
+        int sequence = 1;
+        for (DocumentSnapshot document : queryDocumentSnapshots) {
+          String name = document.getString(STEP_NAME_KEY);
+          String description = document.getString(STEP_DESCRIPTION_KEY);
+          String photoId = document.getString(STEP_PHOTO_ID_KEY);
+          Step step = new Step(sequence++, name, description);
+          step.setPhotoId(photoId);
+          steps.add(step);
         }
+      }
 
-        // Create a StepAdapter class and tie it in with the steps list.
-        final StepAdapter adapter = new StepAdapter(getActivity(), steps, false);
+      // Create a StepAdapter class and tie it in with the steps list.
+      final StepAdapter adapter = new StepAdapter(getActivity(), steps, false);
+      View v = getView();
+      if (v != null) {
         ListView listView = getView().findViewById(R.id.list_view_steps);
         listView.setAdapter(adapter);
+      }
 
-        // Pass the steps back to the calling activity
-        if (stepsSetter != null) {
-          stepsSetter.SetSteps(steps);
-        }
+      // Pass the steps back to the calling activity
+      if (stepsSetter != null) {
+        stepsSetter.SetSteps(steps);
       }
     });
   }

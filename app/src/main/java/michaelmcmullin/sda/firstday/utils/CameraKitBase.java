@@ -17,12 +17,9 @@
 
 package michaelmcmullin.sda.firstday.utils;
 
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import com.camerakit.CameraKitView;
-import michaelmcmullin.sda.firstday.ImageReaderActivity;
-import michaelmcmullin.sda.firstday.R;
 
 /**
  * Base class to use for activities that use a CameraKitView so that boilerplate code can be kept

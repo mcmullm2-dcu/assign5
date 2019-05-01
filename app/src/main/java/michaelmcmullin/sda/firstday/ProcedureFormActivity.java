@@ -210,45 +210,42 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
       newProcedure.put("is_public", workingProcedure.isPublic());
       newProcedure.put("is_draft", workingProcedure.isDraft());
       newProcedure.put("owner", workingProcedure.getOwner().getId());
-      List<String> tags = new ArrayList<String>(workingTags);
+      List<String> tags = new ArrayList<>(workingTags);
       newProcedure.put("tags", tags);
 
       procedureCollection.add(newProcedure).addOnSuccessListener(
-          new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-              // The procedure has been added. Now add the steps.
-              String newId = documentReference.getId();
-              Log.i(AppConstants.TAG, "Procedure added, attempting to write steps.");
-              WriteBatch batch = db.batch();
-              for(Step step : workingSteps) {
-                // Add a step to Firestore batch.
-                DocumentReference doc = stepCollection.document();
-                Map<String, Object> newStep = new HashMap<>();
-                newStep.put("sequence", step.getSequence());
-                newStep.put("name", step.getName());
-                newStep.put("description", step.getDescription());
-                newStep.put("procedure_id", newId);
-                if (step.hasPhoto()) {
-                  newStep.put("photo_id", step.getPhotoId());
+          documentReference -> {
+            // The procedure has been added. Now add the steps.
+            String newId = documentReference.getId();
+            Log.i(AppConstants.TAG, "Procedure added, attempting to write steps.");
+            WriteBatch batch = db.batch();
+            for(Step step : workingSteps) {
+              // Add a step to Firestore batch.
+              DocumentReference doc = stepCollection.document();
+              Map<String, Object> newStep = new HashMap<>();
+              newStep.put("sequence", step.getSequence());
+              newStep.put("name", step.getName());
+              newStep.put("description", step.getDescription());
+              newStep.put("procedure_id", newId);
+              if (step.hasPhoto()) {
+                newStep.put("photo_id", step.getPhotoId());
 
-                  // Save the image to Firebase Storage
-                  step.setCloud(new FirebaseImageStorage());
-                  step.saveCloudPhoto();
-                }
-                batch.set(doc, newStep);
+                // Save the image to Firebase Storage
+                step.setCloud(new FirebaseImageStorage());
+                step.saveCloudPhoto();
               }
-              batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                  String format = getString(R.string.message_procedure_added);
-                  String message = String.format(format, workingProcedure.getName());
-                  Toast.makeText(ProcedureFormActivity.this, message, Toast.LENGTH_SHORT).show();
-                  ClearData();
-                  finish();
-                }
-              });
+              batch.set(doc, newStep);
             }
+            batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+              @Override
+              public void onComplete(@NonNull Task<Void> task) {
+                String format = getString(R.string.message_procedure_added);
+                String message = String.format(format, workingProcedure.getName());
+                Toast.makeText(ProcedureFormActivity.this, message, Toast.LENGTH_SHORT).show();
+                ClearData();
+                finish();
+              }
+            });
           }).addOnFailureListener(new OnFailureListener() {
         @Override
         public void onFailure(@NonNull Exception e) {
