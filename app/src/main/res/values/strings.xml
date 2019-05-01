@@ -15,17 +15,14 @@
 <resources>
   <string name="app_name">FirstDay</string>
   <string name="app_summary">Whether it\'s your first day in a new job, a new role, or covering holidays, get the instructions you need, when you need them.</string>
-  <string name="app_signin">Sign in with your Google account or email address.</string>
   <string name="button_signin">Sign in</string>
   <string name="hint_search_procedures">Search procedures</string>
   <string name="button_scan_qrcode">Scan QR Code</string>
   <string name="button_scan_image">Read Camera Image</string>
-  <string name="button_browse">Browse</string>
   <string name="button_cancel">Cancel</string>
   <string name="title_my_procedures">My Procedures:</string>
   <string name="title_steps">Steps:</string>
   <string name="title_comments">Comments (newest first):</string>
-  <string name="comment_owner_format">%s (Owner)</string>
   <string name="hint_add_comment">Write a comment</string>
   <string name="button_add_comment">Add Comment</string>
   <string name="modal_dismiss_text">Dismiss</string>
@@ -43,45 +40,23 @@
     <item>Published (Private)</item>
     <item>Published (Public)</item>
   </string-array>
-  <string name="button_back">Back</string>
-  <string name="button_add_steps">Add Steps</string>
-  <string name="button_finish">Finish</string>
   <string name="title_new_step">Add Step</string>
   <string name="button_save">Save</string>
   <string name="hint_step_name">Step Name</string>
   <string name="hint_step_description">Full Description</string>
-  <string name="title_step_position">Position</string>
-  <string name="option_step_last">After last step</string>
-  <string name="option_step_first">Before first step</string>
-  <string name="option_step_position_format">After step %d</string>
-  <string name="hint_tag_name">Tag Name</string>
   <string name="hint_add_tag">Add Tag</string>
   <string name="tags_instructions">Enter tags that users can search for to find this procedure.</string>
   <string name="menu_signout">Sign out</string>
-  <string name="menu_signin">Sign in</string>
-  <string name="menu_like">Like</string>
   <string name="menu_share">Share</string>
-  <string name="title_share">Share Procedure</string>
   <string name="description_share">Enter the email address of the person you\'d like to share this procedure with.</string>
   <string name="button_share">Share Procedure</string>
   <string name="hint_share_procedure">Email Address</string>
   <string name="subject_share_procedure">FirstDay shared a procedure with you</string>
   <string name="message_procedure_shared_see_qr">If you download the FirstDay app, you can scan the attached QR code to access this procedure directly!</string>
-  <string name="message_procedure_shared">Procedure "%s" successfully shared with %s</string>
-  <string name="message_procedure_not_shared">Problem sharing procedure with %s</string>
-  <string name="message_procedure_not_found">Sorry, can\'t find that procedure.</string>
-  <string name="message_procedure_no_access">This procedure is private. Contact its owner for access.</string>
-  <string name="message_signin_failed">Signin failed.</string>
   <string name="message_procedure_added">Procedure "%s" added successfully.</string>
-  <string name="message_step_added">Step added.</string>
   <string name="message_no_qr_code">No QR code detected.</string>
-  <string name="message_no_image_labels">No image labels detected.</string>
   <string name="error_parse_date">Error parsing Date</string>
   <string name="error_failed_adding_procedure">Error Adding Procedure</string>
   <string name="title_search_results">Search Results: \'%s\'</string>
-  <string name="no_results">No Results.</string>
   <string name="button_take_photo">Take Photo</string>
-
-  <!-- TODO: Remove or change this placeholder text -->
-  <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

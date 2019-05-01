@@ -36,8 +36,15 @@ import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler;
 import java.util.List;
 import michaelmcmullin.sda.firstday.utils.AppConstants;
 
+/**
+ * Activity for capturing an image for labelling, so a photo can be searched by attempting to
+ * interpret its contents.
+ */
 public class ImageReaderActivity extends AppCompatActivity {
 
+  /**
+   * A reference to the CameraKitView element, where the camera input is displayed.
+   */
   private CameraKitView cameraKitView;
 
   @Override
