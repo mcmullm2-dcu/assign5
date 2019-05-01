@@ -19,24 +19,21 @@ package michaelmcmullin.sda.firstday;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.support.v4.util.Consumer;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.util.Consumer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import com.camerakit.CameraKitView;
 import michaelmcmullin.sda.firstday.interfaces.services.QrService;
-import michaelmcmullin.sda.firstday.services.FirebaseQr;
 import michaelmcmullin.sda.firstday.services.Services;
 import michaelmcmullin.sda.firstday.utils.AppConstants;
+import michaelmcmullin.sda.firstday.utils.CameraKitBase;
 
-public class QrReaderActivity extends AppCompatActivity {
-
-  /**
-   * A reference to the CameraKitView element, where the camera input is displayed.
-   */
-  private CameraKitView cameraKitView;
+/**
+ * Activity for capturing an image for QR code recognition.
+ */
+public class QrReaderActivity extends CameraKitBase {
 
   /**
    * The service to use for QR codes
@@ -59,15 +56,16 @@ public class QrReaderActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_qr_reader);
-    cameraKitView = findViewById(R.id.camera);
+    SetCameraKitView(findViewById(R.id.camera));
   }
 
   /**
    * Handler for pressing the 'Scan QR Code' button.
-   * @param v
+   *
+   * @param v The button that was pressed to trigger this handler.
    */
   public void takePhoto(View v) {
-    cameraKitView.captureImage(new CameraKitView.ImageCallback() {
+    GetCameraKitView().captureImage(new CameraKitView.ImageCallback() {
       @Override
       public void onImage(CameraKitView cameraKitView, final byte[] capturedImage) {
         // Sets up the consumer method that responds to the return value from the QR reading service.
@@ -79,7 +77,7 @@ public class QrReaderActivity extends AppCompatActivity {
         // allowing the service to operate asynchronously, as many Firebase services do.
         Consumer<String> consumer = (x) -> returnIntent(x);
 
-        // capturedImage contains the image from the CameraKitView.
+        // capturedImage contains the image from the CameraKitView. Use the app's QrService to read it.
         qr.ReadQrCode(
             BitmapFactory.decodeByteArray(capturedImage, 0, capturedImage.length),
             consumer,
@@ -90,40 +88,8 @@ public class QrReaderActivity extends AppCompatActivity {
   }
 
   /**
-   * Utility function to take a captured image and interpret any QR Code present
-   * @param bitmap
-   * @return
-   */
-  /* public void readQrCode(Bitmap bitmap) {
-    String code = null;
-    FirebaseVisionBarcodeDetectorOptions options =
-        new FirebaseVisionBarcodeDetectorOptions.Builder()
-            .setBarcodeFormats(FirebaseVisionBarcode.FORMAT_QR_CODE)
-            .build();
-    FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
-    FirebaseVisionBarcodeDetector detector = FirebaseVision.getInstance()
-        .getVisionBarcodeDetector(options);
-    Task<List<FirebaseVisionBarcode>> barcodeResult = detector.detectInImage(image)
-        .addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionBarcode>>() {
-          @Override
-          public void onSuccess(List<FirebaseVisionBarcode> barcodes) {
-            if (barcodes != null && barcodes.size() > 0) {
-              returnIntent(barcodes.get(0).getRawValue());
-            } else {
-              returnIntent(getString(R.string.message_no_qr_code));
-            }
-          }
-        })
-        .addOnFailureListener(new OnFailureListener() {
-          @Override
-          public void onFailure(@NonNull Exception e) {
-            returnIntent(getString(R.string.message_no_qr_code));
-          }
-        });
-  } */
-
-  /**
    * Method called when the camera image has been processed.
+   *
    * @param value The value picked up by the QR reading service.
    */
   protected void returnIntent(String value) {
@@ -139,55 +105,5 @@ public class QrReaderActivity extends AppCompatActivity {
       Toast.makeText(this, value, Toast.LENGTH_SHORT).show();
       finish();
     }
-  }
-
-  /**
-   * Overrides the standard Activity.onStart() method to ensure the correct initialisation of the
-   * CameraKitView.
-   */
-  @Override
-  protected void onStart() {
-    super.onStart();
-    cameraKitView.onStart();
-  }
-
-  /**
-   * Overrides the standard Activity.onResume() method to ensure the correct initialisation of the
-   * CameraKitView.
-   */
-  @Override
-  protected void onResume() {
-    super.onResume();
-    cameraKitView.onResume();
-  }
-
-  /**
-   * Overrides the standard Activity.onPause() method to ensure the correct initialisation of the
-   * CameraKitView.
-   */
-  @Override
-  protected void onPause() {
-    cameraKitView.onPause();
-    super.onPause();
-  }
-
-  /**
-   * Overrides the standard Activity.onStop() method to ensure the correct initialisation of the
-   * CameraKitView.
-   */
-  @Override
-  protected void onStop() {
-    cameraKitView.onStop();
-    super.onStop();
-  }
-
-  /**
-   * Overrides the standard Activity.onRequestPermissionsResult() method to ensure the correct
-   * initialisation of the CameraKitView.
-   */
-  @Override
-  public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    cameraKitView.onRequestPermissionsResult(requestCode, permissions, grantResults);
   }
 }
