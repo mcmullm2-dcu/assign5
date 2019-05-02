@@ -22,27 +22,29 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v4.util.Consumer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import java.util.ArrayList;
 import michaelmcmullin.sda.firstday.R;
 import michaelmcmullin.sda.firstday.adapters.StepAdapter;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureIdGetter;
 import michaelmcmullin.sda.firstday.interfaces.StepsSetter;
+import michaelmcmullin.sda.firstday.interfaces.services.StepService;
 import michaelmcmullin.sda.firstday.models.Step;
-import michaelmcmullin.sda.firstday.utils.AppConstants;
+import michaelmcmullin.sda.firstday.services.Services;
 
 /**
  * Fragment that displays the steps involved in a procedure.
  */
 public class StepsFragment extends Fragment {
+
+  /**
+   * Service used to handle {@link Step} data.
+   */
+  private final StepService StepService = Services.StepService;
 
   /**
    * This is used to get the procedure Id from the calling activity.
@@ -53,36 +55,6 @@ public class StepsFragment extends Fragment {
    * Used to pass a list of steps back to the calling activity.
    */
   private StepsSetter stepsSetter;
-
-  /**
-   * Name of the procedure ID field in other collections.
-   */
-  private static final String PROCEDURE_KEY = "procedure_id";
-
-  /**
-   * Name of the Step 'name' field in Firestore.
-   */
-  private static final String STEP_NAME_KEY = "name";
-
-  /**
-   * Name of the Step 'description' field in Firestore.
-   */
-  private static final String STEP_DESCRIPTION_KEY = "description";
-
-  /**
-   * Name of the Step 'photo_id' field in Firestore.
-   */
-  private static final String STEP_PHOTO_ID_KEY = "photo_id";
-
-  /**
-   * Holds a reference to the Firestore database instance.
-   */
-  private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-  /**
-   * Holds a reference to the 'step' collection in Firestore
-   */
-  private final CollectionReference stepCollection = db.collection("step");
 
   /**
    * A required empty public constructor.
@@ -142,43 +114,32 @@ public class StepsFragment extends Fragment {
   public void onStart() {
     super.onStart();
 
-    // Populate steps from Firestore
-    // Based on code from StackOverflow https://stackoverflow.com/a/48807510/5233918
-    // Author Alex Mamo https://stackoverflow.com/users/5246885/alex-mamo
-    Query query = stepCollection
-        .whereEqualTo(PROCEDURE_KEY, procedureIdGetter.getProcedureId())
-        .orderBy("sequence");
-    query.addSnapshotListener((queryDocumentSnapshots, e) -> {
-      if (e != null) {
-        Log.w(AppConstants.TAG, "Listen failed.", e);
-        return;
-      }
+    // Get the requested steps
+    Consumer<ArrayList<Step>> consumer = this::ProcessSteps;
+    StepService.GetSteps(
+        procedureIdGetter.getProcedureId(),
+        consumer,
+        getString(R.string.error_finding_steps)
+    );
+  }
 
-      ArrayList<Step> steps = new ArrayList<>();
-      if (queryDocumentSnapshots != null) {
-        int sequence = 1;
-        for (DocumentSnapshot document : queryDocumentSnapshots) {
-          String name = document.getString(STEP_NAME_KEY);
-          String description = document.getString(STEP_DESCRIPTION_KEY);
-          String photoId = document.getString(STEP_PHOTO_ID_KEY);
-          Step step = new Step(sequence++, name, description);
-          step.setPhotoId(photoId);
-          steps.add(step);
-        }
-      }
+  /**
+   * Process the steps returned from the data service.
+   *
+   * @param steps The list of steps to process.
+   */
+  private void ProcessSteps(ArrayList<Step> steps) {
+    // Create a StepAdapter class and tie it in with the steps list.
+    final StepAdapter adapter = new StepAdapter(getActivity(), steps, false);
+    View v = getView();
+    if (v != null) {
+      ListView listView = getView().findViewById(R.id.list_view_steps);
+      listView.setAdapter(adapter);
+    }
 
-      // Create a StepAdapter class and tie it in with the steps list.
-      final StepAdapter adapter = new StepAdapter(getActivity(), steps, false);
-      View v = getView();
-      if (v != null) {
-        ListView listView = getView().findViewById(R.id.list_view_steps);
-        listView.setAdapter(adapter);
-      }
-
-      // Pass the steps back to the calling activity
-      if (stepsSetter != null) {
-        stepsSetter.SetSteps(steps);
-      }
-    });
+    // Pass the steps back to the calling activity
+    if (stepsSetter != null) {
+      stepsSetter.SetSteps(steps);
+    }
   }
 }

@@ -20,7 +20,9 @@ package michaelmcmullin.sda.firstday.services;
 import michaelmcmullin.sda.firstday.interfaces.services.ImageLabelService;
 import michaelmcmullin.sda.firstday.interfaces.services.ProcedureService;
 import michaelmcmullin.sda.firstday.interfaces.services.QrService;
+import michaelmcmullin.sda.firstday.interfaces.services.StepService;
 import michaelmcmullin.sda.firstday.models.Procedure;
+import michaelmcmullin.sda.firstday.models.Step;
 
 /**
  * Class to store default services in one location to simplify updates.
@@ -41,4 +43,9 @@ public class Services {
    * Service used for handling {@link Procedure} data.
    */
   public static ProcedureService ProcedureService = new FirestoreProcedure();
+
+  /**
+   * Service used for handling {@link Step} data.
+   */
+  public static StepService StepService = new FirestoreStep();
 }

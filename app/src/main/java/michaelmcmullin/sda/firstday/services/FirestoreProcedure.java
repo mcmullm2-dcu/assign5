@@ -39,6 +39,7 @@ public class FirestoreProcedure implements ProcedureService {
   @Override
   public void FindProcedure(String procedureId, Consumer<Procedure> consumer, String error) {
     DocumentReference procedureDoc = db.collection("procedure").document(procedureId);
+
     // Gets the main procedure details. Adding a Snapshot listener seems like it might be overkill,
     // so this assumes the procedure isn't going to be continually updated as users are watching it.
     // The snapshot listeners will be more appropriate for, say, the comments section.
