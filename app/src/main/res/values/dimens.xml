@@ -24,4 +24,8 @@
 
   <!-- Image sizes -->
   <dimen name="profile_image">48dp</dimen>
+
+  <!-- Layout Weights -->
+  <dimen name="golden_proportion_a">1.6</dimen>
+  <dimen name="golden_proportion_b">1</dimen>
 </resources>

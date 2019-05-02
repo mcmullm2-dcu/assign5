@@ -18,6 +18,7 @@
   <color name="colorPrimaryDark">#1b5e20</color>
   <color name="colorAccent">#9b27b0</color>
   <color name="colorMuted">#cccccc</color>
+  <color name="colorLightBackground">#ddffd9</color>
   <color name="colorNeutral">#666666</color>
   <color name="colorWhite">#ffffff</color>
 </resources>
