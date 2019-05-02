@@ -11,6 +11,7 @@ stability and reliability of photo and video capture on all Android devices.
 * [Glide](https://github.com/bumptech/glide): An image loading and caching library for Android focused on smooth scrolling.
 * [AndroidTagGroup](https://github.com/2dxgujun/AndroidTagGroup): An Android Tag Group widget.
 * [QRGen](https://github.com/kenglxn/QRGen): A simple QRCode generation API for Java built on top [ZXING](https://github.com/zxing/zxing).
+* [Swipe to Dismiss Undo](https://github.com/hudomju/android-swipe-to-dismiss-undo): Library to make the items in a ListView or RecyclerView dismissable with the possibility to undo it.
 
 StackOverflow provided some helpful code snippets, which are licensed under CC BY-SA 3.0 (Creative Commons Attribution-ShareAlike 3.0 Unported). These are attributed throughout the code with links to the relevant answers. Some notable examples include:
 

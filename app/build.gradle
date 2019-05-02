@@ -76,12 +76,10 @@ dependencies {
        Apache 2.0 license */
     implementation 'me.gujun.android.taggroup:library:1.4@aar'
 
-    /* Lifecycle/Architecture Components dependencies
-       https://developer.android.com/topic/libraries/architecture
-       Proprietary with Apache 2.0 code samples. */
-    /* def lifecycle_version = "1.1.1"
-    implementation "android.arch.lifecycle:extensions:$lifecycle_version"
-    annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version" */
+    /* Android Swipe to Dismiss Undo
+       https://github.com/hudomju/android-swipe-to-dismiss-undo
+       MIT license. */
+    implementation 'com.hudomju:swipe-to-dismiss-undo:1.0'
 
     /* QRGen
        https://github.com/kenglxn/QRGen
