@@ -18,7 +18,9 @@
 package michaelmcmullin.sda.firstday.services;
 
 import michaelmcmullin.sda.firstday.interfaces.services.ImageLabelService;
+import michaelmcmullin.sda.firstday.interfaces.services.ProcedureService;
 import michaelmcmullin.sda.firstday.interfaces.services.QrService;
+import michaelmcmullin.sda.firstday.models.Procedure;
 
 /**
  * Class to store default services in one location to simplify updates.
@@ -34,4 +36,9 @@ public class Services {
    * Service used for labelling a Bitmap image.
    */
   public static ImageLabelService ImageLabelService = new FirebaseImageLabeller();
+
+  /**
+   * Service used for handling {@link Procedure} data.
+   */
+  public static ProcedureService ProcedureService = new FirestoreProcedure();
 }

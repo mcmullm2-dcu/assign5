@@ -26,7 +26,7 @@ import android.support.v4.util.Consumer;
 public interface QrService {
 
   /**
-   * Reads a QR code from a supplied Bitmap image passes it to another method.
+   * Reads a QR code from a supplied Bitmap image passes it to a consumer method.
    *
    * @param image The source image to read the QR code from.
    * @param consumer The method to call with the resulting String.
