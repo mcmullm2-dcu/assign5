@@ -86,7 +86,9 @@ public class FirestoreProcedure implements ProcedureService {
   public void ListProcedures(ProcedureFilter filter, String search,
       Consumer<ArrayList<Procedure>> consumer, String error) {
     Query query = GetQuery(filter, search);
+
     if (query == null) {
+      Log.w(AppConstants.TAG, "Procedure query is null.");
       return;
     }
 
@@ -108,10 +110,10 @@ public class FirestoreProcedure implements ProcedureService {
 
           procedures.add(procedure);
         }
+
+        consumer.accept(procedures);
       }
     });
-
-    consumer.accept(procedures);
   }
 
   /**

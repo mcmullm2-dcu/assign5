@@ -24,6 +24,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Consumer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ import michaelmcmullin.sda.firstday.interfaces.Searchable;
 import michaelmcmullin.sda.firstday.interfaces.services.ProcedureService;
 import michaelmcmullin.sda.firstday.models.Procedure;
 import michaelmcmullin.sda.firstday.services.Services;
+import michaelmcmullin.sda.firstday.utils.AppConstants;
 
 /**
  * Fragment that displays a list of procedures filtered appropriately.
@@ -148,6 +150,7 @@ public class ProcedureListFragment extends Fragment {
   private void ProcessList(ArrayList<Procedure> procedures) {
     // Create a ProcedureAdapter class and tie it in with the procedures list.
     final ProcedureAdapter adapter = new ProcedureAdapter(getActivity(), procedures);
+
     View v = getView();
     if (v != null) {
       ListView listView = getView().findViewById(R.id.list_view_procedures);
