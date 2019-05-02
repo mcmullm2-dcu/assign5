@@ -38,11 +38,17 @@ public class SearchResultsActivity extends AppCompatActivity
     implements ProcedureFilterGetter, Searchable {
 
   /**
-   * The term to search for.
+   * The original term the user is searching for, before it's been processed.
    */
-  private String searchTerm;
+  private String originalSearchTerm;
 
-
+  /**
+   * Called when {@link SearchResultsActivity} is started, initialising the Activity and inflating the
+   * appropriate XML layout.
+   *
+   * @param savedInstanceState Used if this Activity is re-initialised, where it contains the
+   *     most recently available data (or null).
+   */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -50,8 +56,12 @@ public class SearchResultsActivity extends AppCompatActivity
 
     // Set activity title to include the search term.
     TextView title = findViewById(R.id.search_results_title);
+    String term = getSearchTerm();
+    if (originalSearchTerm != null) {
+      term = originalSearchTerm;
+    }
     String titleFormat = getString(R.string.title_search_results);
-    title.setText(String.format(titleFormat, searchTerm));
+    title.setText(String.format(titleFormat, term));
 
     // Add back button
     ActionBar actionBar = getSupportActionBar();
@@ -110,16 +120,20 @@ public class SearchResultsActivity extends AppCompatActivity
   public String getSearchTerm() {
     Intent intent = getIntent();
     if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-      searchTerm = intent.getStringExtra(SearchManager.QUERY).trim().toLowerCase();
+      String searchTerm = intent.getStringExtra(SearchManager.QUERY).trim();
+
+      originalSearchTerm = searchTerm;
 
       // Firestore has a limitation which means an array of search terms or wildcards can't be used.
       // As a workaround, split the search term and just search for the first word.
-      String[] terms = searchTerm.split(" ", 2);
+      String[] terms = searchTerm.toLowerCase().split(" ", 2);
       if (terms.length > 0) {
         searchTerm = terms[0];
       }
+
+      return searchTerm;
     }
 
-    return searchTerm;
+    return null;
   }
 }
