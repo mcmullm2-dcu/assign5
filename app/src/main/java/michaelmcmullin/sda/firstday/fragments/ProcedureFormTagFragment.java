@@ -132,7 +132,12 @@ public class ProcedureFormTagFragment extends Fragment implements GetterSetter<S
   public void SetData() {
     Set<String> data = new HashSet<>();
     if (tagGroup != null) {
-      Collections.addAll(data, tagGroup.getTags());
+      String[] startTags = tagGroup.getTags();
+      String[] lowerTags = new String[startTags.length];
+      for (int i=0; i < startTags.length; i++) {
+        lowerTags[i] = startTags[i].toLowerCase();
+      }
+      Collections.addAll(data, lowerTags);
     }
     procedureStorer.StoreTags(data);
   }
