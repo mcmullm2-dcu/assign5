@@ -23,24 +23,20 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v4.util.Consumer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import java.util.ArrayList;
 import michaelmcmullin.sda.firstday.ProcedureActivity;
 import michaelmcmullin.sda.firstday.R;
 import michaelmcmullin.sda.firstday.adapters.ProcedureAdapter;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureFilterGetter;
 import michaelmcmullin.sda.firstday.interfaces.Searchable;
+import michaelmcmullin.sda.firstday.interfaces.services.ProcedureService;
 import michaelmcmullin.sda.firstday.models.Procedure;
-import michaelmcmullin.sda.firstday.utils.AppConstants;
-import michaelmcmullin.sda.firstday.utils.CurrentUser;
+import michaelmcmullin.sda.firstday.services.Services;
 
 /**
  * Fragment that displays a list of procedures filtered appropriately.
@@ -48,14 +44,9 @@ import michaelmcmullin.sda.firstday.utils.CurrentUser;
 public class ProcedureListFragment extends Fragment {
 
   /**
-   * Name of the Procedure 'name' field in Firestore.
+   * Service used to handle {@link Procedure} data.
    */
-  private static final String PROCEDURE_NAME_KEY = "name";
-
-  /**
-   * Name of the Procedure 'description' field in Firestore.
-   */
-  private static final String PROCEDURE_DESCRIPTION_KEY = "description";
+  private final ProcedureService ProcedureService = Services.ProcedureService;
 
   /**
    * This is used to get the procedure Id from the calling activity.
@@ -67,21 +58,6 @@ public class ProcedureListFragment extends Fragment {
    * term.
    */
   private Searchable searchable;
-
-  /**
-   * Holds a reference to the Firestore database instance.
-   */
-  private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-  /**
-   * Holds a reference to the 'procedure' collection in Firestore
-   */
-  private final CollectionReference procedureCollection = db.collection("procedure");
-
-  /**
-   * The query to filter procedures by.
-   */
-  private Query query;
 
   /**
    * A required empty public constructor.
@@ -124,7 +100,6 @@ public class ProcedureListFragment extends Fragment {
 
     if (context instanceof ProcedureFilterGetter) {
       procedureFilterGetter = (ProcedureFilterGetter) context;
-      setQuery();
     } else {
       throw new RuntimeException(context.toString() + " must implement ProcedureFilterGetter");
     }
@@ -139,38 +114,6 @@ public class ProcedureListFragment extends Fragment {
     procedureFilterGetter = null;
   }
 
-  /**
-   * Sets the query with appropriate filters.
-   */
-  private void setQuery() {
-    if (procedureFilterGetter == null) {
-      return;
-    }
-
-    CurrentUser user = new CurrentUser();
-
-    switch (procedureFilterGetter.getFilter()) {
-      case MINE:
-        if (user.getUserId() != null && !user.getUserId().isEmpty()) {
-          query = procedureCollection.whereEqualTo("owner", user.getUserId()).orderBy("name");
-        }
-        break;
-      case SEARCH_RESULTS:
-        if (searchable == null) {
-          throw new RuntimeException("Searchable interface has not been implemented");
-        }
-        String searchTerm = searchable.getSearchTerm();
-        query = procedureCollection.whereArrayContains("tags", searchTerm).orderBy("name");
-        break;
-      case PUBLIC:
-        query = procedureCollection
-            .whereEqualTo("is_public", true).orderBy("name");
-        break;
-      // TODO: Populate other query filters
-      default:
-        break;
-    }
-  }
 
   /**
    * Use the onStart method to populate the list view.
@@ -179,52 +122,44 @@ public class ProcedureListFragment extends Fragment {
   public void onStart() {
     super.onStart();
 
-    // Only run a query if it exists
-    if (query == null) {
-      return;
-    }
-
-    // Don't run a search query if there's nothing to search for
-    if (searchable != null
-        && (searchable.getSearchTerm() == null || searchable.getSearchTerm().isEmpty())) {
-      return;
-    }
-
-    // Fetch the procedures that apply to the filtered query
-    query.addSnapshotListener((queryDocumentSnapshots, e) -> {
-      if (e != null) {
-        Log.w(AppConstants.TAG, "Listen failed.", e);
+    String search = null;
+    if (searchable != null) {
+      search = searchable.getSearchTerm();
+      if (search == null || search.isEmpty()) {
         return;
       }
+    }
 
-      final ArrayList<Procedure> procedures = new ArrayList<>();
-      if (queryDocumentSnapshots != null) {
-        int sequence = 1;
-        for (DocumentSnapshot document : queryDocumentSnapshots) {
-          String name = document.getString(PROCEDURE_NAME_KEY);
-          String description = document.getString(PROCEDURE_DESCRIPTION_KEY);
-          Procedure procedure = new Procedure(name, description);
-          procedure.setId(document.getId());
+    // Get procedure data
+    Consumer<ArrayList<Procedure>> consumer = this::ProcessList;
+    ProcedureService.ListProcedures(
+        procedureFilterGetter.getFilter(),
+        search,
+        consumer,
+        getString(R.string.error_listing_procedures)
+    );
+  }
 
-          procedures.add(procedure);
-        }
-      }
+  /**
+   * Display the list of procedures.
+   *
+   * @param procedures The list of procedures to display.
+   */
+  private void ProcessList(ArrayList<Procedure> procedures) {
+    // Create a ProcedureAdapter class and tie it in with the procedures list.
+    final ProcedureAdapter adapter = new ProcedureAdapter(getActivity(), procedures);
+    View v = getView();
+    if (v != null) {
+      ListView listView = getView().findViewById(R.id.list_view_procedures);
+      listView.setAdapter(adapter);
 
-      // Create a ProcedureAdapter class and tie it in with the procedures list.
-      final ProcedureAdapter adapter = new ProcedureAdapter(getActivity(), procedures);
-      View v = getView();
-      if (v != null) {
-        ListView listView = getView().findViewById(R.id.list_view_procedures);
-        listView.setAdapter(adapter);
-
-        // Add click event listener to each procedure to open up its details
-        listView.setOnItemClickListener((adapterView, view, i, l) -> {
-          Procedure clicked = procedures.get(i);
-          Intent procedureIntent = new Intent(getActivity(), ProcedureActivity.class);
-          procedureIntent.putExtra(ProcedureActivity.EXTRA_ID, clicked.getId());
-          startActivity(procedureIntent);
-        });
-      }
-    });
+      // Add click event listener to each procedure to open up its details
+      listView.setOnItemClickListener((adapterView, view, i, l) -> {
+        Procedure clicked = procedures.get(i);
+        Intent procedureIntent = new Intent(getActivity(), ProcedureActivity.class);
+        procedureIntent.putExtra(ProcedureActivity.EXTRA_ID, clicked.getId());
+        startActivity(procedureIntent);
+      });
+    }
   }
 }

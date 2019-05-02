@@ -59,6 +59,7 @@
   <string name="error_parse_date">Error parsing Date</string>
   <string name="error_failed_adding_procedure">Error Adding Procedure</string>
   <string name="error_finding_procedure">Error finding procedure</string>
+  <string name="error_listing_procedures">Error finding procedures</string>
   <string name="error_finding_steps">Error finding steps</string>
   <string name="error_finding_comments">Error finding comments</string>
   <string name="title_search_results">Search Results: \'%s\'</string>
