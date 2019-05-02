@@ -16,9 +16,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto">
   <item
-    android:id="@+id/menuitem_log_out"
+    android:id="@+id/menu_item_log_out"
     android:icon="@drawable/ic_log_out_icon"
-    android:title="@string/menu_signout"
+    android:title="@string/menu_sign_out"
     app:showAsAction="never">
   </item>
 </menu>

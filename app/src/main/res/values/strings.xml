@@ -15,9 +15,9 @@
 <resources>
   <string name="app_name">FirstDay</string>
   <string name="app_summary">Whether it\'s your first day in a new job, a new role, or covering holidays, get the instructions you need, when you need them.</string>
-  <string name="button_signin">Sign in</string>
+  <string name="button_sign_in">Sign in</string>
   <string name="hint_search_procedures">Search procedures</string>
-  <string name="button_scan_qrcode">Scan QR Code</string>
+  <string name="button_scan_qr_code">Scan QR Code</string>
   <string name="button_scan_image">Read Camera Image</string>
   <string name="button_cancel">Cancel</string>
   <string name="title_my_procedures">My Procedures:</string>
@@ -46,8 +46,9 @@
   <string name="hint_step_description">Full Description</string>
   <string name="hint_add_tag">Add Tag</string>
   <string name="tags_instructions">Enter tags that users can search for to find this procedure.</string>
-  <string name="menu_signout">Sign out</string>
+  <string name="menu_sign_out">Sign out</string>
   <string name="menu_share">Share</string>
+  <string name="menu_comment">Comment</string>
   <string name="description_share">Enter the email address of the person you\'d like to share this procedure with.</string>
   <string name="button_share">Share Procedure</string>
   <string name="hint_share_procedure">Email Address</string>

@@ -17,24 +17,20 @@
 
 package michaelmcmullin.sda.firstday.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.util.Consumer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
 import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import michaelmcmullin.sda.firstday.R;
 import michaelmcmullin.sda.firstday.adapters.CommentAdapter;
-import michaelmcmullin.sda.firstday.dialogs.AddCommentDialogFragment;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureIdGetter;
 import michaelmcmullin.sda.firstday.interfaces.services.CommentService;
 import michaelmcmullin.sda.firstday.models.Comment;
@@ -77,18 +73,7 @@ public class CommentsFragment extends Fragment {
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    View v = inflater.inflate(R.layout.fragment_procedure_comments, container, false);
-    ImageView addCommentButton = v.findViewById(R.id.button_add_comment);
-    addCommentButton.setOnClickListener(view -> {
-      Activity activity = getActivity();
-      if (activity != null) {
-        FragmentManager fm = getActivity().getSupportFragmentManager();
-        AddCommentDialogFragment commentDialog = AddCommentDialogFragment
-            .newInstance(procedureIdGetter.getProcedureId());
-        commentDialog.show(fm, "dialog_add_comment");
-      }
-    });
-    return v;
+    return inflater.inflate(R.layout.fragment_procedure_comments, container, false);
   }
 
   /**

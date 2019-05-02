@@ -27,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import java.util.List;
+import michaelmcmullin.sda.firstday.dialogs.AddCommentDialogFragment;
 import michaelmcmullin.sda.firstday.dialogs.ProcedureShareDialogFragment;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureGetter;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureIdGetter;
@@ -124,16 +125,22 @@ public class ProcedureActivity extends AppCompatActivity implements ProcedureIdG
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
-      case R.id.menuitem_share:
+      case R.id.menu_item_share:
         // Find the Procedure and Steps and pass them to the dialog.
         FragmentManager fm = getSupportFragmentManager();
         ProcedureShareDialogFragment shareDialog = ProcedureShareDialogFragment
             .newInstance(getProcedure(), steps);
         shareDialog.show(fm, "dialog_share_procedure");
         return true;
-      case R.id.menuitem_log_out:
+      case R.id.menu_item_log_out:
         CurrentUser user = new CurrentUser();
         user.logOut(this);
+        return true;
+      case R.id.menu_item_comment:
+        FragmentManager fmComment = getSupportFragmentManager();
+        AddCommentDialogFragment commentDialog = AddCommentDialogFragment
+            .newInstance(getProcedureId());
+        commentDialog.show(fmComment, "dialog_add_comment");
         return true;
     }
     return false;

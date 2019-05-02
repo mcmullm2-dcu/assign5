@@ -43,7 +43,7 @@
         android:id="@+id/launch_qr_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_scan_qrcode"
+        android:text="@string/button_scan_qr_code"
         android:onClick="TakeQrCodePhoto"/>
 
       <Button

@@ -93,7 +93,7 @@ public class SearchResultsActivity extends AppCompatActivity
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
-      case R.id.menuitem_log_out:
+      case R.id.menu_item_log_out:
         CurrentUser user = new CurrentUser();
         user.logOut(this);
         return true;

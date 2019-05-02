@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements ProcedureFilterGe
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
-      case R.id.menuitem_log_out:
+      case R.id.menu_item_log_out:
         user.logOut(this);
         return true;
     }
