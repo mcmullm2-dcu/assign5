@@ -76,11 +76,6 @@ dependencies {
        Apache 2.0 license */
     implementation 'me.gujun.android.taggroup:library:1.4@aar'
 
-    /* Android Swipe to Dismiss Undo
-       https://github.com/hudomju/android-swipe-to-dismiss-undo
-       MIT license. */
-    implementation 'com.hudomju:swipe-to-dismiss-undo:1.0'
-
     /* QRGen
        https://github.com/kenglxn/QRGen
        Apache 2.0 license
