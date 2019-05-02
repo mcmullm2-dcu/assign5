@@ -7,9 +7,15 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.WriteBatch;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import michaelmcmullin.sda.firstday.interfaces.services.ProcedureService;
 import michaelmcmullin.sda.firstday.models.Procedure;
+import michaelmcmullin.sda.firstday.models.Step;
 import michaelmcmullin.sda.firstday.utils.AppConstants;
 import michaelmcmullin.sda.firstday.utils.CurrentUser;
 import michaelmcmullin.sda.firstday.utils.ProcedureFilter;
@@ -38,6 +44,11 @@ public class FirestoreProcedure implements ProcedureService {
    * Holds a reference to the 'procedure' collection in Firestore
    */
   private final CollectionReference procedureCollection = db.collection("procedure");
+
+  /**
+   * Holds a reference to the 'step' collection in Firestore
+   */
+  private final CollectionReference stepCollection = db.collection("step");
 
   /**
    * Finds a {@link Procedure} with a given ID and passes it to a consumer method.
@@ -113,6 +124,60 @@ public class FirestoreProcedure implements ProcedureService {
 
         consumer.accept(procedures);
       }
+    });
+  }
+
+  /**
+   * Adds a new procedure along with all its steps and tags to the database, before calling a given
+   * function.
+   *
+   * @param procedure The {@link Procedure} to save to a database.
+   * @param steps A list of {@link Step} objects to save to the database.
+   * @param tags A list of tag strings to save to the database.
+   * @param consumer A method to call after the {@link Procedure} has been added, taking a
+   *     success argument.
+   * @param error An error message to process if there is an error.
+   */
+  @Override
+  public void AddProcedure(Procedure procedure, List<Step> steps, List<String> tags,
+      Consumer<Boolean> consumer, String error) {
+    Map<String, Object> newProcedure = new HashMap<>();
+    newProcedure.put("name", procedure.getName());
+    newProcedure.put("description", procedure.getDescription());
+    newProcedure.put("created", new Date());
+    newProcedure.put("is_public", procedure.isPublic());
+    newProcedure.put("is_draft", procedure.isDraft());
+    newProcedure.put("owner", procedure.getOwner().getId());
+    List<String> tagList = new ArrayList<>(tags);
+    newProcedure.put("tags", tagList);
+
+    procedureCollection.add(newProcedure).addOnSuccessListener(
+        documentReference -> {
+          // The procedure has been added. Now add the steps.
+          String newId = documentReference.getId();
+          Log.i(AppConstants.TAG, "Procedure added, attempting to write steps.");
+          WriteBatch batch = db.batch();
+          for (Step step : steps) {
+            // Add a step to Firestore batch.
+            DocumentReference doc = stepCollection.document();
+            Map<String, Object> newStep = new HashMap<>();
+            newStep.put("sequence", step.getSequence());
+            newStep.put("name", step.getName());
+            newStep.put("description", step.getDescription());
+            newStep.put("procedure_id", newId);
+            if (step.hasPhoto()) {
+              newStep.put("photo_id", step.getPhotoId());
+
+              // Save the image to Firebase Storage
+              step.setCloud(new FirebaseImageStorage());
+              step.saveCloudPhoto();
+            }
+            batch.set(doc, newStep);
+          }
+          batch.commit().addOnCompleteListener(task -> consumer.accept(true));
+        }).addOnFailureListener(e -> {
+      Log.w(AppConstants.TAG, error);
+      consumer.accept(false);
     });
   }
 

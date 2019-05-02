@@ -18,100 +18,78 @@
 package michaelmcmullin.sda.firstday;
 
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.design.widget.TabLayout.Tab;
+import android.support.v4.app.Fragment;
+import android.support.v4.util.Consumer;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.WriteBatch;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 import michaelmcmullin.sda.firstday.adapters.ProcedureFormAdapter;
 import michaelmcmullin.sda.firstday.interfaces.GetterSetter;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureStorer;
+import michaelmcmullin.sda.firstday.interfaces.services.ProcedureService;
 import michaelmcmullin.sda.firstday.models.Procedure;
 import michaelmcmullin.sda.firstday.models.Step;
 import michaelmcmullin.sda.firstday.models.User;
-import michaelmcmullin.sda.firstday.services.FirebaseImageStorage;
+import michaelmcmullin.sda.firstday.services.Services;
 import michaelmcmullin.sda.firstday.utils.AppConstants;
 import michaelmcmullin.sda.firstday.utils.CurrentUser;
 
 public class ProcedureFormActivity extends AppCompatActivity implements ProcedureStorer {
 
+  /**
+   * Service that handles {@link Procedure} data.
+   */
+  private final ProcedureService ProcedureService = Services.ProcedureService;
+
   // Indices to each tab
   private final int MAIN_TAB_INDEX = 0;
   private final int STEPS_TAB_INDEX = MAIN_TAB_INDEX + 1;
-  private final int TAGS_TAB_INDEX = STEPS_TAB_INDEX + 1;
-
-  /**
-   * The names of each tab
-   */
-  String[] tabTitles;
 
   /**
    * The layout that contains the tabs themselves.
    */
-  TabLayout tabLayout;
+  private TabLayout tabLayout;
 
   /**
    * An instance of this app's shared preferences.
    */
-  SharedPreferences prefs;
+  private SharedPreferences prefs;
 
   /**
    * Stores a working Procedure instance that will eventually get saved to Firestore.
    */
-  Procedure workingProcedure;
+  private Procedure workingProcedure;
 
   /**
    * Stores a working list of Step instances that will eventually get saved to Firestore.
    */
-  ArrayList<Step> workingSteps;
+  private ArrayList<Step> workingSteps;
 
   /**
    * Stores a working set of tag strings that will eventually get saved to Firestore.
    */
-  HashSet<String> workingTags;
+  private HashSet<String> workingTags;
 
   /**
    * A list of tab content accessors.
    */
-  ArrayList<GetterSetter> workingTabs;
-
-  /**
-   * Holds a reference to the Firestore database instance.
-   */
-  private FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-  /**
-   * Holds a reference to the 'procedure' collection in Firestore
-   */
-  private CollectionReference procedureCollection = db.collection("procedure");
-
-  /**
-   * Holds a reference to the 'step' collection in Firestore
-   */
-  private CollectionReference stepCollection = db.collection("step");
+  private ArrayList<GetterSetter> workingTabs;
 
   /**
    * Called when {@link ProcedureFormActivity} is started, initialising the Activity and inflating
@@ -130,14 +108,18 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
     // Set up toolbar and set a 'close' button in the top-left
     Toolbar toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
-    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
+    ActionBar actionBar = getSupportActionBar();
+    if (actionBar != null) {
+      actionBar.setDisplayHomeAsUpEnabled(true);
+      actionBar.setHomeAsUpIndicator(R.drawable.ic_close);
+    }
     setTitle(R.string.title_new_procedure);
 
     // Set up tabs
     tabLayout = findViewById(R.id.tab_layout);
-    tabTitles = getResources().getStringArray(R.array.procedure_form_tabs);
-    for(String s : tabTitles) {
+    String [] tabTitles = getResources().getStringArray(R.array.procedure_form_tabs);
+    for (String tabTitle : tabTitles) {
+      Log.i(AppConstants.TAG, "Creating tab: " + tabTitle);
       tabLayout.addTab(tabLayout.newTab());
     }
     // Ensure 'Main' tab is presented to the user
@@ -155,7 +137,7 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
 
     // Set up a list of data accessors for each tab.
     workingTabs = new ArrayList<>();
-    for (int i=0; i<tabTitles.length; i++) {
+    for (int i = 0; i < tabTitles.length; i++) {
       Fragment tabData = formAdapter.getItem(i);
       if (tabData instanceof GetterSetter) {
         workingTabs.add((GetterSetter) tabData);
@@ -165,6 +147,7 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
 
   /**
    * Specify the menu to display for this activity.
+   *
    * @param menu The options menu to place the menu items into.
    * @return Returns <code>true</code> if the menu is to be displayed.
    */
@@ -177,6 +160,7 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
 
   /**
    * Responds to a menu item being selected.
+   *
    * @param item The menu item selected by the user
    * @return Returns <code>true</code> if the menu item functionality is being handled here rather
    *     than by the normal system menu processing.
@@ -202,56 +186,33 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
     GetTags();
 
     if (workingProcedure != null && workingProcedure.isNew()) {
-      Map<String, Object> newProcedure = new HashMap<>();
-      newProcedure.put("name", workingProcedure.getName());
-      newProcedure.put("description", workingProcedure.getDescription());
-      newProcedure.put("created", new Date());
-      newProcedure.put("is_public", workingProcedure.isPublic());
-      newProcedure.put("is_draft", workingProcedure.isDraft());
-      newProcedure.put("owner", workingProcedure.getOwner().getId());
-      List<String> tags = new ArrayList<>(workingTags);
-      newProcedure.put("tags", tags);
+      Consumer<Boolean> consumer = this::OnProcedureAdded;
+      ProcedureService.AddProcedure(
+          workingProcedure,
+          workingSteps,
+          new ArrayList<>(workingTags),
+          consumer,
+          getString(R.string.error_failed_adding_procedure)
+      );
+    }
+  }
 
-      procedureCollection.add(newProcedure).addOnSuccessListener(
-          documentReference -> {
-            // The procedure has been added. Now add the steps.
-            String newId = documentReference.getId();
-            Log.i(AppConstants.TAG, "Procedure added, attempting to write steps.");
-            WriteBatch batch = db.batch();
-            for(Step step : workingSteps) {
-              // Add a step to Firestore batch.
-              DocumentReference doc = stepCollection.document();
-              Map<String, Object> newStep = new HashMap<>();
-              newStep.put("sequence", step.getSequence());
-              newStep.put("name", step.getName());
-              newStep.put("description", step.getDescription());
-              newStep.put("procedure_id", newId);
-              if (step.hasPhoto()) {
-                newStep.put("photo_id", step.getPhotoId());
-
-                // Save the image to Firebase Storage
-                step.setCloud(new FirebaseImageStorage());
-                step.saveCloudPhoto();
-              }
-              batch.set(doc, newStep);
-            }
-            batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
-              @Override
-              public void onComplete(@NonNull Task<Void> task) {
-                String format = getString(R.string.message_procedure_added);
-                String message = String.format(format, workingProcedure.getName());
-                Toast.makeText(ProcedureFormActivity.this, message, Toast.LENGTH_SHORT).show();
-                ClearData();
-                finish();
-              }
-            });
-          }).addOnFailureListener(new OnFailureListener() {
-        @Override
-        public void onFailure(@NonNull Exception e) {
-          Log.w(AppConstants.TAG, "Failed to save data to Firestore");
-          Toast.makeText(ProcedureFormActivity.this, getString(R.string.error_failed_adding_procedure), Toast.LENGTH_SHORT).show();
-        }
-      });
+  /**
+   * Method to call after a form has been submitted.
+   * @param success Indicates that the {@link Procedure} was added successfully.
+   */
+  private void OnProcedureAdded(boolean success) {
+    if (!success) {
+      Log.w(AppConstants.TAG, getString(R.string.error_failed_adding_procedure));
+      Toast
+          .makeText(ProcedureFormActivity.this, getString(R.string.error_failed_adding_procedure),
+              Toast.LENGTH_SHORT).show();
+    } else {
+      String format = getString(R.string.message_procedure_added);
+      String message = String.format(format, workingProcedure.getName());
+      Toast.makeText(ProcedureFormActivity.this, message, Toast.LENGTH_SHORT).show();
+      ClearData();
+      finish();
     }
   }
 
@@ -280,11 +241,15 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
 
   /**
    * Sets the given tab index as the selected tab.
+   *
    * @param index The index of the tab to display.
    */
   private void setTab(int index) {
     if (tabLayout != null && tabLayout.getTabCount() > index) {
-      tabLayout.getTabAt(index).select();
+      Tab tab = tabLayout.getTabAt(index);
+      if (tab != null) {
+        tab.select();
+      }
     }
   }
 
@@ -390,7 +355,7 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
           steps.add(step);
         }
       }
-      workingSteps = (ArrayList<Step>)steps;
+      workingSteps = (ArrayList<Step>) steps;
       return steps;
     }
     return null;

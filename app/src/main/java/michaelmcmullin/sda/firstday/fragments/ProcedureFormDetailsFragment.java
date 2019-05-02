@@ -20,18 +20,22 @@ package michaelmcmullin.sda.firstday.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Spinner;
 import java.util.Date;
+import java.util.Locale;
 import michaelmcmullin.sda.firstday.R;
 import michaelmcmullin.sda.firstday.interfaces.GetterSetter;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureStorer;
 import michaelmcmullin.sda.firstday.models.Procedure;
 import michaelmcmullin.sda.firstday.models.User;
+import michaelmcmullin.sda.firstday.utils.AppConstants;
 import michaelmcmullin.sda.firstday.utils.CurrentUser;
 
 
@@ -54,17 +58,32 @@ public class ProcedureFormDetailsFragment extends Fragment implements GetterSett
   /**
    * Reference to the 'Name' edit text view.
    */
-  private EditText editName;
+  private static EditText editName;
+
+  /**
+   * Content of the editName EditText
+   */
+  private String nameValue;
 
   /**
    * Reference to the 'Description' edit text view.
    */
-  private EditText editDescription;
+  private static EditText editDescription;
+
+  /**
+   * Content of the editDescription EditText
+   */
+  private String descriptionValue;
 
   /**
    * Reference to the 'Status' spinner.
    */
-  private Spinner spinnerStatus;
+  private static Spinner spinnerStatus;
+
+  /**
+   * Selected index of the spinnerStatus Spinner
+   */
+  private int statusIndex;
 
   /**
    * The date this procedure was created.
@@ -120,7 +139,42 @@ public class ProcedureFormDetailsFragment extends Fragment implements GetterSett
     editName = v.findViewById(R.id.edit_text_procedure_form_name);
     editDescription = v.findViewById(R.id.edit_text_procedure_form_description);
     spinnerStatus = v.findViewById(R.id.spinner_procedure_form_status);
+
+    if (savedInstanceState != null) {
+      RestoreValues(savedInstanceState);
+      editName.setText(nameValue);
+      editDescription.setText(descriptionValue);
+      spinnerStatus.setSelection(statusIndex);
+    }
+
     return v;
+  }
+
+  /**
+   * Saves the current state of this fragment's elements.
+   * @param outState The bundle where the state data is stored.
+   */
+  @Override
+  public void onSaveInstanceState(@NonNull Bundle outState) {
+    super.onSaveInstanceState(outState);
+    if (editName != null)
+      outState.putString("name", editName.getText().toString());
+    if (editDescription != null)
+      outState.putString("description", editDescription.getText().toString());
+    if (spinnerStatus != null)
+      outState.putInt("status", spinnerStatus.getSelectedItemPosition());
+  }
+
+  /**
+   * Restores values from saved state.
+   * @param bundle The data saved during the previous onSaveInstanceState method.
+   */
+  private void RestoreValues(@Nullable Bundle bundle) {
+    if (bundle != null) {
+      nameValue = bundle.getString("name");
+      descriptionValue = bundle.getString("description");
+      statusIndex = bundle.getInt("status");
+    }
   }
 
   /**
@@ -165,6 +219,8 @@ public class ProcedureFormDetailsFragment extends Fragment implements GetterSett
   @Override
   public void SetData() {
     if (editName != null && editDescription != null && spinnerStatus != null) {
+      Log.i(AppConstants.TAG, "Main creator block.");
+
       String name = editName.getText().toString();
       String description = editDescription.getText().toString();
       int spinnerIndex = spinnerStatus.getSelectedItemPosition();
