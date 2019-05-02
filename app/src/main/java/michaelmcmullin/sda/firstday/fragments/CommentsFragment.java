@@ -19,32 +19,26 @@ package michaelmcmullin.sda.firstday.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
+import android.support.v4.util.Consumer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import com.bumptech.glide.Glide;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.Query.Direction;
 import java.util.ArrayList;
 import michaelmcmullin.sda.firstday.R;
 import michaelmcmullin.sda.firstday.adapters.CommentAdapter;
 import michaelmcmullin.sda.firstday.dialogs.AddCommentDialogFragment;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureIdGetter;
+import michaelmcmullin.sda.firstday.interfaces.services.CommentService;
 import michaelmcmullin.sda.firstday.models.Comment;
-import michaelmcmullin.sda.firstday.models.User;
-import michaelmcmullin.sda.firstday.utils.AppConstants;
+import michaelmcmullin.sda.firstday.services.Services;
 
 /**
  * Fragment that displays comments for a procedure.
@@ -57,19 +51,9 @@ public class CommentsFragment extends Fragment {
   private ProcedureIdGetter procedureIdGetter;
 
   /**
-   * Name of the procedure ID field in other collections.
+   * Service used to handle {@link Comment} data.
    */
-  private static final String PROCEDURE_KEY = "procedure_id";
-
-  /**
-   * Holds a reference to the Firestore database instance.
-   */
-  private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-  /**
-   * Holds a reference to the 'comment' collection in Firestore
-   */
-  private final CollectionReference commentCollection = db.collection("procedure_comment");
+  private final CommentService CommentService = Services.CommentService;
 
   /**
    * A required empty public constructor.
@@ -137,45 +121,20 @@ public class CommentsFragment extends Fragment {
   @Override
   public void onStart() {
     super.onStart();
-    loadComments();
+
+    // Get the required comments
+    Consumer<ArrayList<Comment>> consumer = this::loadComments;
+    CommentService.GetComments(
+        procedureIdGetter.getProcedureId(),
+        consumer,
+        getString(R.string.error_finding_comments)
+    );
   }
 
   /**
    * Loads the comments to the screen
    */
-  private void loadComments() {
-    final ArrayList<Comment> comments = new ArrayList<>();
-
-    // Populate comments from Firestore
-    // Based on code from StackOverflow https://stackoverflow.com/a/48807510/5233918
-    // Author Alex Mamo https://stackoverflow.com/users/5246885/alex-mamo
-    Query query = commentCollection
-        .whereEqualTo(PROCEDURE_KEY, procedureIdGetter.getProcedureId())
-        .orderBy("created", Direction.DESCENDING);
-    query.addSnapshotListener((queryDocumentSnapshots, e) -> {
-      if (e != null) {
-        Log.w(AppConstants.TAG, "Listen failed.", e);
-        return;
-      }
-
-      if (queryDocumentSnapshots != null) {
-        comments.clear();
-        for (DocumentSnapshot comment : queryDocumentSnapshots) {
-          String message = comment.getString("message");
-          String authorName = comment.getString("author_name");
-          String authorImage = comment.getString("author_picture");
-
-          Uri photo = null;
-          if (authorImage != null && !authorImage.isEmpty()) {
-            photo = new Uri.Builder().path(authorImage).build();
-          }
-
-          User author = new User(authorName, photo);
-          comments.add(new Comment(author, null, message));
-        }
-      }
-    });
-
+  private void loadComments(ArrayList<Comment> comments) {
     // Create a CommentAdapter class and tie it in with the comments list.
     final CommentAdapter adapter = new CommentAdapter(getActivity(), comments, Glide.with(this));
     View v = getView();

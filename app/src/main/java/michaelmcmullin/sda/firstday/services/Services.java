@@ -17,10 +17,12 @@
 
 package michaelmcmullin.sda.firstday.services;
 
+import michaelmcmullin.sda.firstday.interfaces.services.CommentService;
 import michaelmcmullin.sda.firstday.interfaces.services.ImageLabelService;
 import michaelmcmullin.sda.firstday.interfaces.services.ProcedureService;
 import michaelmcmullin.sda.firstday.interfaces.services.QrService;
 import michaelmcmullin.sda.firstday.interfaces.services.StepService;
+import michaelmcmullin.sda.firstday.models.Comment;
 import michaelmcmullin.sda.firstday.models.Procedure;
 import michaelmcmullin.sda.firstday.models.Step;
 
@@ -48,4 +50,9 @@ public class Services {
    * Service used for handling {@link Step} data.
    */
   public static StepService StepService = new FirestoreStep();
+
+  /**
+   * Service used for handling {@link Comment} data.
+   */
+  public static CommentService CommentService = new FirestoreComment();
 }

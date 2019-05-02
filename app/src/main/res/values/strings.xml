@@ -60,6 +60,7 @@
   <string name="error_failed_adding_procedure">Error Adding Procedure</string>
   <string name="error_finding_procedure">Error finding procedure</string>
   <string name="error_finding_steps">Error finding steps</string>
+  <string name="error_finding_comments">Error finding comments</string>
   <string name="title_search_results">Search Results: \'%s\'</string>
   <string name="button_take_photo">Take Photo</string>
 </resources>
