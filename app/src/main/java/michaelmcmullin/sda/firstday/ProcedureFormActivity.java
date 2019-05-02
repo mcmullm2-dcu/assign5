@@ -72,17 +72,17 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
   private SharedPreferences prefs;
 
   /**
-   * Stores a working Procedure instance that will eventually get saved to Firestore.
+   * Stores a working Procedure instance that will eventually get saved to the database.
    */
   private Procedure workingProcedure;
 
   /**
-   * Stores a working list of Step instances that will eventually get saved to Firestore.
+   * Stores a working list of Step instances that will eventually get saved to the database.
    */
   private ArrayList<Step> workingSteps;
 
   /**
-   * Stores a working set of tag strings that will eventually get saved to Firestore.
+   * Stores a working set of tag strings that will eventually get saved to the database.
    */
   private HashSet<String> workingTags;
 
@@ -117,7 +117,7 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
 
     // Set up tabs
     tabLayout = findViewById(R.id.tab_layout);
-    String [] tabTitles = getResources().getStringArray(R.array.procedure_form_tabs);
+    String[] tabTitles = getResources().getStringArray(R.array.procedure_form_tabs);
     for (String tabTitle : tabTitles) {
       Log.i(AppConstants.TAG, "Creating tab: " + tabTitle);
       tabLayout.addTab(tabLayout.newTab());
@@ -177,7 +177,7 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
   }
 
   /**
-   * Saves the new procedure to Firestore.
+   * Saves the new procedure to the database.
    */
   private void SaveProcedure() {
     CommitFragmentData();
@@ -187,10 +187,10 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
 
     if (workingProcedure != null && workingProcedure.isNew()) {
       Consumer<Boolean> consumer = this::OnProcedureAdded;
+      workingProcedure.setTags(workingTags);
       ProcedureService.AddProcedure(
           workingProcedure,
           workingSteps,
-          new ArrayList<>(workingTags),
           consumer,
           getString(R.string.error_failed_adding_procedure)
       );
@@ -199,6 +199,7 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
 
   /**
    * Method to call after a form has been submitted.
+   *
    * @param success Indicates that the {@link Procedure} was added successfully.
    */
   private void OnProcedureAdded(boolean success) {

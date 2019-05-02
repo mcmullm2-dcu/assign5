@@ -18,7 +18,9 @@
 package michaelmcmullin.sda.firstday.models;
 
 import com.google.firebase.firestore.ServerTimestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * Class for storing information about a single {@link Procedure} instance.
@@ -60,6 +62,11 @@ public class Procedure {
    * Flag indicating if this {@link Procedure} is still a draft, or only available to its owner.
    */
   private boolean is_draft;
+
+  /**
+   * List of search tags associated with this procedure.
+   */
+  private ArrayList<String> tags;
 
   /**
    * Firestore requires a constructor with no arguments.
@@ -179,5 +186,31 @@ public class Procedure {
    */
   public boolean isNew() {
     return (this.id == null || this.id.isEmpty());
+  }
+
+  /**
+   * Gets any search tags available for this procedure.
+   * @return Returns a list of tags available for this procedure.
+   */
+  public ArrayList<String> getTags() {
+    return tags;
+  }
+
+  /**
+   * Sets the list of search tags for this procedure.
+   * @param tags A list of search tags to assign to this procedure.
+   */
+  public void setTags(ArrayList<String> tags) {
+    this.tags = tags;
+  }
+
+  /**
+   * Sets the list of search tags for this procedure based on
+   * @param tags A Set of tags to assign to this procedure. They'll be converted to an ArrayList.
+   */
+  public void setTags(Set<String> tags) {
+    if (tags != null) {
+      this.tags = new ArrayList<>(tags);
+    }
   }
 }

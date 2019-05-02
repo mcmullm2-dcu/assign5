@@ -133,14 +133,13 @@ public class FirestoreProcedure implements ProcedureService {
    *
    * @param procedure The {@link Procedure} to save to a database.
    * @param steps A list of {@link Step} objects to save to the database.
-   * @param tags A list of tag strings to save to the database.
    * @param consumer A method to call after the {@link Procedure} has been added, taking a
    *     success argument.
    * @param error An error message to process if there is an error.
    */
   @Override
-  public void AddProcedure(Procedure procedure, List<Step> steps, List<String> tags,
-      Consumer<Boolean> consumer, String error) {
+  public void AddProcedure(Procedure procedure, List<Step> steps, Consumer<Boolean> consumer,
+      String error) {
     Map<String, Object> newProcedure = new HashMap<>();
     newProcedure.put("name", procedure.getName());
     newProcedure.put("description", procedure.getDescription());
@@ -148,8 +147,7 @@ public class FirestoreProcedure implements ProcedureService {
     newProcedure.put("is_public", procedure.isPublic());
     newProcedure.put("is_draft", procedure.isDraft());
     newProcedure.put("owner", procedure.getOwner().getId());
-    List<String> tagList = new ArrayList<>(tags);
-    newProcedure.put("tags", tagList);
+    newProcedure.put("tags", procedure.getTags());
 
     procedureCollection.add(newProcedure).addOnSuccessListener(
         documentReference -> {

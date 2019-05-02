@@ -38,10 +38,9 @@ public interface ProcedureService {
    *
    * @param procedure The {@link Procedure} to save to a database.
    * @param steps A list of {@link Step} objects to save to the database.
-   * @param tags A list of tag strings to save to the database.
    * @param consumer A method to call after the {@link Procedure} has been added.
    * @param error An error message to process if there is an error.
    */
-  void AddProcedure(Procedure procedure, List<Step> steps, List<String> tags,
-      final Consumer<Boolean> consumer, final String error);
+  void AddProcedure(Procedure procedure, List<Step> steps, final Consumer<Boolean> consumer,
+      final String error);
 }
