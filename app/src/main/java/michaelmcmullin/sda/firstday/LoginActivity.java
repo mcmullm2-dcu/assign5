@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
    * A list of authentication providers. Some are commented out for future configuration. For now,
    * we're only supporting Email and Google providers
    */
-  private List<IdpConfig> providers = Arrays.asList(
+  private final List<IdpConfig> providers = Arrays.asList(
       new AuthUI.IdpConfig.EmailBuilder().build(),
       //new AuthUI.IdpConfig.PhoneBuilder().build(),
       new AuthUI.IdpConfig.GoogleBuilder().build()
@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
   /**
    * The authenticated user (or null if the user isn't authenticated)
    */
-  FirebaseUser user;
+  private FirebaseUser user;
 
   /**
    * Called when {@link LoginActivity} is started, initialising the Activity and inflating the
@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
    * @return Returns <code>true</code> if the user is logged in. Otherwise,
    *     return <code>false</code>
    */
-  public boolean IsLoggedIn() {
+  private boolean IsLoggedIn() {
     user = FirebaseAuth.getInstance().getCurrentUser();
     return user != null;
   }
@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
   /**
    * Method to start the main app
    */
-  public void StartApp() {
+  private void StartApp() {
     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
     startActivity(intent);
     finish();

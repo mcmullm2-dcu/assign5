@@ -34,25 +34,25 @@ public class Services {
   /**
    * Service used for reading and writing QR codes.
    */
-  public static QrService QrService = new FirebaseQr();
+  public static final QrService QrService = new FirebaseQr();
 
   /**
    * Service used for labelling a Bitmap image.
    */
-  public static ImageLabelService ImageLabelService = new FirebaseImageLabeller();
+  public static final ImageLabelService ImageLabelService = new FirebaseImageLabeller();
 
   /**
    * Service used for handling {@link Procedure} data.
    */
-  public static ProcedureService ProcedureService = new FirestoreProcedure();
+  public static final ProcedureService ProcedureService = new FirestoreProcedure();
 
   /**
    * Service used for handling {@link Step} data.
    */
-  public static StepService StepService = new FirestoreStep();
+  public static final StepService StepService = new FirestoreStep();
 
   /**
    * Service used for handling {@link Comment} data.
    */
-  public static CommentService CommentService = new FirestoreComment();
+  public static final CommentService CommentService = new FirestoreComment();
 }

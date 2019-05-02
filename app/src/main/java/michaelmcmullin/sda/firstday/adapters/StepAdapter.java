@@ -114,12 +114,4 @@ public class StepAdapter extends ArrayAdapter<Step> {
     return listItemView;
   }
 
-  /**
-   * Removes an item at a particular position.
-   * @param position The position to remove an item from.
-   */
-  public void remove(int position) {
-    this.remove(getItem(position));
-    notifyDataSetChanged();
-  }
 }

@@ -40,12 +40,12 @@ public class MainActivity extends AppCompatActivity implements ProcedureFilterGe
   /**
    * A reference to the currently signed-in user
    */
-  User user = new CurrentUser();
+  private final User user = new CurrentUser();
 
   /**
    * The search view widget to search for procedures.
    */
-  SearchView searchView;
+  private SearchView searchView;
 
   /**
    * Called when {@link MainActivity} is started, initialising the Activity and inflating the
