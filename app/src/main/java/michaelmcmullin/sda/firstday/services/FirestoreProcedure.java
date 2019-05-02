@@ -36,6 +36,11 @@ public class FirestoreProcedure implements ProcedureService {
   private static final String DESCRIPTION_KEY = "description";
 
   /**
+   * Name of the Procedure 'Description' field in Firestore.
+   */
+  private static final String TAGS_KEY = "tags";
+
+  /**
    * Holds a reference to the Firestore database instance.
    */
   private final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -73,8 +78,16 @@ public class FirestoreProcedure implements ProcedureService {
           // Populate the procedure headings
           String name = document.getString(NAME_KEY);
           String description = document.getString(DESCRIPTION_KEY);
+
           Procedure result = new Procedure(name, description);
           result.setId(procedureId);
+
+          Object rawTags = document.get(TAGS_KEY);
+          if (rawTags != null && rawTags instanceof ArrayList<?>) {
+            ArrayList<String> tags = (ArrayList<String>) rawTags;
+            result.setTags(tags);
+          }
+
           consumer.accept(result);
         } else {
           Log.d(AppConstants.TAG, error);
