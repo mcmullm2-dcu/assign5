@@ -65,4 +65,17 @@
   <string name="error_finding_comments">Error finding comments</string>
   <string name="title_search_results">Search Results: \'%s\'</string>
   <string name="button_take_photo">Take Photo</string>
+  <!-- Words to ignore in a search query (just a small selection for demonstration) -->
+  <string-array name="search_stop_words">
+    <item>a</item>
+    <item>am</item>
+    <item>an</item>
+    <item>can</item>
+    <item>how</item>
+    <item>i</item>
+    <item>the</item>
+    <item>to</item>
+    <item>use</item>
+  </string-array>
+
 </resources>

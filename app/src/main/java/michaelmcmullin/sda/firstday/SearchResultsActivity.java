@@ -22,11 +22,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureFilterGetter;
 import michaelmcmullin.sda.firstday.interfaces.Searchable;
+import michaelmcmullin.sda.firstday.utils.AppConstants;
 import michaelmcmullin.sda.firstday.utils.CurrentUser;
 import michaelmcmullin.sda.firstday.utils.ProcedureFilter;
 
@@ -125,10 +127,25 @@ public class SearchResultsActivity extends AppCompatActivity
       originalSearchTerm = searchTerm;
 
       // Firestore has a limitation which means an array of search terms or wildcards can't be used.
-      // As a workaround, split the search term and just search for the first word.
-      String[] terms = searchTerm.toLowerCase().split(" ", 2);
+      // As a workaround, split the search term and just search for the first word that's not a
+      // stop word.
+      String[] terms = searchTerm.trim().toLowerCase().split(" ");
+      String[] stop_words = getResources().getStringArray(R.array.search_stop_words);
+
       if (terms.length > 0) {
-        searchTerm = terms[0];
+        for (int i=0; i<terms.length; i++) {
+          boolean isStop = false;
+          for (int j=0; j<stop_words.length; j++) {
+            if (terms[i].equals(stop_words[j])) {
+              isStop = true;
+            }
+          }
+
+          if (!isStop) {
+            searchTerm = terms[i];
+            break;
+          }
+        }
       }
 
       return searchTerm;
