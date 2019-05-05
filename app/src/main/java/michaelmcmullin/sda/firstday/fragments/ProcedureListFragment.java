@@ -17,6 +17,7 @@
 
 package michaelmcmullin.sda.firstday.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -152,8 +153,13 @@ public class ProcedureListFragment extends Fragment {
    * @param procedures The list of procedures to display.
    */
   private void ProcessList(ArrayList<Procedure> procedures) {
+    Activity activity = getActivity();
+    if (activity == null || procedures == null) {
+      return;
+    }
+
     // Create a ProcedureAdapter class and tie it in with the procedures list.
-    final ProcedureAdapter adapter = new ProcedureAdapter(getActivity(), procedures);
+    final ProcedureAdapter adapter = new ProcedureAdapter(activity, procedures);
 
     View v = getView();
     if (v != null) {
@@ -176,7 +182,7 @@ public class ProcedureListFragment extends Fragment {
 
       new Network(internetAvailable -> {
         if (!internetAvailable) {
-          Toast.makeText(getActivity(), getString(R.string.procedures_no_internet), Toast.LENGTH_SHORT).show();
+          Toast.makeText(activity, getString(R.string.procedures_no_internet), Toast.LENGTH_SHORT).show();
         }
       });
     }
