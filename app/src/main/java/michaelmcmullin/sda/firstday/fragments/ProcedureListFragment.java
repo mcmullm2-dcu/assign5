@@ -28,6 +28,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 import java.util.ArrayList;
 import michaelmcmullin.sda.firstday.ProcedureActivity;
 import michaelmcmullin.sda.firstday.R;
@@ -152,6 +153,11 @@ public class ProcedureListFragment extends Fragment {
     View v = getView();
     if (v != null) {
       ListView listView = getView().findViewById(R.id.list_view_procedures);
+      TextView emptyMessageTextView = getView().findViewById(R.id.empty_procedure_list);
+      if (procedures.size() == 0) {
+        emptyMessageTextView.setText(getEmptyProceduresMessage());
+      }
+      listView.setEmptyView(emptyMessageTextView);
       listView.setAdapter(adapter);
 
       // Add click event listener to each procedure to open up its details
@@ -162,5 +168,24 @@ public class ProcedureListFragment extends Fragment {
         startActivity(procedureIntent);
       });
     }
+  }
+
+  /**
+   * Get an appropriate message to display when there are no procedures listed.
+   * @return
+   */
+  private String getEmptyProceduresMessage() {
+    if (procedureFilterGetter != null) {
+      switch (procedureFilterGetter.getFilter()) {
+        case MINE:
+          return getString(R.string.procedure_list_empty_mine);
+        case SEARCH_RESULTS:
+          return getString(R.string.procedure_list_empty_search);
+        default:
+          break;
+      }
+    }
+
+    return getString(R.string.procedure_list_empty_default);
   }
 }

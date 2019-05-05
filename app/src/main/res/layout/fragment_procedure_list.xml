@@ -23,5 +23,11 @@
     android:layout_gravity="top"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"/>
+  <TextView
+    android:id="@+id/empty_procedure_list"
+    android:textStyle="italic"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    />
 
 </LinearLayout>

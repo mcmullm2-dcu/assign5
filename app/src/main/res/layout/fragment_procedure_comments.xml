@@ -28,4 +28,11 @@
     android:id="@+id/list_view_comments"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"/>
+  <TextView
+    android:id="@+id/empty_comment_list"
+    android:text="@string/comments_list_empty"
+    android:textStyle="italic"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    />
 </LinearLayout>

@@ -127,6 +127,7 @@ public class CommentsFragment extends Fragment {
       ListView listView = getView().findViewById(R.id.list_view_comments);
       if (listView != null) {
         listView.setAdapter(adapter);
+        listView.setEmptyView(getView().findViewById(R.id.empty_comment_list));
       }
     }
   }

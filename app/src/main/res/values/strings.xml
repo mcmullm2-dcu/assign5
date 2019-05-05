@@ -65,6 +65,11 @@
   <string name="error_finding_comments">Error finding comments</string>
   <string name="title_search_results">Search Results: \'%s\'</string>
   <string name="button_take_photo">Take Photo</string>
+  <string name="procedure_list_empty_default">No procedures found</string>
+  <string name="procedure_list_empty_mine">You haven\'t created any procedures yet.</string>
+  <string name="procedure_list_empty_search">Sorry, no procedures match that search term.</string>
+  <string name="comments_list_empty">No comments yet.</string>
+
   <!-- Words to ignore in a search query (just a small selection for demonstration) -->
   <string-array name="search_stop_words">
     <item>a</item>
