@@ -26,6 +26,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 import java.util.List;
 import michaelmcmullin.sda.firstday.dialogs.AddCommentDialogFragment;
 import michaelmcmullin.sda.firstday.dialogs.ProcedureShareDialogFragment;
@@ -150,6 +151,12 @@ public class ProcedureActivity extends AppCompatActivity implements ProcedureIdG
    * Populate the activity's view with a Procedure's details.
    */
   private void populateViews(Procedure procedure) {
+    if (procedure == null) {
+      Toast.makeText(this, getString(R.string.message_unrecognised_qr_code), Toast.LENGTH_SHORT).show();
+      finish();
+      return;
+    }
+
     if (procedureHeading != null) {
       String name = procedure.getName();
       if (procedure.isDraft()) {

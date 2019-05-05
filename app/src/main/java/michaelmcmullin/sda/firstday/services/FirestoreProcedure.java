@@ -69,6 +69,12 @@ public class FirestoreProcedure implements ProcedureService {
    */
   @Override
   public void FindProcedure(String procedureId, Consumer<Procedure> consumer, String error) {
+    if (!isValidProcedureId(procedureId)) {
+      consumer.accept(null);
+      return;
+    }
+    Log.i(AppConstants.TAG, "Valid Procedure ID: " + procedureId);
+
     DocumentReference procedureDoc = db.collection("procedure").document(procedureId);
 
     // Gets the main procedure details. Adding a Snapshot listener seems like it might be overkill,
@@ -99,11 +105,38 @@ public class FirestoreProcedure implements ProcedureService {
           consumer.accept(result);
         } else {
           Log.d(AppConstants.TAG, error);
+          consumer.accept(null);
         }
       } else {
         Log.d(AppConstants.TAG, error, task.getException());
+        consumer.accept(null);
       }
     });
+  }
+
+  /**
+   * Method to check if a supplied procedure ID is valid.
+   *
+   * @param id The ID of the procedure to check.
+   * @return Returns <code>true</code> if the given ID is in a valid format, otherwise
+   *     <code>false</code>. Note that this method doesn't check if the procedure exists.
+   */
+  private boolean isValidProcedureId(String id) {
+    if (id == null) {
+      return false;
+    }
+    id = id.trim();
+    if (id.isEmpty()) {
+      return false;
+    }
+    if (id.contains(" ") ||
+        id.contains("\\") ||
+        id.contains("/")
+        ) {
+      return false;
+    }
+
+    return true;
   }
 
   /**

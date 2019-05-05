@@ -95,6 +95,7 @@ public class QrReaderActivity extends CameraKitBase {
       Intent procedureIntent = new Intent(this, ProcedureActivity.class);
       procedureIntent.putExtra(ProcedureActivity.EXTRA_ID, value);
       startActivity(procedureIntent);
+      finish();
     } else {
       Toast.makeText(this, value, Toast.LENGTH_SHORT).show();
       finish();
