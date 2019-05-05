@@ -52,11 +52,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "359349161675-d3q1c0bm4o7f5tkd2hmodvupa0pi9h9k.apps.googleusercontent.com",
+          "client_id": "359349161675-7iaoemfo951dr9ajuc2hgo2nnoncrp03.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "michaelmcmullin.sda.firstday",
-            "certificate_hash": "8a45cb419848e84710dae7a025b267b9fcec7193"
+            "certificate_hash": "0f1781b51891d3554cc2b70a87bd6af19f5c6c3b"
           }
         },
         {
@@ -65,6 +65,14 @@
           "android_info": {
             "package_name": "michaelmcmullin.sda.firstday",
             "certificate_hash": "fdc815a3e55638ecc7334dfaa5853f335bba6d20"
+          }
+        },
+        {
+          "client_id": "359349161675-d3q1c0bm4o7f5tkd2hmodvupa0pi9h9k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "michaelmcmullin.sda.firstday",
+            "certificate_hash": "8a45cb419848e84710dae7a025b267b9fcec7193"
           }
         },
         {
