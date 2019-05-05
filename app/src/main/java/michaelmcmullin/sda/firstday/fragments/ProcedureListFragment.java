@@ -24,11 +24,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Consumer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import java.util.ArrayList;
 import michaelmcmullin.sda.firstday.ProcedureActivity;
 import michaelmcmullin.sda.firstday.R;
@@ -38,6 +41,7 @@ import michaelmcmullin.sda.firstday.interfaces.Searchable;
 import michaelmcmullin.sda.firstday.interfaces.services.ProcedureService;
 import michaelmcmullin.sda.firstday.models.Procedure;
 import michaelmcmullin.sda.firstday.services.Services;
+import michaelmcmullin.sda.firstday.utils.AppConstants;
 
 /**
  * Fragment that displays a list of procedures filtered appropriately.
@@ -159,6 +163,7 @@ public class ProcedureListFragment extends Fragment {
       }
       listView.setEmptyView(emptyMessageTextView);
       listView.setAdapter(adapter);
+      setListViewHeightBasedOnChildren(listView, adapter);
 
       // Add click event listener to each procedure to open up its details
       listView.setOnItemClickListener((adapterView, view, i, l) -> {
@@ -187,5 +192,36 @@ public class ProcedureListFragment extends Fragment {
     }
 
     return getString(R.string.procedure_list_empty_default);
+  }
+
+  /**
+   * Set the height of a list view based on its content. The purpose of this .
+   * @param listView The ListView to change.
+   * @param listAdapter The ProcedureAdapter used by the ListView.
+   * Adapted from: https://stackoverflow.com/a/9486390/5233918
+   */
+  public static void setListViewHeightBasedOnChildren(ListView listView, ProcedureAdapter listAdapter) {
+    if (listAdapter == null) {
+      // pre-condition
+      return;
+    }
+
+    int totalHeight = 0;
+    int desiredWidth = MeasureSpec.makeMeasureSpec(listView.getWidth(), MeasureSpec.AT_MOST);
+    for (int i = 0; i < listAdapter.getCount(); i++) {
+      View listItem = listAdapter.getView(i, null, listView);
+      listItem.measure(desiredWidth, MeasureSpec.UNSPECIFIED);
+      totalHeight += listItem.getMeasuredHeight();
+
+      // Original code omitted extra elements that could affect the height. Adding them here.
+      totalHeight += listItem.getPaddingTop();
+      totalHeight += (listItem.getPaddingBottom() * 2);
+      totalHeight += listView.getDividerHeight();
+    }
+
+    ViewGroup.LayoutParams params = listView.getLayoutParams();
+    params.height = totalHeight;
+    listView.setLayoutParams(params);
+    listView.requestLayout();
   }
 }

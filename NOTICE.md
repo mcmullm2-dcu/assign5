@@ -21,3 +21,4 @@ StackOverflow provided some helpful code snippets, which are licensed under CC B
 * [Resizing a Bitmap Proportionally](https://stackoverflow.com/a/28367226) by [joaomgcd](https://stackoverflow.com/users/1002963/joaomgcd)
 * [Generate a GUID](https://stackoverflow.com/a/2982751) by [Kaleb Brasee](https://stackoverflow.com/users/179233/kaleb-brasee)
 * [Convert a Bitmap to Uri](https://stackoverflow.com/a/50924037) by [kjs566](https://stackoverflow.com/users/5479478/kjs566)
+* [Resizing a ListView based on its children](https://stackoverflow.com/a/9486390/5233918) by [Pankaj](https://stackoverflow.com/users/1112856/pankaj)

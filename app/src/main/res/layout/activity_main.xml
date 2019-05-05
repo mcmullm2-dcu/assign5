@@ -33,26 +33,26 @@
 
     <LinearLayout
       android:id="@+id/main_buttons"
-      android:layout_marginTop="@dimen/spacing_med"
-      app:layout_constraintTop_toBottomOf="@+id/search_view"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content">
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/spacing_med"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/search_view">
       <Button
         android:id="@+id/launch_qr_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_scan_qr_code"
-        android:onClick="TakeQrCodePhoto"/>
+        android:onClick="TakeQrCodePhoto"
+        android:text="@string/button_scan_qr_code"/>
 
       <Button
         android:id="@+id/launch_image_reader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_scan_image"
         android:layout_marginStart="@dimen/spacing_med"
-        android:onClick="TakeLabelledImagePhoto"/>
+        android:onClick="TakeLabelledImagePhoto"
+        android:text="@string/button_scan_image"/>
     </LinearLayout>
 
     <View
@@ -65,30 +65,33 @@
 
     <TextView
       android:id="@+id/title_my_procedures"
-      app:layout_constraintTop_toBottomOf="@id/horizontal_rule"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/spacing_med"
       android:paddingLeft="@dimen/spacing_med"
       android:paddingRight="@dimen/spacing_med"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
       android:text="@string/title_my_procedures"
-      android:theme="@style/AppTheme.SectionHeading"/>
-    <fragment
-      android:id="@+id/procedures_list"
-      android:name="michaelmcmullin.sda.firstday.fragments.ProcedureListFragment"
-      android:layout_margin="@dimen/spacing_med"
-      app:layout_constraintTop_toBottomOf="@id/title_my_procedures"
+      android:theme="@style/AppTheme.SectionHeading"
+      app:layout_constraintTop_toBottomOf="@id/horizontal_rule"/>
+    <ScrollView
+      app:layout_constraintTop_toBottomOf="@+id/title_my_procedures"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"/>
-
+      android:layout_height="wrap_content">
+      <fragment
+        android:id="@+id/procedures_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_med"
+        android:name="michaelmcmullin.sda.firstday.fragments.ProcedureListFragment"/>
+    </ScrollView>
   </android.support.constraint.ConstraintLayout>
 
   <android.support.design.widget.FloatingActionButton
     android:id="@+id/procedure_add_button"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="bottom|end"
     android:layout_margin="@dimen/spacing_med"
+    android:layout_gravity="bottom|end"
     android:src="@drawable/ic_add"/>
 
 </android.support.design.widget.CoordinatorLayout>

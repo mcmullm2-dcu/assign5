@@ -13,16 +13,17 @@
   See the License for the specific language governing permissions and
   limitations under the License.
  -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical"
   android:layout_width="match_parent"
-  android:layout_height="wrap_content">
+  android:layout_height="0dp"
+  android:orientation="vertical">
 
   <ListView
     android:id="@+id/list_view_procedures"
-    android:layout_gravity="top"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"/>
+    android:layout_height="wrap_content"
+    android:layout_gravity="start"/>
   <TextView
     android:id="@+id/empty_procedure_list"
     android:textStyle="italic"
