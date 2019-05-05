@@ -155,6 +155,7 @@ public class ProcedureListFragment extends Fragment {
   private void ProcessList(ArrayList<Procedure> procedures) {
     Activity activity = getActivity();
     if (activity == null || procedures == null) {
+      Log.w(AppConstants.TAG, "Problem processing the list of procedures.");
       return;
     }
 

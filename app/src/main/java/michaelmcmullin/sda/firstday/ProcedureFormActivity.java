@@ -53,6 +53,15 @@ import michaelmcmullin.sda.firstday.utils.CurrentUser;
 public class ProcedureFormActivity extends AppCompatActivity implements ProcedureStorer {
 
   /**
+   * Enum indicating the validity of form data.
+   */
+  private enum FormStatus {
+    VALID, NO_PROCEDURE_NAME, NO_STEPS
+  }
+
+  ;
+
+  /**
    * Service that handles {@link Procedure} data.
    */
   private final ProcedureService ProcedureService = Services.ProcedureService;
@@ -171,6 +180,11 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
       case R.id.save_procedure:
         SaveProcedure();
         return true;
+      case android.R.id.home:
+        ClearData();
+        Toast.makeText(this, getString(R.string.message_procedure_cancelled), Toast.LENGTH_SHORT)
+            .show();
+        return false;
     }
     ClearData();
     return false;
@@ -184,6 +198,24 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
     GetProcedure();
     GetSteps();
     GetTags();
+
+    FormStatus status = Validate();
+
+    if (status != FormStatus.VALID) {
+      String message = getString(R.string.error_failed_adding_procedure);
+      switch(status) {
+        case NO_PROCEDURE_NAME:
+          message = getString(R.string.error_no_procedure_name);
+          setTab(MAIN_TAB_INDEX);
+          break;
+        case NO_STEPS:
+          message = getString(R.string.error_no_steps);
+          setTab(STEPS_TAB_INDEX);
+          break;
+      }
+      Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+      return;
+    }
 
     if (workingProcedure != null && workingProcedure.isNew()) {
       Consumer<Boolean> consumer = this::OnProcedureAdded;
@@ -215,6 +247,22 @@ public class ProcedureFormActivity extends AppCompatActivity implements Procedur
       ClearData();
       finish();
     }
+  }
+
+  /**
+   * Analyse the form to discover if it's valid.
+   *
+   * @return Returns a value indicating if the form is valid, or if there is incorrect/incomplete
+   *     information in it.
+   */
+  public FormStatus Validate() {
+    if (workingProcedure == null || workingProcedure.getName().trim().isEmpty()) {
+      return FormStatus.NO_PROCEDURE_NAME;
+    }
+    if (workingSteps == null || workingSteps.size() == 0) {
+      return FormStatus.NO_STEPS;
+    }
+    return FormStatus.VALID;
   }
 
   /**

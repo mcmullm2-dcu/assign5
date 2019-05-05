@@ -57,10 +57,13 @@
   <string name="subject_share_procedure">FirstDay shared a procedure with you</string>
   <string name="message_procedure_shared_see_qr">If you download the FirstDay app, you can scan the attached QR code to access this procedure directly!</string>
   <string name="message_procedure_added">Procedure "%s" added successfully.</string>
+  <string name="message_procedure_cancelled">Procedure cancelled.</string>
   <string name="message_no_qr_code">No QR code detected.</string>
   <string name="message_unrecognised_qr_code">Sorry, unrecognised QR code</string>
   <string name="message_no_image_labels">No image labels detected.</string>
   <string name="error_parse_date">Error parsing Date</string>
+  <string name="error_no_procedure_name">Error: Please give this procedure a name.</string>
+  <string name="error_no_steps">Error: Please add one or more steps.</string>
   <string name="error_failed_adding_procedure">Error Adding Procedure</string>
   <string name="error_finding_procedure">Error finding procedure</string>
   <string name="error_listing_procedures">Error finding procedures</string>
