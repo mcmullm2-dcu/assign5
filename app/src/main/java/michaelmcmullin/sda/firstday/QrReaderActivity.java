@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.util.Consumer;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -52,6 +53,15 @@ public class QrReaderActivity extends CameraKitBase {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_qr_reader);
     SetCameraKitView(findViewById(R.id.camera));
+
+    // Add back button
+    ActionBar actionBar = getSupportActionBar();
+    if (actionBar != null) {
+      actionBar.setDisplayHomeAsUpEnabled(true);
+      actionBar.setHomeAsUpIndicator(R.drawable.ic_close);
+    }
+    setTitle(R.string.title_scan_qr_code);
+
   }
 
   /**

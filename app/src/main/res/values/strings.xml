@@ -43,6 +43,8 @@
     <item>Published (Public)</item>
   </string-array>
   <string name="title_new_step">Add Step</string>
+  <string name="title_scan_qr_code">Scan QR Code</string>
+  <string name="title_scan_photo">Search by Photo</string>
   <string name="button_save">Save</string>
   <string name="hint_step_name">Step Name</string>
   <string name="hint_step_description">Full Description</string>
