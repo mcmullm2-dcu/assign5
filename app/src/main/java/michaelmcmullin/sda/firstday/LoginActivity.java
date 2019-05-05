@@ -18,8 +18,8 @@
 package michaelmcmullin.sda.firstday;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -72,10 +72,12 @@ public class LoginActivity extends AppCompatActivity {
     }
     setContentView(R.layout.activity_login);
   }
+
   /**
    * Check if a user is logged in
-   * @return Returns <code>true</code> if the user is logged in. Otherwise,
-   *     return <code>false</code>
+   *
+   * @return Returns <code>true</code> if the user is logged in. Otherwise, return
+   *     <code>false</code>
    */
   private boolean IsLoggedIn() {
     user = FirebaseAuth.getInstance().getCurrentUser();
@@ -107,6 +109,7 @@ public class LoginActivity extends AppCompatActivity {
 
   /**
    * Handles the result returned from the FirebaseUI authentication process.
+   *
    * @param requestCode The request we're responding to.
    * @param resultCode A code indicating the status of the result.
    * @param data The resulting <code>Intent</code> which can contain data through "extras".
@@ -126,11 +129,12 @@ public class LoginActivity extends AppCompatActivity {
         // Sign in failed. If response is null the user canceled the
         // sign-in flow using the back button. Otherwise check
         // response.getError().getErrorCode() and handle the error.
-        // ...
-        Toast.makeText(this, "Sign in failed", Toast.LENGTH_SHORT).show();
+        String message = "";
         if (response != null) {
           Log.w(AppConstants.TAG, response.getError().getMessage());
+          message = ": " + response.getError().getMessage();
         }
+        Toast.makeText(this, "Sign in failed" + message, Toast.LENGTH_SHORT).show();
       }
     }
   }
