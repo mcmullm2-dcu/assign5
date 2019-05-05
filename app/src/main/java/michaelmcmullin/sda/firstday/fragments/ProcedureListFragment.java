@@ -42,6 +42,7 @@ import michaelmcmullin.sda.firstday.interfaces.services.ProcedureService;
 import michaelmcmullin.sda.firstday.models.Procedure;
 import michaelmcmullin.sda.firstday.services.Services;
 import michaelmcmullin.sda.firstday.utils.AppConstants;
+import michaelmcmullin.sda.firstday.utils.Network;
 
 /**
  * Fragment that displays a list of procedures filtered appropriately.
@@ -171,6 +172,12 @@ public class ProcedureListFragment extends Fragment {
         Intent procedureIntent = new Intent(getActivity(), ProcedureActivity.class);
         procedureIntent.putExtra(ProcedureActivity.EXTRA_ID, clicked.getId());
         startActivity(procedureIntent);
+      });
+
+      new Network(internetAvailable -> {
+        if (!internetAvailable) {
+          Toast.makeText(getActivity(), getString(R.string.procedures_no_internet), Toast.LENGTH_SHORT).show();
+        }
       });
     }
   }

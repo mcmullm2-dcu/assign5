@@ -22,6 +22,7 @@
   <string name="button_cancel">Cancel</string>
   <string name="title_my_procedures">My Procedures:</string>
   <string name="draft">Draft</string>
+  <string name="procedures_no_internet">There may be more procedures, but you\'ll need an active internet connection.</string>
   <string name="title_steps">Steps:</string>
   <string name="title_comments">Comments (newest first):</string>
   <string name="hint_add_comment">Write a comment</string>
