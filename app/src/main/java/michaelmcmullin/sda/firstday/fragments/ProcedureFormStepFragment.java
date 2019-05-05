@@ -146,10 +146,8 @@ public class ProcedureFormStepFragment extends Fragment
 
     // Set up the picture buttons
     ImageView buttonCamera = v.findViewById(R.id.image_view_procedure_form_step_photo);
-    ImageView buttonGallery = v.findViewById(R.id.image_view_procedure_form_step_gallery);
 
     buttonCamera.setOnClickListener(this);
-    buttonGallery.setOnClickListener(this);
 
     return v;
   }
@@ -242,9 +240,6 @@ public class ProcedureFormStepFragment extends Fragment
           photoDialog.setTargetFragment(this, 0);
           photoDialog.show(fm, "dialog_take_photo");
         }
-        break;
-      case R.id.image_view_procedure_form_step_gallery:
-        Log.i(AppConstants.TAG, "Loading Gallery...");
         break;
     }
   }
