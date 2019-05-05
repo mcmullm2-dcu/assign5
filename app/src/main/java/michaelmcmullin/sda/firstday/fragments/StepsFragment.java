@@ -17,12 +17,14 @@
 
 package michaelmcmullin.sda.firstday.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Consumer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +37,7 @@ import michaelmcmullin.sda.firstday.interfaces.StepsSetter;
 import michaelmcmullin.sda.firstday.interfaces.services.StepService;
 import michaelmcmullin.sda.firstday.models.Step;
 import michaelmcmullin.sda.firstday.services.Services;
+import michaelmcmullin.sda.firstday.utils.AppConstants;
 
 /**
  * Fragment that displays the steps involved in a procedure.
@@ -130,6 +133,12 @@ public class StepsFragment extends Fragment {
    */
   private void ProcessSteps(ArrayList<Step> steps) {
     // Create a StepAdapter class and tie it in with the steps list.
+    Activity activity = getActivity();
+
+    if (activity == null) {
+      Log.w(AppConstants.TAG, "Can't find activity");
+      return;
+    }
     final StepAdapter adapter = new StepAdapter(getActivity(), steps, false);
     View v = getView();
     if (v != null) {
