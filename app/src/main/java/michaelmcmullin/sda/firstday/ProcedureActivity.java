@@ -151,7 +151,11 @@ public class ProcedureActivity extends AppCompatActivity implements ProcedureIdG
    */
   private void populateViews(Procedure procedure) {
     if (procedureHeading != null) {
-      procedureHeading.setText(procedure.getName());
+      String name = procedure.getName();
+      if (procedure.isDraft()) {
+        name += " (" + getString(R.string.draft) + ")";
+      }
+      procedureHeading.setText(name);
     }
     if (procedureDescription != null) {
       procedureDescription.setText(procedure.getDescription());

@@ -21,6 +21,7 @@
   <string name="button_scan_image">Read Camera Image</string>
   <string name="button_cancel">Cancel</string>
   <string name="title_my_procedures">My Procedures:</string>
+  <string name="draft">Draft</string>
   <string name="title_steps">Steps:</string>
   <string name="title_comments">Comments (newest first):</string>
   <string name="hint_add_comment">Write a comment</string>

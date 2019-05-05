@@ -18,6 +18,7 @@
 package michaelmcmullin.sda.firstday.adapters;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,7 +75,13 @@ public class ProcedureAdapter extends ArrayAdapter<Procedure> {
     if (currentItem != null) {
       // Find the procedure name in the layout file and populate it.
       TextView nameTextView = listItemView.findViewById(R.id.procedure_name_text_view);
-      nameTextView.setText(currentItem.getName());
+      String name = currentItem.getName();
+
+      if (currentItem.isDraft()) {
+        name += " (" + getContext().getResources().getString(R.string.draft) + ")";
+        nameTextView.setTypeface(null, Typeface.ITALIC);
+      }
+      nameTextView.setText(name);
 
       // Find the procedure description in the layout file and populate it.
       TextView descriptionTextView = listItemView

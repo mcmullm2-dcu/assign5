@@ -36,9 +36,14 @@ public class FirestoreProcedure implements ProcedureService {
   private static final String DESCRIPTION_KEY = "description";
 
   /**
-   * Name of the Procedure 'Description' field in Firestore.
+   * Name of the Procedure 'Tags' field in Firestore.
    */
   private static final String TAGS_KEY = "tags";
+
+  /**
+   * Name of the Procedure 'Draft' field in Firestore.
+   */
+  private static final String DRAFT_KEY = "is_draft";
 
   /**
    * Holds a reference to the Firestore database instance.
@@ -78,8 +83,11 @@ public class FirestoreProcedure implements ProcedureService {
           // Populate the procedure headings
           String name = document.getString(NAME_KEY);
           String description = document.getString(DESCRIPTION_KEY);
+          Boolean draft = document.getBoolean(DRAFT_KEY);
 
           Procedure result = new Procedure(name, description);
+          result.setDraft(draft);
+
           result.setId(procedureId);
 
           Object rawTags = document.get(TAGS_KEY);
@@ -129,8 +137,10 @@ public class FirestoreProcedure implements ProcedureService {
         for (DocumentSnapshot document : queryDocumentSnapshots) {
           String name = document.getString(NAME_KEY);
           String description = document.getString(DESCRIPTION_KEY);
+          Boolean draft = document.getBoolean(DRAFT_KEY);
           Procedure procedure = new Procedure(name, description);
           procedure.setId(document.getId());
+          procedure.setDraft(draft);
 
           procedures.add(procedure);
         }

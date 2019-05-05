@@ -180,6 +180,18 @@ public class Procedure {
   }
 
   /**
+   * Sets a value indicating if this {@link Procedure} instance is a draft.
+   *
+   * @param is_draft Set to <code>true</code> if this {@link Procedure} instance is a draft.
+   *     Otherwise, set it to <code>false</code>.
+   */
+  public void setDraft(Boolean is_draft) {
+    if (is_draft != null) {
+      this.is_draft = is_draft;
+    }
+  }
+
+  /**
    * Indicates if this is a new procedure (i.e. it has no ID set).
    *
    * @return Returns <code>true</code> if this {@link Procedure} instance is a new procedure.
@@ -190,6 +202,7 @@ public class Procedure {
 
   /**
    * Gets any search tags available for this procedure.
+   *
    * @return Returns a list of tags available for this procedure.
    */
   public ArrayList<String> getTags() {
@@ -198,6 +211,7 @@ public class Procedure {
 
   /**
    * Sets the list of search tags for this procedure.
+   *
    * @param tags A list of search tags to assign to this procedure.
    */
   public void setTags(ArrayList<String> tags) {
@@ -206,7 +220,9 @@ public class Procedure {
 
   /**
    * Sets the list of search tags for this procedure based on
-   * @param tags A Set of tags to assign to this procedure. They'll be converted to an ArrayList.
+   *
+   * @param tags A Set of tags to assign to this procedure. They'll be converted to an
+   *     ArrayList.
    */
   public void setTags(Set<String> tags) {
     if (tags != null) {
