@@ -6,10 +6,24 @@ CameraKit is licensed under the MIT licence.
 Glide is Copyright 2014 Google, Inc. All rights reserved. See below for
 redistribution rights, compliance and third party licensing.
 
-All other files are licensed under the Apache 2 license.
+All other files are licensed under the Apache 2.0 license.
 
-Content adapted from StackOverflow answers are licensed under CC BY-SA 3.0
-(Creative Commons Attribution-ShareAlike 3.0 Unported).
+Content adapted from StackOverflow answers from before 1st February 2016
+are licensed under CC BY-SA 3.0 (Creative Commons Attribution-ShareAlike
+3.0 Unported).
+
+StackOverflow answers from after 1st February 2016 are licensed under
+the MIT license (https://opensource.org/licenses/MIT). The full text
+of the MIT license is not required here as specified under the
+StackOverflow terms:
+
+"You don’t have to include the full MIT License in your code base. Contributors agree to give code users permission to ignore the MIT License’s notice preservation requirement, as long as users give reasonable attribution upon request of the copyright holder (or Stack Exchange on behalf of the contributor). This optional exception to the MIT License will live in our terms of service."
+Source: https://meta.stackexchange.com/questions/271080/the-mit-license-clarity-on-using-code-on-stack-overflow-and-stack-exchange
+
+In compliance with this requirement, all StackOverflow references listed
+in the NOTICE.md file provide an additional link to the author's profile
+in the format recommended by StackOverflow:
+https://stackoverflow.blog/2009/06/25/attribution-required/
 
 =======================================================================
 
