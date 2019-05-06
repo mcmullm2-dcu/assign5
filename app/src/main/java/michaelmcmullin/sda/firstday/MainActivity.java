@@ -35,6 +35,9 @@ import michaelmcmullin.sda.firstday.utils.AppConstants;
 import michaelmcmullin.sda.firstday.utils.CurrentUser;
 import michaelmcmullin.sda.firstday.utils.ProcedureFilter;
 
+/**
+ * The main starting point for logged in users.
+ */
 public class MainActivity extends AppCompatActivity implements ProcedureFilterGetter {
 
   /**

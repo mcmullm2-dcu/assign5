@@ -34,11 +34,15 @@ import michaelmcmullin.sda.firstday.interfaces.ProcedureGetter;
 import michaelmcmullin.sda.firstday.interfaces.ProcedureIdGetter;
 import michaelmcmullin.sda.firstday.interfaces.StepsSetter;
 import michaelmcmullin.sda.firstday.interfaces.services.ProcedureService;
+import michaelmcmullin.sda.firstday.models.Comment;
 import michaelmcmullin.sda.firstday.models.Procedure;
 import michaelmcmullin.sda.firstday.models.Step;
 import michaelmcmullin.sda.firstday.services.Services;
 import michaelmcmullin.sda.firstday.utils.CurrentUser;
 
+/**
+ * Displays a {@link Procedure} instance's full details, including {@link Step}s and {@link Comment}s.
+ */
 public class ProcedureActivity extends AppCompatActivity implements ProcedureIdGetter,
     ProcedureGetter, StepsSetter {
 

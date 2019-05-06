@@ -191,7 +191,8 @@ public class ProcedureListFragment extends Fragment {
 
   /**
    * Get an appropriate message to display when there are no procedures listed.
-   * @return
+   * @return Returns a message that accurately describes why there are no procedures listed, which
+   * changes depending on context.
    */
   private String getEmptyProceduresMessage() {
     if (procedureFilterGetter != null) {

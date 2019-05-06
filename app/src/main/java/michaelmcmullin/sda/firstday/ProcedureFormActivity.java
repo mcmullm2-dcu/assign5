@@ -50,6 +50,9 @@ import michaelmcmullin.sda.firstday.services.Services;
 import michaelmcmullin.sda.firstday.utils.AppConstants;
 import michaelmcmullin.sda.firstday.utils.CurrentUser;
 
+/**
+ * Activity that displays a form for adding or editing a procedure.
+ */
 public class ProcedureFormActivity extends AppCompatActivity implements ProcedureStorer {
 
   /**
